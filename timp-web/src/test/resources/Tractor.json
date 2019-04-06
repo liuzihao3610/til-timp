@@ -1,0 +1,26 @@
+{
+  "data":{
+    "tractorId":0,
+    "tractorCode":"Test-tractorCode",
+    "tractorName":"Test-tractorName",
+    "brandId":0,
+    "tractorType":0,
+    "baseType":0,
+    "tractorLong":0,
+    "tractorWidth":0,
+    "tractorHigh":0,
+    "tractorWeight":0,
+    "tractionWeight":0,
+    "fuel":0,
+    "price":0,
+    "origin":"Test-origin",
+    "supplierId":0,
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-03-22 08:09:59",
+    "checker":0,
+    "checkDate":"2018-03-22 08:09:59",
+    "corpId":0,
+    "flag":0
+  }
+}

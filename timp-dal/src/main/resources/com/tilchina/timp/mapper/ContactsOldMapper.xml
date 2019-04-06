@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.ContactsOldMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.ContactsOld" >
+    <id column="CONTACTS_ID" jdbcType="BIGINT" property="contactsId" />
+	<result column="CONTACTS_ID" jdbcType="BIGINT" property="contactsId" />
+	<result column="USER_ID" jdbcType="BIGINT" property="userId" />
+	<result column="UNIT_ID" jdbcType="BIGINT" property="unitId" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="USER_NAME" jdbcType="VARCHAR" property="refContactsName" />
+	<result column="USER_CODE" jdbcType="VARCHAR" property="refContactsCode" />
+	<result column="PHONE" jdbcType="VARCHAR" property="refPhone" />
+	<result column="EMAIL" jdbcType="VARCHAR" property="refEmail" />
+	<result column="FIX" jdbcType="VARCHAR" property="refFix" />
+	<result column="ADDRESS" jdbcType="VARCHAR" property="refAddress" />
+	<result column="UNIT_NAME" jdbcType="VARCHAR" property="refUnitName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CONTACTS_ID, USER_ID, UNIT_ID, CREATOR, CREATE_TIME, CORP_ID, FLAG
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	contacts.CONTACTS_ID,contacts.USER_ID,us.USER_NAME ,us.USER_CODE,us.PHONE,us.EMAIL,unit.ADDRESS,unit.TELEPHONE AS FIX,contacts.UNIT_ID,unit.UNIT_NAME,
+  	contacts.CREATOR,u.USER_NAME AS CREATE_NAME,contacts.CREATE_TIME,contacts.CORP_ID,corp.CORP_NAME,contacts.FLAG
+  
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where contacts.del = 0
+    <trim  suffixOverrides="," >
+      <if test="contactsId != null and contactsId != ''" >
+        and contacts.CONTACTS_ID = #{contactsId}
+      </if>
+      <if test="userId != null and userId != ''" >
+        and contacts.USER_ID = #{userId}
+      </if>
+      <if test="refContactsName != null and refContactsName != ''" >
+        and us.USER_NAME LIKE CONCAT('%',#{refContactsName},'%')
+      </if>
+      <if test="unitId != null and unitId != ''" >
+        and contacts.UNIT_ID = #{unitId}
+      </if>
+
+      <if test="refUnitName != null and refUnitName != ''" >
+        and unit.UNIT_NAME LIKE CONCAT('%',#{refUnitName},'%')
+      </if>
+      <if test="creator != null and creator != ''" >
+        and contacts.CREATOR = #{creator}
+      </if>
+      <if test="createTime != null and createTime != ''" >
+        and contacts.CREATE_TIME = #{createTime}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and contacts.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and contacts.FLAG = #{flag}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (unit.UNIT_NAME LIKE CONCAT('%',#{searchContent},'%')
+        	or us.USER_NAME LIKE CONCAT('%',#{searchContent},'%') 
+        	or us.USER_CODE LIKE CONCAT('%',#{searchContent},'%') 
+        	 )
+      </if>
+	  <if test="refPhone != null and refPhone != ''" >
+		and us.PHONE LIKE CONCAT('%',#{refPhone},'%')
+	  </if>
+     <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and contacts.CREATE_TIME  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and contacts.CREATE_TIME  <=  #{endTime}  ]]>
+	  </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM bd_contacts contacts
+		JOIN bd_user us ON contacts.USER_ID=us.USER_ID
+		JOIN bd_unit unit ON contacts.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user u ON contacts.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON contacts.CORP_ID=corp.CORP_ID
+    where contacts.CONTACTS_ID = #{contactsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    DELETE FROM bd_contacts where CONTACTS_ID = #{contactsId}
+  </delete>
+  <delete id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	DELETE   FROM   BD_CONTACTS	
+  		<if test="null!=array || 0!=array.length">
+  		  where	CONTACTS_ID in
+  	 		<foreach item="contactsId" collection="array" open="(" separator="," close=")">
+  	 			#{contactsId}
+  	 		</foreach>
+  		</if>
+  		
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.ContactsOld" keyProperty="contactsId" useGeneratedKeys="true">
+    insert into BD_CONTACTS
+	(USER_ID, UNIT_ID, CREATOR, CREATE_TIME, CORP_ID, FLAG)
+	values
+	(#{userId,jdbcType=BIGINT}, #{unitId,jdbcType=BIGINT}, #{creator,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+	#{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.ContactsOld" keyProperty="contactsId" useGeneratedKeys="true">
+    insert into BD_CONTACTS
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="userId != null">
+	    USER_ID, 
+	  </if>
+	  <if test="unitId != null">
+	    UNIT_ID, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createTime != null">
+	    CREATE_TIME, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="userId != null">
+	    #{userId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="unitId != null">
+	    #{unitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createTime != null">
+	    #{createTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateById" parameterType="java.lang.Long">
+  	update BD_CONTACTS set DEL=1 where CONTACTS_ID = #{contactsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.ContactsOld" >
+	update BD_CONTACTS
+	<set>
+	  <if test="userId != null">
+	    USER_ID = #{userId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="unitId != null">
+	    UNIT_ID = #{unitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createTime != null">
+	    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where CONTACTS_ID = #{contactsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.ContactsOld" >
+    update BD_CONTACTS set 
+	  USER_ID = #{userId,jdbcType=BIGINT}, UNIT_ID = #{unitId,jdbcType=BIGINT}, CREATOR = #{creator,jdbcType=BIGINT}, CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, 
+	  CORP_ID = #{corpId,jdbcType=BIGINT}, FLAG = #{flag,jdbcType=INTEGER}
+	where CONTACTS_ID = #{contactsId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    FROM bd_contacts contacts
+		JOIN bd_user us ON contacts.USER_ID=us.USER_ID
+		JOIN bd_unit unit ON contacts.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user u ON contacts.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON contacts.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by contacts.CREATE_TIME DESC
+  </select>
+  
+    <select id="getList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    FROM bd_contacts contacts
+		JOIN bd_user us ON contacts.USER_ID=us.USER_ID
+		JOIN bd_unit unit ON contacts.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user u ON contacts.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON contacts.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by contacts.CREATE_TIME DESC
+  </select>
+  
+  <select id="queryByUnitId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+     <include refid="Query_Column_List"/>
+    FROM bd_contacts contacts
+		JOIN bd_user us ON contacts.USER_ID=us.USER_ID
+		JOIN bd_unit unit ON contacts.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user u ON contacts.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON contacts.CORP_ID=corp.CORP_ID
+    where contacts.UNIT_ID = #{unitId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="getReferenceList" resultType="java.util.Map"  parameterType="Object">
+	select
+      contacts.CONTACTS_ID AS contactsId,contacts.USER_ID AS userId,us.USER_NAME  AS userName,us.PHONE  AS phone,us.EMAIL AS email,unit.ADDRESS AS address,unit.TELEPHONE AS fix,contacts.UNIT_ID AS unitId,unit.UNIT_NAME AS unitName
+    FROM bd_contacts contacts
+		JOIN bd_user us ON contacts.USER_ID=us.USER_ID
+		JOIN bd_unit unit ON contacts.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user u ON contacts.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON contacts.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+
+	<select id="queryByName"  resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Query_Column_List"/>
+		FROM bd_contacts contacts
+		JOIN bd_user us ON contacts.USER_ID=us.USER_ID
+		JOIN bd_unit unit ON contacts.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user u ON contacts.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON contacts.CORP_ID=corp.CORP_ID
+		where us.USER_NAME = #{refUserName,jdbcType=BIGINT}
+	</select>
+
+  	
+</mapper>   
+

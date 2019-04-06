@@ -1,0 +1,22 @@
+{
+  "data":{
+    "checkPointId":0,
+    "checkPointCode":"Test-checkPointCode",
+    "checkPointName":"Test-checkPointName",
+    "enName":"Test-enName",
+    "checkPointType":0,
+    "checkContent":"Test-checkContent",
+    "provinceId":0,
+    "cityId":0,
+    "areaId":0,
+    "contact":"Test-contact",
+    "address":"Test-address",
+    "telephone":"Test-telephone",
+    "fax":"Test-fax",
+    "lng":0,
+    "lat":0,
+    "creator":0,
+    "createTime":"2018-04-04 09:15:52",
+    "flag":0
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "data":{
+    "transportPriceId":0,
+    "transportPriceCode":"Test-transportPriceCode",
+    "customerId":0,
+    "brandId":0,
+    "carTypeId":0,
+    "carId":0,
+    "startCityId":0,
+    "endCityId":0,
+    "priceType":0,
+    "price":0,
+    "examination":0,
+    "checkpointId":0,
+    "remark":"Test-remark",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-03-22 08:12:14",
+    "checker":0,
+    "checkDate":"2018-03-22 08:12:14",
+    "corpId":0
+  }
+}

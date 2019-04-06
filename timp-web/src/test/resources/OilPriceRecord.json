@@ -1,0 +1,14 @@
+{
+  "data":{
+    "oilPriceRecordId":0,
+    "oilPriceId":0,
+    "price":0,
+    "billStatus":0,
+    "creator":0,
+    "createTime":"2018-03-22 08:09:35",
+    "checker":0,
+    "checkDate":"2018-03-22 08:09:35",
+    "corpId":0,
+    "flag":0
+  }
+}

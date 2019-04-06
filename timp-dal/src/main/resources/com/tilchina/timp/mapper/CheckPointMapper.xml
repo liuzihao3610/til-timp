@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CheckPointMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.CheckPoint" >
+    <id column="CHECK_POINT_ID" jdbcType="BIGINT" property="checkPointId" />
+	<result column="CHECK_POINT_ID" jdbcType="BIGINT" property="checkPointId" />
+	<result column="CHECK_POINT_CODE" jdbcType="VARCHAR" property="checkPointCode" />
+	<result column="CHECK_POINT_NAME" jdbcType="VARCHAR" property="checkPointName" />
+	<result column="EN_NAME" jdbcType="VARCHAR" property="enName" />
+	<result column="CHECK_POINT_TYPE" jdbcType="INTEGER" property="checkPointType" />
+	<result column="CHECK_CONTENT" jdbcType="VARCHAR" property="checkContent" />
+	<result column="PROVINCE_ID" jdbcType="BIGINT" property="provinceId" />
+	<result column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+	<result column="AREA_ID" jdbcType="BIGINT" property="areaId" />
+	<result column="CONTACT" jdbcType="BIGINT" property="contact" />
+	<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+	<result column="TELEPHONE" jdbcType="VARCHAR" property="telephone" />
+	<result column="FAX" jdbcType="VARCHAR" property="fax" />
+	<result column="LNG" jdbcType="DOUBLE" property="lng" />
+	<result column="LAT" jdbcType="DOUBLE" property="lat" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="USER_NAME" jdbcType="VARCHAR" property="refUserName" />
+	<result column="PROVINCE_NAME" jdbcType="VARCHAR" property="refProvinceName" />
+	<result column="CITY_NAME" jdbcType="VARCHAR" property="refCityName" />
+	<result column="AREA_NAME" jdbcType="VARCHAR" property="refAreaName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CHECK_POINT_ID, CHECK_POINT_CODE, CHECK_POINT_NAME, EN_NAME, CHECK_POINT_TYPE, CHECK_CONTENT, PROVINCE_ID, CITY_ID, 
+	AREA_ID, CONTACT, ADDRESS, TELEPHONE, FAX, LNG, LAT, CREATOR, CREATE_TIME, FLAG
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	checkpoint.CHECK_POINT_ID,checkpoint.CHECK_POINT_CODE,checkpoint.CHECK_POINT_NAME,checkpoint.EN_NAME,checkpoint.CHECK_POINT_TYPE,
+  	checkpoint.CHECK_CONTENT,checkpoint.PROVINCE_ID,city.CITY_NAME AS PROVINCE_NAME,checkpoint.CITY_ID,ci.CITY_NAME,checkpoint.AREA_ID,c.CITY_NAME AS AREA_NAME,
+  	checkpoint.CONTACT,u.USER_NAME,checkpoint.ADDRESS,checkpoint.TELEPHONE,checkpoint.FAX,checkpoint.LNG,checkpoint.LAT,checkpoint.CREATOR,us.USER_NAME AS CREATE_NAME,
+  	checkpoint.CREATE_TIME,checkpoint.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where checkpoint.del = 0
+    <trim  suffixOverrides="," >
+      <if test="checkPointId != null and checkPointId != ''" >
+        and checkpoint.CHECK_POINT_ID = #{checkPointId}
+      </if>
+      <if test="checkPointCode != null and checkPointCode != ''" >
+        and checkpoint.CHECK_POINT_CODE LIKE CONCAT('%',#{checkPointCode},'%') 
+      </if>
+      <if test="checkPointName != null and checkPointName != ''" >
+        and checkpoint.CHECK_POINT_NAME LIKE CONCAT('%',#{checkPointName},'%') 
+      </if>
+      <if test="enName != null and enName != ''" >
+        and checkpoint.EN_NAME LIKE CONCAT('%',#{enName},'%') 
+      </if>
+      <if test="checkPointType != null and checkPointType != ''" >
+        and checkpoint.CHECK_POINT_TYPE = #{checkPointType}
+      </if>
+      <if test="checkContent != null and checkContent != ''" >
+        and checkpoint.CHECK_CONTENT = #{checkContent}
+      </if>
+      <if test="provinceId != null and provinceId != ''" >
+        and checkpoint.PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''" >
+        and checkpoint.CITY_ID = #{cityId}
+      </if>
+      <if test="areaId != null and areaId != ''" >
+        and checkpoint.AREA_ID = #{areaId}
+      </if>
+      <if test="contact != null and contact != ''" >
+        and checkpoint.CONTACT = #{contact}
+      </if>
+      <if test="address != null and address != ''" >
+        and checkpoint.ADDRESS = #{address}
+      </if>
+      <if test="telephone != null and telephone != ''" >
+        and checkpoint.TELEPHONE = #{telephone}
+      </if>
+      <if test="fax != null and fax != ''" >
+        and checkpoint.FAX = #{fax}
+      </if>
+      <if test="lng != null and lng != ''" >
+        and checkpoint.LNG = #{lng}
+      </if>
+      <if test="lat != null and lat != ''" >
+        and checkpoint.LAT = #{lat}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and checkpoint.CREATOR = #{creator}
+      </if>
+      <if test="createTime != null and createTime != ''" >
+        and checkpoint.CREATE_TIME = #{createTime}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and checkpoint.FLAG = #{flag}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and checkpoint.FLAG = #{flag}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (checkpoint.CHECK_POINT_CODE LIKE  CONCAT('%',#{searchContent},'%')
+        	or checkpoint.CHECK_POINT_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	or checkpoint.EN_NAME LIKE  CONCAT('%',#{searchContent},'%') ) 
+      </if>
+      <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and checkpoint.CREATE_TIME  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and checkpoint.CREATE_TIME  <=  #{endTime}  ]]>
+	  </if>
+      <if test="refProvinceName != null and refProvinceName != ''" >
+        and city.CITY_NAME= #{refProvinceName,jdbcType=VARCHAR}
+      </if>
+      <if test="refCityName != null and refCityName != ''" >
+        and ci.CITY_NAME= #{refCityName,jdbcType=VARCHAR}
+      </if>
+      <if test="refAreaName != null and refAreaName != ''" >
+        and c.CITY_NAME= #{refAreaName,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM bd_check_point checkpoint
+    	JOIN bd_user u ON checkpoint.CONTACT=u.USER_ID
+		JOIN bd_city city ON checkpoint.PROVINCE_ID=city.CITY_ID
+		JOIN bd_city ci ON checkpoint.CITY_ID=ci.CITY_ID
+		JOIN bd_city c ON checkpoint.AREA_ID=c.CITY_ID
+		JOIN bd_user us ON checkpoint.CREATOR=us.USER_ID
+    where checkpoint.CHECK_POINT_ID = #{checkPointId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from bd_check_point  where CHECK_POINT_ID = #{checkPointId}
+  </delete>
+  <delete id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	delete from bd_check_point	
+  		<if test="null!=array || 0!=array.length">
+  		 where	CHECK_POINT_ID in
+  	 		<foreach item="checkPointId" collection="array" open="(" separator="," close=")">
+  	 			#{checkPointId}
+  	 		</foreach>
+  		</if>
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.CheckPoint" keyProperty="checkPointId" useGeneratedKeys="true">
+    insert into bd_check_point
+	(CHECK_POINT_CODE, CHECK_POINT_NAME, EN_NAME, CHECK_POINT_TYPE, CHECK_CONTENT, PROVINCE_ID, CITY_ID, AREA_ID, CONTACT, 
+	ADDRESS, TELEPHONE, FAX, LNG, LAT, CREATOR, CREATE_TIME, FLAG)
+	values
+	(#{checkPointCode,jdbcType=VARCHAR}, #{checkPointName,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}, #{checkPointType,jdbcType=INTEGER}, 
+	#{checkContent,jdbcType=VARCHAR}, #{provinceId,jdbcType=BIGINT}, #{cityId,jdbcType=BIGINT}, #{areaId,jdbcType=BIGINT}, 
+	#{contact,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+	#{fax,jdbcType=VARCHAR}, #{lng,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, #{creator,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+	#{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.CheckPoint" keyProperty="checkPointId" useGeneratedKeys="true">
+    insert into bd_check_point
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="checkPointCode != null">
+	    CHECK_POINT_CODE, 
+	  </if>
+	  <if test="checkPointName != null">
+	    CHECK_POINT_NAME, 
+	  </if>
+	  <if test="enName != null">
+	    EN_NAME, 
+	  </if>
+	  <if test="checkPointType != null">
+	    CHECK_POINT_TYPE, 
+	  </if>
+	  <if test="checkContent != null">
+	    CHECK_CONTENT, 
+	  </if>
+	  <if test="provinceId != null">
+	    PROVINCE_ID, 
+	  </if>
+	  <if test="cityId != null">
+	    CITY_ID, 
+	  </if>
+	  <if test="areaId != null">
+	    AREA_ID, 
+	  </if>
+	  <if test="contact != null">
+	    CONTACT, 
+	  </if>
+	  <if test="address != null">
+	    ADDRESS, 
+	  </if>
+	  <if test="telephone != null">
+	    TELEPHONE, 
+	  </if>
+	  <if test="fax != null">
+	    FAX, 
+	  </if>
+	  <if test="lng != null">
+	    LNG, 
+	  </if>
+	  <if test="lat != null">
+	    LAT, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createTime != null">
+	    CREATE_TIME, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="checkPointCode != null">
+	    #{checkPointCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="checkPointName != null">
+	    #{checkPointName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="enName != null">
+	    #{enName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="checkPointType != null">
+	    #{checkPointType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="checkContent != null">
+	    #{checkContent,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="provinceId != null">
+	    #{provinceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="cityId != null">
+	    #{cityId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="areaId != null">
+	    #{areaId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="contact != null">
+	    #{contact,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="address != null">
+	    #{address,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="telephone != null">
+	    #{telephone,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="fax != null">
+	    #{fax,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="lng != null">
+	    #{lng,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="lat != null">
+	    #{lat,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createTime != null">
+	    #{createTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.CheckPoint" >
+	update bd_check_point
+	<set>
+	  <if test="checkPointCode != null">
+	    CHECK_POINT_CODE = #{checkPointCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="checkPointName != null">
+	    CHECK_POINT_NAME = #{checkPointName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="enName != null">
+	    EN_NAME = #{enName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="checkPointType != null">
+	    CHECK_POINT_TYPE = #{checkPointType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="checkContent != null">
+	    CHECK_CONTENT = #{checkContent,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="provinceId != null">
+	    PROVINCE_ID = #{provinceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="cityId != null">
+	    CITY_ID = #{cityId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="areaId != null">
+	    AREA_ID = #{areaId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="contact != null">
+	    CONTACT = #{contact,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="address != null">
+	    ADDRESS = #{address,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="telephone != null">
+	    TELEPHONE = #{telephone,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="fax != null">
+	    FAX = #{fax,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="lng != null">
+	    LNG = #{lng,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="lat != null">
+	    LAT = #{lat,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createTime != null">
+	    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where CHECK_POINT_ID = #{checkPointId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.CheckPoint" >
+    update bd_check_point set 
+	  CHECK_POINT_CODE = #{checkPointCode,jdbcType=VARCHAR}, CHECK_POINT_NAME = #{checkPointName,jdbcType=VARCHAR}, EN_NAME = #{enName,jdbcType=VARCHAR}, 
+	  CHECK_POINT_TYPE = #{checkPointType,jdbcType=INTEGER}, CHECK_CONTENT = #{checkContent,jdbcType=VARCHAR}, 
+	  PROVINCE_ID = #{provinceId,jdbcType=BIGINT}, CITY_ID = #{cityId,jdbcType=BIGINT}, AREA_ID = #{areaId,jdbcType=BIGINT}, 
+	  CONTACT = #{contact,jdbcType=BIGINT}, ADDRESS = #{address,jdbcType=VARCHAR}, TELEPHONE = #{telephone,jdbcType=VARCHAR}, 
+	  FAX = #{fax,jdbcType=VARCHAR}, LNG = #{lng,jdbcType=DOUBLE}, LAT = #{lat,jdbcType=DOUBLE}, 
+	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, FLAG = #{flag,jdbcType=INTEGER}
+	where CHECK_POINT_ID = #{checkPointId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_check_point checkpoint
+		JOIN bd_user u ON checkpoint.CONTACT=u.USER_ID
+		JOIN bd_city city ON checkpoint.PROVINCE_ID=city.CITY_ID
+		JOIN bd_city ci ON checkpoint.CITY_ID=ci.CITY_ID
+		JOIN bd_city c ON checkpoint.AREA_ID=c.CITY_ID
+		JOIN bd_user us ON checkpoint.CREATOR=us.USER_ID
+	<include refid="Example_Where_Clause"/>
+	order by  checkpoint.CREATE_TIME DESC
+  </select>
+  
+  <select id="getList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_check_point checkpoint
+		JOIN bd_user u ON checkpoint.CONTACT=u.USER_ID
+		JOIN bd_city city ON checkpoint.PROVINCE_ID=city.CITY_ID
+		JOIN bd_city ci ON checkpoint.CITY_ID=ci.CITY_ID
+		JOIN bd_city c ON checkpoint.AREA_ID=c.CITY_ID
+		JOIN bd_user us ON checkpoint.CREATOR=us.USER_ID
+	<include refid="Example_Where_Clause"/>
+       order by  checkpoint.CREATE_TIME DESC
+  </select>
+  
+  <select id="getReferenceList"  resultType="java.util.Map">
+  	 SELECT checkpoint.CHECK_POINT_ID AS checkPointId,checkpoint.CHECK_POINT_NAME AS checkPointName,checkpoint.CHECK_CONTENT AS checkContent ,checkpoint.ADDRESS AS address  
+  	 FROM bd_check_point checkpoint
+		JOIN bd_user u ON checkpoint.CONTACT=u.USER_ID
+		JOIN bd_city city ON checkpoint.PROVINCE_ID=city.CITY_ID
+		JOIN bd_city ci ON checkpoint.CITY_ID=ci.CITY_ID
+		JOIN bd_city c ON checkpoint.AREA_ID=c.CITY_ID
+		JOIN bd_user us ON checkpoint.CREATOR=us.USER_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  	
+</mapper>   

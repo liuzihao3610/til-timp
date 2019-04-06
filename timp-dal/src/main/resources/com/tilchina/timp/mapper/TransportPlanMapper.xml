@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransportPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransportPlan" >
+    <id column="TRANSPORT_PLAN_ID" jdbcType="BIGINT" property="transportPlanId" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="transportOrderCode" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="SEQUENCE" jdbcType="INTEGER" property="sequence" />
+	<result column="CAR_COUNT" jdbcType="INTEGER" property="carCount" />
+	<result column="HANDING_COUNT" jdbcType="INTEGER" property="handingCount" />
+	<result column="DRIVING" jdbcType="DOUBLE" property="driving" />
+	<result column="APPROVE" jdbcType="DOUBLE" property="approve" />
+	<result column="START_UNIT_ID" jdbcType="BIGINT" property="startUnitId" />
+	<result column="START_LNG" jdbcType="DOUBLE" property="startLng" />
+	<result column="START_LAT" jdbcType="DOUBLE" property="startLat" />
+	<result column="END_UNIT_ID" jdbcType="BIGINT" property="endUnitId" />
+	<result column="LOAD_TYPE" jdbcType="INTEGER" property="loadType" />
+	<result column="LOAD_WEIGHT" jdbcType="DOUBLE" property="loadWeight" />
+	<result column="END_LNG" jdbcType="DOUBLE" property="endLng" />
+	<result column="END_LAT" jdbcType="DOUBLE" property="endLat" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="START_UNIT_NAME" jdbcType="VARCHAR" property="refStartUnitName" />
+	<result column="END_UNIT_NAME" jdbcType="VARCHAR" property="refEndUnitName" />
+	<result column="START_CITY_NAME" jdbcType="VARCHAR" property="refStartCityName" />
+	<result column="END_CITY_NAME" jdbcType="VARCHAR" property="refEndCityName" />
+	<result column="START_UNIT_ADDRESS" jdbcType="VARCHAR" property="refStartUnitAddr" />
+	<result column="END_UNIT_ADDRESS" jdbcType="VARCHAR" property="refEndUnitAddr" />
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANSPORT_PLAN_ID, TRANSPORT_ORDER_ID, LOAD_WEIGHT,TRANSPORT_ORDER_CODE, TRANSPORTER_ID, DRIVER_ID, SEQUENCE, CAR_COUNT, 
+	HANDING_COUNT, DRIVING, APPROVE, START_UNIT_ID, START_LNG, START_LAT, END_UNIT_ID, END_LNG, END_LAT, CORP_ID
+  </sql>
+   
+  <sql id="Query_Column_List" >
+  	sunit.UNIT_NAME as START_UNIT_NAME,sunit.ADDRESS as START_UNIT_ADDRESS,scity.CITY_NAME as START_CITY_NAME,
+  	runit.UNIT_NAME as END_UNIT_NAME,runit.ADDRESS as END_UNIT_ADDRESS, rcity.CITY_NAME  as END_CITY_NAME,
+    tp.TRANSPORT_PLAN_ID, tp.TRANSPORT_ORDER_ID, tp.TRANSPORT_ORDER_CODE, tp.TRANSPORTER_ID,  tr.TRANSPORTER_CODE,tp.DRIVER_ID,
+    user.USER_CODE as DRIVER_CODE,user.USER_NAME as DRIVER_NAME, tp.SEQUENCE,  tr.TRACTIR_PLATE_CODE,
+    tp.CAR_COUNT, tp.HANDING_COUNT,tp.DRIVING, tp.APPROVE, tp.START_UNIT_ID, tp.START_LNG, tp.START_LAT, 
+    tp.LOAD_WEIGHT, tp.LOAD_TYPE,tp.END_UNIT_ID, tp.END_LNG, tp.END_LAT, tp.CORP_ID, corp.CORP_NAME
+ </sql>
+  
+  <sql id="Example_Where_Clause">
+    where tp.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transportPlanId != null and transportPlanId != ''" >
+        and tp.TRANSPORT_PLAN_ID = #{transportPlanId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and tp.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="transportOrderCode != null and transportOrderCode != ''" >
+        and tp.TRANSPORT_ORDER_CODE = #{transportOrderCode}
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and tp.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and tp.DRIVER_ID = #{driverId}
+      </if>
+      <if test="sequence != null and sequence != ''" >
+        and tp.SEQUENCE = #{sequence}
+      </if>
+      <if test="carCount != null and carCount != ''" >
+        and tp.CAR_COUNT = #{carCount}
+      </if>
+      <if test="handingCount != null and handingCount != ''" >
+        and tp.HANDING_COUNT = #{handingCount}
+      </if>
+      <if test="driving != null and driving != ''" >
+        and tp.DRIVING = #{driving}
+      </if>
+      <if test="approve != null and approve != ''" >
+        and tp.APPROVE = #{approve}
+      </if>
+      <if test="startUnitId != null and startUnitId != ''" >
+        and tp.START_UNIT_ID = #{startUnitId}
+      </if>
+      <if test="startLng != null and startLng != ''" >
+        and tp.START_LNG = #{startLng}
+      </if>
+      <if test="startLat != null and startLat != ''" >
+        and tp.START_LAT = #{startLat}
+      </if>
+      <if test="endUnitId != null and endUnitId != ''" >
+        and tp.END_UNIT_ID = #{endUnitId}
+      </if>
+      <if test="loadWeight != null and loadWeight != ''" >
+        and tp.LOAD_WEIGHT = #{loadWeight}
+      </if>
+      <if test="loadType != null and loadType != ''" >
+        and tp.LOAD_TYPE = #{loadType}
+      </if>
+      <if test="endLng != null and endLng != ''" >
+        and tp.END_LNG = #{endLng}
+      </if>
+      <if test="endLat != null and endLat != ''" >
+        and tp.END_LAT = #{endLat}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and tp.CORP_ID = #{corpId}
+      </if>
+      
+      <if test="refDriverCode != null and refDriverCode != ''" >
+        and user.USER_CODE like concat(concat('%',#{refDriverCode}),'%')
+      </if>
+      <if test="refDriverName != null and refDriverName != ''" >
+        and user.USER_NAME like concat(concat('%',#{refDriverName}),'%')
+      </if>
+      <if test="refTractirPlateCode != null and refTractirPlateCode != ''" >
+        and tr.TRACTIR_PLATE_CODE like concat(concat('%',#{refTractirPlateCode}),'%')
+      </if>
+      <if test="refTransporterCode != null and refTransporterCode != ''" >
+        and tr.TRANSPORTER_CODE like concat(concat('%',#{refTransporterCode}),'%')
+      </if>
+      
+      <if test="searchContent != null and searchContent != ''" >
+        and (
+		  	sunit.UNIT_NAME  like concat(concat('%',#{searchContent}),'%')
+        or 	runit.UNIT_NAME like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+      
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from om_transport_plan tp
+	join om_transport_order tso  on tso.TRANSPORT_ORDER_ID =  tp.TRANSPORT_ORDER_ID
+	join  tc_transporter tr on   tr.TRANSPORTER_ID = tp.TRANSPORTER_ID
+	join bd_user user ON user.USER_ID =  tp.DRIVER_ID
+	join SYS_CORP corp on corp.CORP_ID =  tp.CORP_ID
+	left join bd_unit sunit on sunit.UNIT_ID =  tp.START_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tp.END_UNIT_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+    where tp.del = 0
+    and tp.TRANSPORT_PLAN_ID = #{transportPlanId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from om_transport_plan where TRANSPORT_PLAN_ID = #{transportPlanId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.TransportPlan" keyProperty="transportPlanId" useGeneratedKeys="true">
+    insert into om_transport_plan
+	(TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE, TRANSPORTER_ID, DRIVER_ID, SEQUENCE, CAR_COUNT, HANDING_COUNT, DRIVING, 
+	APPROVE, START_UNIT_ID, START_LNG, START_LAT, END_UNIT_ID, END_LNG, END_LAT,LOAD_WEIGHT,LOAD_TYPE, CORP_ID)
+	values
+	(#{transportOrderId,jdbcType=BIGINT}, #{transportOrderCode,jdbcType=VARCHAR}, #{transporterId,jdbcType=BIGINT}, #{driverId,jdbcType=BIGINT}, 
+	#{sequence,jdbcType=INTEGER}, #{carCount,jdbcType=INTEGER}, #{handingCount,jdbcType=INTEGER}, 
+	#{driving,jdbcType=DOUBLE}, #{approve,jdbcType=DOUBLE}, #{startUnitId,jdbcType=BIGINT}, #{startLng,jdbcType=DOUBLE}, 
+	#{startLat,jdbcType=DOUBLE}, #{endUnitId,jdbcType=BIGINT}, #{endLng,jdbcType=DOUBLE}, #{endLat,jdbcType=DOUBLE}, 
+	#{loadWeight,jdbcType=DOUBLE}, #{loadType,jdbcType=INTEGER},#{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.TransportPlan" keyProperty="transportPlanId" useGeneratedKeys="true">
+    insert into om_transport_plan
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    TRANSPORT_ORDER_CODE, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID, 
+	  </if>
+	  <if test="sequence != null">
+	    SEQUENCE, 
+	  </if>
+	  <if test="carCount != null">
+	    CAR_COUNT, 
+	  </if>
+	  <if test="handingCount != null">
+	    HANDING_COUNT, 
+	  </if>
+	  <if test="driving != null">
+	    DRIVING, 
+	  </if>
+	  <if test="approve != null">
+	    APPROVE, 
+	  </if>
+	  <if test="startUnitId != null">
+	    START_UNIT_ID, 
+	  </if>
+	  <if test="startLng != null">
+	    START_LNG, 
+	  </if>
+	  <if test="startLat != null">
+	    START_LAT, 
+	  </if>
+	  <if test="endUnitId != null">
+	    END_UNIT_ID, 
+	  </if>
+	  <if test="endLng != null">
+	    END_LNG, 
+	  </if>
+	  <if test="endLat != null">
+	    END_LAT, 
+	  </if>
+	  <if test="loadWeight != null">
+	    LOAD_WEIGHT, 
+	  </if>
+	  <if test="loadType != null">
+	    LOAD_TYPE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="transportOrderId != null">
+	    #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    #{transportOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="transporterId != null">
+	    #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="sequence != null">
+	    #{sequence,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="carCount != null">
+	    #{carCount,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="handingCount != null">
+	    #{handingCount,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="driving != null">
+	    #{driving,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="approve != null">
+	    #{approve,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="startUnitId != null">
+	    #{startUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="startLng != null">
+	    #{startLng,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="startLat != null">
+	    #{startLat,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="endUnitId != null">
+	    #{endUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="endLng != null">
+	    #{endLng,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="endLat != null">
+	    #{endLat,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="loadWeight != null">
+	    #{loadWeight,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="loadType != null">
+	    #{loadType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.TransportPlan" >
+	update om_transport_plan
+	<set>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="sequence != null">
+	    SEQUENCE = #{sequence,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="carCount != null">
+	    CAR_COUNT = #{carCount,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="handingCount != null">
+	    HANDING_COUNT = #{handingCount,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="driving != null">
+	    DRIVING = #{driving,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="approve != null">
+	    APPROVE = #{approve,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="startUnitId != null">
+	    START_UNIT_ID = #{startUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="startLng != null">
+	    START_LNG = #{startLng,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="startLat != null">
+	    START_LAT = #{startLat,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="endUnitId != null">
+	    END_UNIT_ID = #{endUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="endLng != null">
+	    END_LNG = #{endLng,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="endLat != null">
+	    END_LAT = #{endLat,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="loadWeight != null">
+	    LOAD_WEIGHT = #{loadWeight,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="loadType != null">
+	    LOAD_TYPE = #{loadType,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where TRANSPORT_PLAN_ID = #{transportPlanId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.TransportPlan" >
+    update om_transport_plan set 
+	  TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 
+	  TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, SEQUENCE = #{sequence,jdbcType=INTEGER}, 
+	  CAR_COUNT = #{carCount,jdbcType=INTEGER}, HANDING_COUNT = #{handingCount,jdbcType=INTEGER}, 
+	  DRIVING = #{driving,jdbcType=DOUBLE}, APPROVE = #{approve,jdbcType=DOUBLE}, START_UNIT_ID = #{startUnitId,jdbcType=BIGINT}, 
+	  START_LNG = #{startLng,jdbcType=DOUBLE}, START_LAT = #{startLat,jdbcType=DOUBLE}, END_UNIT_ID = #{endUnitId,jdbcType=BIGINT}, 
+	  END_LNG = #{endLng,jdbcType=DOUBLE}, END_LAT = #{endLat,jdbcType=DOUBLE}, 
+	 LOAD_WEIGHT = #{loadWeight,jdbcType=DOUBLE}, LOAD_TYPE = #{loadType,jdbcType=INTEGER},CORP_ID = #{corpId,jdbcType=BIGINT}
+	where TRANSPORT_PLAN_ID = #{transportPlanId,jdbcType=BIGINT}
+  </update>
+  
+     <update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long">
+    update om_transport_plan set 
+      DEL = 1 
+    WHERE TRANSPORT_PLAN_ID = #{transportPlanId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+    update om_transport_plan set 
+	  DEL = 1
+	WHERE TRANSPORT_PLAN_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+   <select id="selectByOrderKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from om_transport_plan tp
+	join om_transport_order tso  on tso.TRANSPORT_ORDER_ID =  tp.TRANSPORT_ORDER_ID
+	join  tc_transporter tr on   tr.TRANSPORTER_ID = tp.TRANSPORTER_ID
+	join bd_user user ON user.USER_ID =  tp.DRIVER_ID
+	join SYS_CORP corp on corp.CORP_ID =  tp.CORP_ID
+	left join bd_unit sunit on sunit.UNIT_ID =  tp.START_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tp.END_UNIT_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+    where tp.TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </select>	
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from om_transport_plan tp
+	join om_transport_order tso  on tso.TRANSPORT_ORDER_ID =  tp.TRANSPORT_ORDER_ID
+	join  tc_transporter tr on   tr.TRANSPORTER_ID = tp.TRANSPORTER_ID
+	join bd_user user ON user.USER_ID =  tp.DRIVER_ID
+	join SYS_CORP corp on corp.CORP_ID =  tp.CORP_ID
+	left join bd_unit sunit on sunit.UNIT_ID =  tp.START_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tp.END_UNIT_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+    <select id="selectSequenceList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from om_transport_plan tp
+	join om_transport_order tso  on tso.TRANSPORT_ORDER_ID =  tp.TRANSPORT_ORDER_ID
+	join  tc_transporter tr on   tr.TRANSPORTER_ID = tp.TRANSPORTER_ID
+	join bd_user user ON user.USER_ID =  tp.DRIVER_ID
+	join SYS_CORP corp on corp.CORP_ID =  tp.CORP_ID
+	left join bd_unit sunit on sunit.UNIT_ID =  tp.START_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tp.END_UNIT_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+</mapper>   

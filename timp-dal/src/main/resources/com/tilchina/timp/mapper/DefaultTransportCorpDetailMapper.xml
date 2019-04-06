@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.DefaultTransportCorpDetailMapper">
+	<resultMap id="BaseResultMap" type="com.tilchina.timp.model.DefaultTransportCorpDetail">
+		<id column="DEFAULT_CORP_DETAIL_ID" jdbcType="BIGINT" property="defaultCorpDetailId"/>
+		<result column="DEFAULT_CORP_DETAIL_ID" jdbcType="BIGINT" property="defaultCorpDetailId"/>
+		<result column="DEFAULT_CORP_ID" jdbcType="BIGINT" property="defaultCorpId"/>
+		<result column="SEQUENCE_NUMBER" jdbcType="INTEGER" property="sequenceNumber"/>
+		<result column="TRANSPORT_CORP_ID" jdbcType="BIGINT" property="transportCorpId"/>
+		<result column="TRANSFER_UNIT_ID" jdbcType="BIGINT" property="transferUnitId"/>
+		<result column="JOB_TYPE" jdbcType="INTEGER" property="jobType"/>
+		<result column="CORP_ID" jdbcType="BIGINT" property="corpId"/>
+		<result column="FLAG" jdbcType="INTEGER" property="flag"/>
+		<result column="refTransportCorpName" jdbcType="VARCHAR" property="refTransportCorpName"/>
+		<result column="refCorpName" jdbcType="VARCHAR" property="refCorpName"/>
+		<result column="refTransferUnitName" jdbcType="VARCHAR" property="refTransferUnitName"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+	    self.DEFAULT_CORP_DETAIL_ID,
+		self.DEFAULT_CORP_ID,
+		self.SEQUENCE_NUMBER,
+		self.TRANSPORT_CORP_ID,
+		self.TRANSFER_UNIT_ID,
+		self.JOB_TYPE,
+		self.CORP_ID,
+		self.FLAG,
+		corpA.CORP_NAME as refTransportCorpName,
+		corpB.CORP_NAME as refCorpName,
+		unit.UNIT_NAME as refTransferUnitName
+  	</sql>
+
+	<sql id="Example_Where_Clause">
+		where self.DEL = 0
+		<trim suffixOverrides=",">
+			<if test="defaultCorpDetailId != null and defaultCorpDetailId != ''">
+				and self.DEFAULT_CORP_DETAIL_ID = #{defaultCorpDetailId}
+			</if>
+			<if test="defaultCorpId != null and defaultCorpId != ''">
+				and self.DEFAULT_CORP_ID = #{defaultCorpId}
+			</if>
+			<if test="sequenceNumber != null and sequenceNumber != ''">
+				and self.SEQUENCE_NUMBER = #{sequenceNumber}
+			</if>
+			<if test="transportCorpId != null and transportCorpId != ''">
+				and self.TRANSPORT_CORP_ID = #{transportCorpId}
+			</if>
+			<if test="transferUnitId != null and transferUnitId != ''">
+				and self.TRANSFER_UNIT_ID = #{transferUnitId}
+			</if>
+			<if test="jobType != null and jobType != ''">
+				and self.JOB_TYPE = #{jobType}
+			</if>
+			<if test="corpId != null and corpId != ''">
+				and self.CORP_ID = #{corpId}
+			</if>
+			<if test="flag != null and flag != ''">
+				and self.FLAG = #{flag}
+			</if>
+		</trim>
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List"/>
+		from bd_default_transport_corp_detail self
+		left join sys_corp corpA on self.TRANSPORT_CORP_ID = corpA.CORP_ID,
+		left join sys_corp corpB on self.CORP_ID = corpB.CORP_ID,
+		left join bd_unit unit on self.TRANSFER_UNIT_ID = unit.UNIT_ID
+		where self.DEFAULT_CORP_DETAIL_ID = #{defaultCorpDetailId,jdbcType=BIGINT}
+		and self.DEL = 0
+	</select>
+
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    	update bd_default_transport_corp_detail
+    	set DEL = 1
+    	where DEFAULT_CORP_DETAIL_ID = #{defaultCorpDetailId}
+  	</update>
+
+	<insert id="insert" parameterType="com.tilchina.timp.model.DefaultTransportCorpDetail"
+	        keyProperty="defaultCorpDetailId" useGeneratedKeys="true">
+    insert into bd_default_transport_corp_detail
+	(DEFAULT_CORP_ID, SEQUENCE_NUMBER, TRANSPORT_CORP_ID, TRANSFER_UNIT_ID, JOB_TYPE, CORP_ID, FLAG)
+	values
+	(#{defaultCorpId,jdbcType=BIGINT}, #{sequenceNumber,jdbcType=INTEGER}, #{transportCorpId,jdbcType=BIGINT}, #{transferUnitId,jdbcType=BIGINT}, 
+	#{jobType,jdbcType=INTEGER}, #{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+	<insert id="insertSelective" parameterType="com.tilchina.timp.model.DefaultTransportCorpDetail"
+	        keyProperty="defaultCorpDetailId" useGeneratedKeys="true">
+		insert into bd_default_transport_corp_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="defaultCorpId != null">
+				DEFAULT_CORP_ID,
+			</if>
+			<if test="sequenceNumber != null">
+				SEQUENCE_NUMBER,
+			</if>
+			<if test="transportCorpId != null">
+				TRANSPORT_CORP_ID,
+			</if>
+			<if test="transferUnitId != null">
+				TRANSFER_UNIT_ID,
+			</if>
+			<if test="jobType != null">
+				JOB_TYPE,
+			</if>
+			<if test="corpId != null">
+				CORP_ID,
+			</if>
+			<if test="flag != null">
+				FLAG,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="defaultCorpId != null">
+				#{defaultCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="sequenceNumber != null">
+				#{sequenceNumber,jdbcType=INTEGER},
+			</if>
+			<if test="transportCorpId != null">
+				#{transportCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="transferUnitId != null">
+				#{transferUnitId,jdbcType=BIGINT},
+			</if>
+			<if test="jobType != null">
+				#{jobType,jdbcType=INTEGER},
+			</if>
+			<if test="corpId != null">
+				#{corpId,jdbcType=BIGINT},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.DefaultTransportCorpDetail">
+		update bd_default_transport_corp_detail
+		<set>
+			<if test="defaultCorpId != null">
+				DEFAULT_CORP_ID = #{defaultCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="sequenceNumber != null">
+				SEQUENCE_NUMBER = #{sequenceNumber,jdbcType=INTEGER},
+			</if>
+			<if test="transportCorpId != null">
+				TRANSPORT_CORP_ID = #{transportCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="transferUnitId != null">
+				TRANSFER_UNIT_ID = #{transferUnitId,jdbcType=BIGINT},
+			</if>
+			<if test="jobType != null">
+				JOB_TYPE = #{jobType,jdbcType=INTEGER},
+			</if>
+			<if test="corpId != null">
+				CORP_ID = #{corpId,jdbcType=BIGINT},
+			</if>
+			<if test="flag != null">
+				FLAG = #{flag,jdbcType=INTEGER},
+			</if>
+		</set>
+		where DEFAULT_CORP_DETAIL_ID = #{defaultCorpDetailId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.DefaultTransportCorpDetail">
+    update bd_default_transport_corp_detail set 
+	  DEFAULT_CORP_ID = #{defaultCorpId,jdbcType=BIGINT}, SEQUENCE_NUMBER = #{sequenceNumber,jdbcType=INTEGER}, TRANSPORT_CORP_ID = #{transportCorpId,jdbcType=BIGINT}, 
+	  TRANSFER_UNIT_ID = #{transferUnitId,jdbcType=BIGINT}, JOB_TYPE = #{jobType,jdbcType=INTEGER}, 
+	  CORP_ID = #{corpId,jdbcType=BIGINT}, FLAG = #{flag,jdbcType=INTEGER}
+	where DEFAULT_CORP_DETAIL_ID = #{defaultCorpDetailId,jdbcType=BIGINT}
+  </update>
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from bd_default_transport_corp_detail self
+		left join sys_corp corpA on self.TRANSPORT_CORP_ID = corpA.CORP_ID
+		left join sys_corp corpB on self.CORP_ID = corpB.CORP_ID
+		left join bd_unit unit on self.TRANSFER_UNIT_ID = unit.UNIT_ID
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<select id="selectByDefaultCorpId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from bd_default_transport_corp_detail self
+		left join sys_corp corpA on self.TRANSPORT_CORP_ID = corpA.CORP_ID
+		left join sys_corp corpB on self.CORP_ID = corpB.CORP_ID
+		left join bd_unit unit on self.TRANSFER_UNIT_ID = unit.UNIT_ID
+		where self.DEFAULT_CORP_ID = #{defaultCorpId}
+		and self.DEL = 0
+	</select>
+
+</mapper>   

@@ -1,0 +1,16 @@
+{
+  "data":{
+    "cardResourceId":0,
+    "cardResourceCode":"Test-cardResourceCode",
+    "cardType":0,
+    "balance":0,
+    "cardStatus":0,
+    "source":0,
+    "issueCompany":"Test-issueCompany",
+    "remark":"Test-remark",
+    "creator":0,
+    "createDate":"2018-05-30 03:00:33",
+    "corpId":0,
+    "flag":0
+  }
+}

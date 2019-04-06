@@ -1,0 +1,30 @@
+{
+  "data":{
+    "reconciliationDetailId":0,
+    "reconciliationId":0,
+    "orderDetailId":0,
+    "orderNumber":"Test-orderNumber",
+    "transportOrderDetailId":0,
+    "transportOrderNumber":"Test-transportOrderNumber",
+    "sendCityId":0,
+    "recvCityId":0,
+    "distance":0,
+    "productionNumber":"Test-productionNumber",
+    "carBrandId":0,
+    "carTypeId":0,
+    "carModelId":0,
+    "carVin":"Test-carVin",
+    "customerId":0,
+    "designatedLoadingDate":"2018-05-19 03:03:10",
+    "actualLoadingDate":"2018-05-19 03:03:10",
+    "quotationPrice":0,
+    "hedgeAmount":0,
+    "settlementPrice":0,
+    "deductionAmount":0,
+    "deductionReason":"Test-deductionReason",
+    "recvUnitId":0,
+    "sendUnitId":0,
+    "corpId":0,
+    "flag":0
+  }
+}

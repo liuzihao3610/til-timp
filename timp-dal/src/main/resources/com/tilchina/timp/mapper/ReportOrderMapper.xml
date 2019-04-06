@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.ReportOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.ReportOrder" >
+	<result column="REPORT_ORDER_ID" jdbcType="BIGINT" property="reportOrderId" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="REPORT_ID" jdbcType="BIGINT" property="reportId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="refTransportOrderCode" />
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+	<result column="ORDER_CODE" jdbcType="VARCHAR" property="refOrderCode" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    REPORT_ORDER_ID, TRANSPORT_ORDER_ID, ORDER_ID, REPORT_ID, CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List" >
+    report.REPORT_ORDER_ID, report.TRANSPORT_ORDER_ID, tr.TRANSPORT_ORDER_CODE,report.ORDER_ID, 
+    o.ORDER_CODE,dr.USER_CODE as DRIVER_CODE,dr.USER_NAME as DRIVER_NAME,
+    transporter.TRANSPORTER_CODE,transporter.TRACTIR_PLATE_CODE,
+    report.REPORT_ID, report.CORP_ID ,corp.CORP_NAME
+  </sql>
+  
+  <sql id="Example_Where_Clause">
+    where report.del = 0
+    <trim  suffixOverrides="," >
+      <if test="reportOrderId != null and reportOrderId != ''" >
+        and report.REPORT_ORDER_ID = #{reportOrderId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and report.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="orderId != null and orderId != ''" >
+        and report.ORDER_ID = #{orderId}
+      </if>
+      <if test="reportId != null and reportId != ''" >
+        and report.REPORT_ID = #{reportId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and report.CORP_ID = #{corpId}
+      </if>
+       <if test="refTransportOrderCode != null and refTransportOrderCode != ''" >
+        and (
+        tr.TRANSPORT_ORDER_CODE = #{refTransportOrderCode}
+        or tr.TRANSPORT_ORDER_CODE like concat(concat('%',#{refTransportOrderCode}),'%')
+        )
+      </if>
+      <if test="refOrderCode != null and refOrderCode != ''" >
+        and (
+        o.ORDER_CODE = #{refOrderCode}
+        or o.ORDER_CODE like concat(concat('%',#{refOrderCode}),'%')
+        )
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (
+         o.ORDER_CODE like concat(concat('%',#{searchContent}),'%')
+        or tr.TRANSPORT_ORDER_CODE like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+      
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from tc_report_order report
+    left join SYS_CORP corp on corp.CORP_ID =  report.CORP_ID 
+    left join om_transport_order tr on tr.TRANSPORT_ORDER_ID =  report.TRANSPORT_ORDER_ID 
+    left join bd_user dr ON dr.USER_ID =  tr.DRIVER_ID
+    left join  tc_transporter transporter on   transporter.TRANSPORTER_ID = tr.TRANSPORTER_ID
+    left join om_order o on  o.ORDER_ID = report.ORDER_ID
+    where report.REPORT_ORDER_ID = #{reportOrderId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from tc_report_order where REPORT_ORDER_ID = #{reportOrderId}
+  </delete>
+  
+  <insert id="insert" parameterType="com.tilchina.timp.model.ReportOrder" keyProperty="reportOrderId" useGeneratedKeys="true">
+    insert into tc_report_order	(TRANSPORT_ORDER_ID, ORDER_ID, REPORT_ID, CORP_ID)	values	(#{transportOrderId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{reportId,jdbcType=BIGINT}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.ReportOrder" keyProperty="reportOrderId" useGeneratedKeys="true">
+    insert into tc_report_order	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="transportOrderId != null">	    TRANSPORT_ORDER_ID, 	  </if>	  <if test="orderId != null">	    ORDER_ID, 	  </if>	  <if test="reportId != null">	    REPORT_ID, 	  </if>	  <if test="corpId != null">	    CORP_ID, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="transportOrderId != null">	    #{transportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="orderId != null">	    #{orderId,jdbcType=BIGINT}, 	  </if>	  <if test="reportId != null">	    #{reportId,jdbcType=BIGINT}, 	  </if>	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	</trim>
+  </insert>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	 from tc_report_order report
+    left join SYS_CORP corp on corp.CORP_ID =  report.CORP_ID 
+    left join om_transport_order tr on tr.TRANSPORT_ORDER_ID =  report.TRANSPORT_ORDER_ID 
+    left join bd_user dr ON dr.USER_ID =  tr.DRIVER_ID
+    left join  tc_transporter transporter on   transporter.TRANSPORTER_ID = tr.TRANSPORTER_ID
+    left join om_order o on  o.ORDER_ID = report.ORDER_ID
+	<include refid="Example_Where_Clause"/>
+	order by report.REPORT_ORDER_ID DESC
+  </select>
+  	
+</mapper>   

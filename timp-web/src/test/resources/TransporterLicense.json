@@ -1,0 +1,33 @@
+{
+  "data":{
+    "transporterLicenseId":0,
+    "transporterId":0,
+    "platrCode":"Test-platrCode",
+    "transporterType":"Test-transporterType",
+    "owner":0,
+    "address":"Test-address",
+    "useType":"Test-useType",
+    "brandModer":"Test-brandModer",
+    "vin":"Test-vin",
+    "engineCode":"Test-engineCode",
+    "registDate":"2018-03-27 03:22:46",
+    "issuedDate":"2018-03-27 03:22:46",
+    "validUntil":"2018-03-27 03:22:46",
+    "fileCode":"Test-fileCode",
+    "loadNumber":0,
+    "totalQuality":0,
+    "hostlingQuality":0,
+    "loadQuality":0,
+    "externalSize":"Test-externalSize",
+    "pullTotalQuality":0,
+    "remark":"Test-remark",
+    "imagePath":"Test-imagePath",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-03-27 03:22:46",
+    "checker":0,
+    "checkDate":"2018-03-27 03:22:46",
+    "corpId":0,
+    "flag":0
+  }
+}

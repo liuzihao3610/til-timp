@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CommonDamagePhotoMapper">
+	<resultMap id="BaseResultMap" type="com.tilchina.timp.model.CommonDamagePhoto">
+		<id column="DAMAGE_PHOTO_ID" jdbcType="BIGINT" property="damagePhotoId"/>
+		<result column="DAMAGE_PHOTO_ID" jdbcType="BIGINT" property="damagePhotoId"/>
+		<result column="DAMAGE_ID" jdbcType="BIGINT" property="damageId"/>
+		<result column="DAMAGE_DETAIL_ID" jdbcType="BIGINT" property="damageDetailId"/>
+		<result column="PHOTO_TYPE" jdbcType="INTEGER" property="photoType"/>
+		<result column="PHOTO_PATH" jdbcType="VARCHAR" property="photoPath"/>
+		<result column="PHOTO_DESC" jdbcType="VARCHAR" property="photoDesc"/>
+		<result column="POSITION_NAME_CN" jdbcType="VARCHAR" property="refPositionNameCN"/>
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+    	self.DAMAGE_PHOTO_ID,
+		self.DAMAGE_ID,
+		self.DAMAGE_DETAIL_ID,
+		self.PHOTO_TYPE,
+		self.PHOTO_PATH,
+		self.PHOTO_DESC,
+		self.CORP_ID,
+		self.FLAG
+  </sql>
+
+	<sql id="Example_Where_Clause">
+		where self.DEL = 0
+		<trim  suffixOverrides="," >
+			<if test="damagePhotoId != null and damagePhotoId != ''" >
+				and self.DAMAGE_PHOTO_ID = #{damagePhotoId}
+			</if>
+			<if test="damageId != null and damageId != ''" >
+				and self.DAMAGE_ID = #{damageId}
+			</if>
+			<if test="damageDetailId != null and damageDetailId != ''" >
+				and self.DAMAGE_DETAIL_ID = #{damageDetailId}
+			</if>
+			<if test="photoType != null and photoType != ''" >
+				and self.PHOTO_TYPE = #{photoType}
+			</if>
+			<if test="photoPath != null and photoPath != ''" >
+				and self.PHOTO_PATH = #{photoPath}
+			</if>
+			<if test="photoDesc != null and photoDesc != ''" >
+				and self.PHOTO_DESC = #{photoDesc}
+			</if>
+			<if test="corpId != null and corpId != ''" >
+				and self.CORP_ID = #{corpId}
+			</if>
+			<if test="flag != null and flag != ''" >
+				and self.FLAG = #{flag}
+			</if>
+		</trim>
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List"/>
+		from sq_common_damage_photo self
+		where self.DAMAGE_PHOTO_ID = #{damagePhotoId,jdbcType=BIGINT}
+		and self.DEL = 0
+	</select>
+
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			update sq_common_damage_photo
+			set DEL = 1
+			where DAMAGE_PHOTO_ID = #{damagePhotoId}
+		</if>
+	</update>
+
+	<insert id="insert" parameterType="com.tilchina.timp.model.CommonDamagePhoto" keyProperty="damagePhotoId" useGeneratedKeys="true">
+    insert into sq_common_damage_photo
+	(DAMAGE_ID, DAMAGE_DETAIL_ID, PHOTO_TYPE, PHOTO_PATH, PHOTO_DESC, CORP_ID, FLAG)
+	values
+	(#{damageId,jdbcType=BIGINT}, #{damageDetailId,jdbcType=BIGINT}, #{photoType,jdbcType=INTEGER}, #{photoPath,jdbcType=VARCHAR},
+	#{photoDesc,jdbcType=VARCHAR}, #{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+
+	<insert id="insertSelective" parameterType="com.tilchina.timp.model.CommonDamagePhoto" keyProperty="damagePhotoId" useGeneratedKeys="true">
+		insert into sq_common_damage_photo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="damageId != null">
+				DAMAGE_ID,
+			</if>
+			<if test="damageDetailId != null">
+				DAMAGE_DETAIL_ID,
+			</if>
+			<if test="photoType != null">
+				PHOTO_TYPE,
+			</if>
+			<if test="photoPath != null">
+				PHOTO_PATH,
+			</if>
+			<if test="photoDesc != null">
+				PHOTO_DESC,
+			</if>
+			<if test="corpId != null">
+				CORP_ID,
+			</if>
+			<if test="flag != null">
+				FLAG,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="damageId != null">
+				#{damageId,jdbcType=BIGINT},
+			</if>
+			<if test="damageDetailId != null">
+				#{damageDetailId,jdbcType=BIGINT},
+			</if>
+			<if test="photoType != null">
+				#{photoType,jdbcType=INTEGER},
+			</if>
+			<if test="photoPath != null">
+				#{photoPath,jdbcType=VARCHAR},
+			</if>
+			<if test="photoDesc != null">
+				#{photoDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="corpId != null">
+				#{corpId,jdbcType=BIGINT},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.CommonDamagePhoto" >
+		update sq_common_damage_photo
+		<set>
+			<if test="damageId != null">
+				DAMAGE_ID = #{damageId,jdbcType=BIGINT},
+			</if>
+			<if test="damageDetailId != null">
+				DAMAGE_DETAIL_ID = #{damageDetailId,jdbcType=BIGINT},
+			</if>
+			<if test="photoType != null">
+				PHOTO_TYPE = #{photoType,jdbcType=INTEGER},
+			</if>
+			<if test="photoPath != null">
+				PHOTO_PATH = #{photoPath,jdbcType=VARCHAR},
+			</if>
+			<if test="photoDesc != null">
+				PHOTO_DESC = #{photoDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="corpId != null">
+				CORP_ID = #{corpId,jdbcType=BIGINT},
+			</if>
+			<if test="flag != null">
+				FLAG = #{flag,jdbcType=INTEGER},
+			</if>
+		</set>
+		where DAMAGE_PHOTO_ID = #{damagePhotoId,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.CommonDamagePhoto" >
+    update sq_common_damage_photo set
+	  DAMAGE_ID = #{damageId,jdbcType=BIGINT}, DAMAGE_DETAIL_ID = #{damageDetailId,jdbcType=BIGINT}, PHOTO_TYPE = #{photoType,jdbcType=INTEGER},
+	  PHOTO_PATH = #{photoPath,jdbcType=VARCHAR}, PHOTO_DESC = #{photoDesc,jdbcType=VARCHAR}, CORP_ID = #{corpId,jdbcType=BIGINT},
+	  FLAG = #{flag,jdbcType=INTEGER}
+	where DAMAGE_PHOTO_ID = #{damagePhotoId,jdbcType=BIGINT}
+  </update>
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from sq_common_damage_photo self
+		<include refid="Example_Where_Clause"/>
+		order by self.DAMAGE_PHOTO_ID DESC
+	</select>
+
+	<select id="selectDamagePhotoIdByDamageId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select DAMAGE_PHOTO_ID
+		from sq_common_damage_photo
+		where DAMAGE_ID = #{damageId, jdbcType=BIGINT}
+	</select>
+
+	<select id="selectDamagePhotoIdByDamageDetailId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select DAMAGE_PHOTO_ID
+		from sq_common_damage_photo
+		where DAMAGE_DETAIL_ID = #{damageDetailId, jdbcType=BIGINT}
+	</select>
+
+	<select id="selectDamagePhotoByDamageId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from sq_common_damage_photo self
+		where self.DAMAGE_ID = #{damageId, jdbcType=BIGINT}
+		and self.DAMAGE_DETAIL_ID is null
+		and (self.PHOTO_TYPE = 0 or self.PHOTO_TYPE = 1)
+		and self.DEL = 0
+	</select>
+
+	<select id="selectDamagePhotoByDamageDetailId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from sq_common_damage_photo self
+		where self.DAMAGE_DETAIL_ID = #{damageDetailId, jdbcType=BIGINT}
+		and self.DEL = 0
+	</select>
+
+</mapper>   

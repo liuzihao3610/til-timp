@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransportRecordOuterMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransportRecordOuter" >
+    <id column="TRANSPORT_RECORD_OUTER_ID" jdbcType="BIGINT" property="transportRecordOuterId" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="transportOrderCode" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="REPORT_DATE" jdbcType="TIMESTAMP" property="reportDate" />
+	<result column="CAR_NUMBER" jdbcType="INTEGER" property="carNumber" />
+	<result column="CURRENT_LOAD_WEIGHT" jdbcType="DOUBLE" property="currentLoadWeight" />
+	<result column="LNG" jdbcType="DOUBLE" property="lng" />
+	<result column="LAT" jdbcType="DOUBLE" property="lat" />
+	<result column="TRANSPORT_STATUS" jdbcType="INTEGER" property="transportStatus" />
+	<result column="CUMULATIVE_KM" jdbcType="DOUBLE" property="cumulativeKm" />
+	<result column="SPEED" jdbcType="DOUBLE" property="speed" />
+	<result column="TEMPERATURE" jdbcType="DOUBLE" property="temperature" />
+	<result column="HUMIDITY" jdbcType="DOUBLE" property="humidity" />
+	<result column="STRESS" jdbcType="DOUBLE" property="stress" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />   
+	<result column="TRACTIR_VIN" jdbcType="VARCHAR" property="refTractirVin" />
+	
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+	
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANSPORT_RECORD_OUTER_ID, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE, TRANSPORTER_ID, DRIVER_ID, REPORT_DATE, CAR_NUMBER, 	CURRENT_LOAD_WEIGHT, LNG, LAT, TRANSPORT_STATUS, CUMULATIVE_KM, SPEED, TEMPERATURE, HUMIDITY, STRESS, CORP_ID
+  </sql>
+ 
+  <sql id="Query_Column_List" >
+   touter.TRANSPORT_RECORD_OUTER_ID, touter.TRANSPORT_ORDER_ID, touter.TRANSPORT_ORDER_CODE, touter.TRANSPORTER_ID, tr.TRANSPORTER_CODE,
+   tr.TRACTIR_VIN,touter.DRIVER_ID, USER.USER_NAME AS DRIVER_NAME, 
+   user.USER_CODE as DRIVER_CODE,tr.TRACTIR_PLATE_CODE,
+   touter.REPORT_DATE, touter.CAR_NUMBER, touter.CURRENT_LOAD_WEIGHT, 
+   touter.LNG, touter.LAT, touter.TRANSPORT_STATUS, touter.CUMULATIVE_KM, touter.SPEED, touter.TEMPERATURE, touter.HUMIDITY, touter.STRESS, 
+   touter.CORP_ID,CORP.CORP_NAME
+  </sql>
+    
+  <sql id="Example_Where_Clause">
+    where  touter.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transportRecordOuterId != null and transportRecordOuterId != ''" >
+        and  touter.TRANSPORT_RECORD_OUTER_ID = #{transportRecordOuterId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and  touter.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="transportOrderCode != null and transportOrderCode != ''" >
+        and  (touter.TRANSPORT_ORDER_CODE = #{transportOrderCode}
+        or touter.TRANSPORT_ORDER_CODE like concat(concat('%',#{transportOrderCode}),'%'))
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and  touter.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and  touter.DRIVER_ID = #{driverId}
+      </if>
+      <if test="reportDate != null and reportDate != ''" >
+        and  touter.REPORT_DATE = #{reportDate}
+      </if>
+      <if test="carNumber != null and carNumber != ''" >
+        and  touter.CAR_NUMBER = #{carNumber}
+      </if>
+      <if test="currentLoadWeight != null and currentLoadWeight != ''" >
+        and  touter.CURRENT_LOAD_WEIGHT = #{currentLoadWeight}
+      </if>
+      <if test="lng != null and lng != ''" >
+        and  touter.LNG = #{lng}
+      </if>
+      <if test="lat != null and lat != ''" >
+        and  touter.LAT = #{lat}
+      </if>
+      <if test="transportStatus != null and transportStatus != ''" >
+        and  touter.TRANSPORT_STATUS = #{transportStatus}
+      </if>
+      <if test="cumulativeKm != null and cumulativeKm != ''" >
+        and  touter.CUMULATIVE_KM = #{cumulativeKm}
+      </if>
+      <if test="speed != null and speed != ''" >
+        and  touter.SPEED = #{speed}
+      </if>
+      <if test="temperature != null and temperature != ''" >
+        and  touter.TEMPERATURE = #{temperature}
+      </if>
+      <if test="humidity != null and humidity != ''" >
+        and  touter.HUMIDITY = #{humidity}
+      </if>
+      <if test="stress != null and stress != ''" >
+        and  touter.STRESS = #{stress}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and  touter.CORP_ID = #{corpId}
+      </if>
+      <if test="tractirVin != null and tractirVin != ''" >
+       and  (tr.TRACTIR_VIN = #{tractirVin}
+       or  tr.TRACTIR_VIN like concat(concat('%',#{tractirVin}),'%'))
+      </if>
+      
+       <if test="refDriverCode != null and refDriverCode != ''" >
+       and  ( user.USER_CODE = #{refDriverCode}
+       or   user.USER_CODE like concat(concat('%',#{refDriverCode}),'%'))
+      </if>
+      
+      <if test="refDriverName != null and refDriverName != ''" >
+       and  ( user.USER_NAME = #{refDriverCode}
+       or   user.USER_NAME like concat(concat('%',#{refDriverName}),'%'))
+      </if>
+      
+      <if test="searchContent != null and searchContent != ''" >
+        and (
+        tr.TRACTIR_PLATE_CODE like  concat(concat('%',#{searchContent}),'%')
+        or  touter.TRANSPORT_ORDER_CODE like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+      
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from  OM_TRANSPORT_RECORD_OUTER touter
+	left join OM_TRANSPORT_ORDER tso  on tso.TRANSPORT_ORDER_ID = touter.TRANSPORT_ORDER_ID
+	left join  TC_TRANSPORTER tr on   tr.TRANSPORTER_ID = touter.TRANSPORTER_ID
+	left join BD_USER user ON user.USER_ID =  touter.DRIVER_ID
+	left join SYS_CORP corp on corp.CORP_ID =  touter.CORP_ID
+    where  touter.del = 0
+    and touter.TRANSPORT_RECORD_OUTER_ID = #{transportRecordOuterId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from OM_TRANSPORT_RECORD_OUTER where TRANSPORT_RECORD_OUTER_ID = #{transportRecordOuterId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.TransportRecordOuter" keyProperty="transportRecordOuterId" useGeneratedKeys="true">
+    insert into OM_TRANSPORT_RECORD_OUTER	(TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE, TRANSPORTER_ID, DRIVER_ID, REPORT_DATE, CAR_NUMBER, CURRENT_LOAD_WEIGHT, 	LNG, LAT, TRANSPORT_STATUS, CUMULATIVE_KM, SPEED, TEMPERATURE, HUMIDITY, STRESS, CORP_ID)	values	(#{transportOrderId,jdbcType=BIGINT}, #{transportOrderCode,jdbcType=VARCHAR}, #{transporterId,jdbcType=BIGINT}, #{driverId,jdbcType=BIGINT}, 	#{reportDate,jdbcType=TIMESTAMP}, #{carNumber,jdbcType=INTEGER}, #{currentLoadWeight,jdbcType=DOUBLE}, 	#{lng,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, #{transportStatus,jdbcType=INTEGER}, #{cumulativeKm,jdbcType=DOUBLE}, 	#{speed,jdbcType=DOUBLE}, #{temperature,jdbcType=DOUBLE}, #{humidity,jdbcType=DOUBLE}, #{stress,jdbcType=DOUBLE}, 	#{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.TransportRecordOuter" keyProperty="transportRecordOuterId" useGeneratedKeys="true">
+    insert into OM_TRANSPORT_RECORD_OUTER	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="transportOrderId != null">	    TRANSPORT_ORDER_ID, 	  </if>	  <if test="transportOrderCode != null">	    TRANSPORT_ORDER_CODE, 	  </if>	  <if test="transporterId != null">	    TRANSPORTER_ID, 	  </if>	  <if test="driverId != null">	    DRIVER_ID, 	  </if>	  <if test="reportDate != null">	    REPORT_DATE, 	  </if>	  <if test="carNumber != null">	    CAR_NUMBER, 	  </if>	  <if test="currentLoadWeight != null">	    CURRENT_LOAD_WEIGHT, 	  </if>	  <if test="lng != null">	    LNG, 	  </if>	  <if test="lat != null">	    LAT, 	  </if>	  <if test="transportStatus != null">	    TRANSPORT_STATUS, 	  </if>	  <if test="cumulativeKm != null">	    CUMULATIVE_KM, 	  </if>	  <if test="speed != null">	    SPEED, 	  </if>	  <if test="temperature != null">	    TEMPERATURE, 	  </if>	  <if test="humidity != null">	    HUMIDITY, 	  </if>	  <if test="stress != null">	    STRESS, 	  </if>	  <if test="corpId != null">	    CORP_ID, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="transportOrderId != null">	    #{transportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="transportOrderCode != null">	    #{transportOrderCode,jdbcType=VARCHAR}, 	  </if>	  <if test="transporterId != null">	    #{transporterId,jdbcType=BIGINT}, 	  </if>	  <if test="driverId != null">	    #{driverId,jdbcType=BIGINT}, 	  </if>	  <if test="reportDate != null">	    #{reportDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="carNumber != null">	    #{carNumber,jdbcType=INTEGER}, 	  </if>	  <if test="currentLoadWeight != null">	    #{currentLoadWeight,jdbcType=DOUBLE}, 	  </if>	  <if test="lng != null">	    #{lng,jdbcType=DOUBLE}, 	  </if>	  <if test="lat != null">	    #{lat,jdbcType=DOUBLE}, 	  </if>	  <if test="transportStatus != null">	    #{transportStatus,jdbcType=INTEGER}, 	  </if>	  <if test="cumulativeKm != null">	    #{cumulativeKm,jdbcType=DOUBLE}, 	  </if>	  <if test="speed != null">	    #{speed,jdbcType=DOUBLE}, 	  </if>	  <if test="temperature != null">	    #{temperature,jdbcType=DOUBLE}, 	  </if>	  <if test="humidity != null">	    #{humidity,jdbcType=DOUBLE}, 	  </if>	  <if test="stress != null">	    #{stress,jdbcType=DOUBLE}, 	  </if>	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.TransportRecordOuter" >
+	update OM_TRANSPORT_RECORD_OUTER	<set>	  <if test="transportOrderId != null">	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="transportOrderCode != null">	    TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 	  </if>	  <if test="transporterId != null">	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 	  </if>	  <if test="driverId != null">	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 	  </if>	  <if test="reportDate != null">	    REPORT_DATE = #{reportDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="carNumber != null">	    CAR_NUMBER = #{carNumber,jdbcType=INTEGER}, 	  </if>	  <if test="currentLoadWeight != null">	    CURRENT_LOAD_WEIGHT = #{currentLoadWeight,jdbcType=DOUBLE}, 	  </if>	  <if test="lng != null">	    LNG = #{lng,jdbcType=DOUBLE}, 	  </if>	  <if test="lat != null">	    LAT = #{lat,jdbcType=DOUBLE}, 	  </if>	  <if test="transportStatus != null">	    TRANSPORT_STATUS = #{transportStatus,jdbcType=INTEGER}, 	  </if>	  <if test="cumulativeKm != null">	    CUMULATIVE_KM = #{cumulativeKm,jdbcType=DOUBLE}, 	  </if>	  <if test="speed != null">	    SPEED = #{speed,jdbcType=DOUBLE}, 	  </if>	  <if test="temperature != null">	    TEMPERATURE = #{temperature,jdbcType=DOUBLE}, 	  </if>	  <if test="humidity != null">	    HUMIDITY = #{humidity,jdbcType=DOUBLE}, 	  </if>	  <if test="stress != null">	    STRESS = #{stress,jdbcType=DOUBLE}, 	  </if>	  <if test="corpId != null">	    CORP_ID = #{corpId,jdbcType=BIGINT}, 	  </if>	</set>	where TRANSPORT_RECORD_OUTER_ID = #{transportRecordOuterId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.TransportRecordOuter" >
+    update OM_TRANSPORT_RECORD_OUTER set 	  TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 	  TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, REPORT_DATE = #{reportDate,jdbcType=TIMESTAMP}, 	  CAR_NUMBER = #{carNumber,jdbcType=INTEGER}, CURRENT_LOAD_WEIGHT = #{currentLoadWeight,jdbcType=DOUBLE}, 	  LNG = #{lng,jdbcType=DOUBLE}, LAT = #{lat,jdbcType=DOUBLE}, TRANSPORT_STATUS = #{transportStatus,jdbcType=INTEGER}, 	  CUMULATIVE_KM = #{cumulativeKm,jdbcType=DOUBLE}, SPEED = #{speed,jdbcType=DOUBLE}, TEMPERATURE = #{temperature,jdbcType=DOUBLE}, 	  HUMIDITY = #{humidity,jdbcType=DOUBLE}, STRESS = #{stress,jdbcType=DOUBLE}, CORP_ID = #{corpId,jdbcType=BIGINT}	where TRANSPORT_RECORD_OUTER_ID = #{transportRecordOuterId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from  OM_TRANSPORT_RECORD_OUTER touter
+	left join OM_TRANSPORT_ORDER tso  on tso.TRANSPORT_ORDER_ID = touter.TRANSPORT_ORDER_ID
+	left join  TC_TRANSPORTER tr on   tr.TRANSPORTER_ID = touter.TRANSPORTER_ID
+	left join BD_USER user ON user.USER_ID =  touter.DRIVER_ID
+	left join SYS_CORP corp on corp.CORP_ID =  touter.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by touter.TRANSPORT_RECORD_OUTER_ID DESC
+  </select>
+  
+  	
+</mapper>   

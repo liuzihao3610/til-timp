@@ -1,0 +1,14 @@
+{
+  "data":{
+    "registId":0,
+    "regisytCode":"Test-regisytCode",
+    "registName":"Test-registName",
+    "urlPath":"Test-urlPath",
+    "registType":0,
+    "icon":"Test-icon",
+    "upRegistId":0,
+    "sequence":0,
+    "corpId":0,
+    "flag":0
+  }
+}

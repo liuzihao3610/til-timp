@@ -1,0 +1,24 @@
+{
+  "data":{
+    "reconciliationDetailId":0,
+    "reconciliationId":0,
+    "orderDetailId":0,
+    "orderNumber":"Test-orderNumber",
+    "carVin":"Test-carVin",
+    "carBrandId":0,
+    "carTypeId":0,
+    "carModelId":0,
+    "quotationId":0,
+    "freightRate":0,
+    "actualFreightRate":0,
+    "hedgeAmount":0,
+    "deductionAmount":0,
+    "deductionReason":"Test-deductionReason",
+    "sendCityId":0,
+    "recvCityId":0,
+    "sendUnitId":0,
+    "recvUnitId":0,
+    "corpId":0,
+    "flag":0
+  }
+}

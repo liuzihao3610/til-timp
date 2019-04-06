@@ -1,0 +1,24 @@
+{
+  "data":{
+    "outsourcePriceId":0,
+    "outsourcePriceCode":"Test-outsourcePriceCode",
+    "transCorpId":0,
+    "offerType":0,
+    "effectiveDate":"2018-05-06 04:35:23",
+    "expiryDate":"2018-05-06 04:35:23",
+    "startPlaceId":0,
+    "arrivalPlaceId":0,
+    "kilometer":0,
+    "deliveryDate":0,
+    "brandId":0,
+    "carTypeId":0,
+    "unitPrice":0,
+    "remark":"Test-remark",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-05-06 04:35:23",
+    "checker":0,
+    "checkDate":"2018-05-06 04:35:23",
+    "flag":0
+  }
+}

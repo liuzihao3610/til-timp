@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.StockCarHisMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.StockCarHis" >
+    <id column="STOCK_CAR_HIS_ID" jdbcType="BIGINT" property="stockCarHisId" />
+	<result column="STOCK_CAR_HIS_ID" jdbcType="BIGINT" property="stockCarHisId" />
+	<result column="STOCK_CAR_ID" jdbcType="BIGINT" property="stockCarId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="CAR_STATUS" jdbcType="INTEGER" property="carStatus" />
+	<result column="CHANGE_DATE" jdbcType="TIMESTAMP" property="changeDate" />
+	<result column="ORDER_BILL_ID" jdbcType="BIGINT" property="orderBillId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="STOCK_CAR_CODE" jdbcType="VARCHAR" property="RefStockCarCode" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="ORDER_BILL_CODE" jdbcType="VARCHAR" property="refOrderBillCode" />
+	
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    STOCK_CAR_HIS_ID, STOCK_CAR_ID, CAR_VIN, CAR_STATUS, CHANGE_DATE, ORDER_BILL_ID, CORP_ID, FLAG
+  </sql>
+ 
+   <sql id="Query_Column_List" >
+    sch.STOCK_CAR_HIS_ID,sch.STOCK_CAR_ID,sch.CAR_VIN,sch.CAR_STATUS,sch.CHANGE_DATE,
+    corp.CORP_NAME,scc.STOCK_CAR_CODE,oo.ORDER_BILL_CODE,
+    sch.ORDER_BILL_ID,sch.CORP_ID,sch.FLAG
+  </sql>
+  
+
+<sql id="Example_Where_Clause">
+    where sch.del = 0
+    <trim  suffixOverrides="," >
+      <if test="stockCarHisId != null and stockCarHisId != ''" >
+        and sch.STOCK_CAR_HIS_ID = #{stockCarHisId}
+      </if>
+      <if test="stockCarId != null and stockCarId != ''" >
+        and sch.STOCK_CAR_ID = #{stockCarId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and sch.CAR_VIN = #{carVin}
+      </if>
+      <if test="carStatus != null and carStatus != ''" >
+        and sch.CAR_STATUS = #{carStatus}
+      </if>
+      <if test="changeDate != null and changeDate != ''" >
+        and sch.CHANGE_DATE = #{changeDate}
+      </if>
+      <if test="orderBillId != null and orderBillId != ''" >
+        and sch.ORDER_BILL_ID = #{orderBillId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and sch.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and sch.flag != ''" >
+        and sch.FLAG = #{flag}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from st_stock_car_his sch
+    join SYS_CORP corp on corp.CORP_ID =  sch.CORP_ID
+	join st_stock_car ssc on ssc.STOCK_CAR_ID = sch.STOCK_CAR_ID
+ 	join om_order oo on oo.ORDER_ID = sch.ORDER_BILL_ID
+    where STOCK_CAR_HIS_ID = #{stockCarHisId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from st_stock_car_his where STOCK_CAR_HIS_ID = #{stockCarHisId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.StockCarHis" keyProperty="stockCarHisId" useGeneratedKeys="true">
+    insert into st_stock_car_his	(STOCK_CAR_ID, CAR_VIN, CAR_STATUS, CHANGE_DATE, ORDER_BILL_ID, CORP_ID, FLAG)	values	(#{stockCarId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR}, #{carStatus,jdbcType=INTEGER}, #{changeDate,jdbcType=TIMESTAMP}, 	#{orderBillId,jdbcType=BIGINT}, #{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.StockCarHis" keyProperty="stockCarHisId" useGeneratedKeys="true">
+    insert into st_stock_car_his	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="stockCarId != null">	    STOCK_CAR_ID, 	  </if>	  <if test="carVin != null">	    CAR_VIN, 	  </if>	  <if test="carStatus != null">	    CAR_STATUS, 	  </if>	  <if test="changeDate != null">	    CHANGE_DATE, 	  </if>	  <if test="orderBillId != null">	    ORDER_BILL_ID, 	  </if>	  <if test="corpId != null">	    CORP_ID, 	  </if>	  <if test="flag != null">	    FLAG, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="stockCarId != null">	    #{stockCarId,jdbcType=BIGINT}, 	  </if>	  <if test="carVin != null">	    #{carVin,jdbcType=VARCHAR}, 	  </if>	  <if test="carStatus != null">	    #{carStatus,jdbcType=INTEGER}, 	  </if>	  <if test="changeDate != null">	    #{changeDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="orderBillId != null">	    #{orderBillId,jdbcType=BIGINT}, 	  </if>	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	  <if test="flag != null">	    #{flag,jdbcType=INTEGER}, 	  </if>	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.StockCarHis" >
+	update st_stock_car_his	<set>	  <if test="stockCarId != null">	    STOCK_CAR_ID = #{stockCarId,jdbcType=BIGINT}, 	  </if>	  <if test="carVin != null">	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 	  </if>	  <if test="carStatus != null">	    CAR_STATUS = #{carStatus,jdbcType=INTEGER}, 	  </if>	  <if test="changeDate != null">	    CHANGE_DATE = #{changeDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="orderBillId != null">	    ORDER_BILL_ID = #{orderBillId,jdbcType=BIGINT}, 	  </if>	  <if test="corpId != null">	    CORP_ID = #{corpId,jdbcType=BIGINT}, 	  </if>	  <if test="flag != null">	    FLAG = #{flag,jdbcType=INTEGER}, 	  </if>	</set>	where STOCK_CAR_HIS_ID = #{stockCarHisId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.StockCarHis" >
+    update st_stock_car_his set 	  STOCK_CAR_ID = #{stockCarId,jdbcType=BIGINT}, CAR_VIN = #{carVin,jdbcType=VARCHAR}, CAR_STATUS = #{carStatus,jdbcType=INTEGER}, 	  CHANGE_DATE = #{changeDate,jdbcType=TIMESTAMP}, ORDER_BILL_ID = #{orderBillId,jdbcType=BIGINT}, CORP_ID = #{corpId,jdbcType=BIGINT}, 	  FLAG = #{flag,jdbcType=INTEGER}	where STOCK_CAR_HIS_ID = #{stockCarHisId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from st_stock_car_his sch
+	join SYS_CORP corp on corp.CORP_ID =  sch.CORP_ID
+	join st_stock_car ssc on ssc.STOCK_CAR_ID = sch.STOCK_CAR_ID
+ 	join om_order oo on oo.ORDER_ID = sch.ORDER_BILL_ID
+	<include refid="Example_Where_Clause"/>
+	order by sch.STOCK_CAR_HIS_ID DESC
+  </select>
+  
+  
+   <update id="logicDeleteByOrderId" parameterType="java.lang.Long">
+    update  st_stock_car_his set 
+      DEL = 1 
+    WHERE ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </update>
+  
+</mapper>   

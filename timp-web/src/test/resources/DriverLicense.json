@@ -1,0 +1,16 @@
+{
+  "data":{
+    "driverLicenseId":0,
+    "driverId":0,
+    "licenseName":"Test-licenseName",
+    "licenseType":0,
+    "licensePath":"Test-licensePath",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-03-22 08:08:45",
+    "checker":0,
+    "checkDate":"2018-03-22 08:08:45",
+    "corpId":0,
+    "flag":0
+  }
+}

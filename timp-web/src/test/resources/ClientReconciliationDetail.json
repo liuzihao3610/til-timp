@@ -1,0 +1,30 @@
+{
+  "data":{
+    "clientReconciliationDetailId":0,
+    "originOrderId":0,
+    "transportId":0,
+    "deliveryCityId":0,
+    "receiveCityId":0,
+    "kilometer":0,
+    "productNumber":"Test-productNumber",
+    "brandId":0,
+    "carId":0,
+    "catTypeId":0,
+    "carVin":"Test-carVin",
+    "dealerId":0,
+    "dealerCode":"Test-dealerCode",
+    "claimLoadDate":"2018-05-08 10:54:05",
+    "actualLoadDate":"2018-05-08 10:54:05",
+    "offerType":0,
+    "quotationId":0,
+    "hedgePrice":0,
+    "settlementPrice":0,
+    "deductionsPrice":0,
+    "deductionsReason":"Test-deductionsReason",
+    "deliveryUnitId":0,
+    "receiveUnitId":0,
+    "creator":0,
+    "createDate":"2018-05-08 10:54:05",
+    "corpId":0
+  }
+}

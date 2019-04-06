@@ -1,0 +1,12 @@
+{
+  "data":{
+    "defaultCorpDetailId":0,
+    "defaultCorpId":0,
+    "sequenceNumber":0,
+    "transportCorpId":0,
+    "transferUnitId":0,
+    "jobType":0,
+    "corpId":0,
+    "flag":0
+  }
+}

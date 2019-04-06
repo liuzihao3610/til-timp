@@ -1,0 +1,24 @@
+{
+  "data":{
+    "outsourceReconciliationDetailId":0,
+    "outsourceReconciliationDetailCode":0,
+    "outsourcePriceId":0,
+    "carId":0,
+    "brandId":0,
+    "carTypeId":0,
+    "carVin":"Test-carVin",
+    "offerType":0,
+    "freightPrice":0,
+    "hedgePrice":0,
+    "factFreightPrice":0,
+    "deductionsPrice":0,
+    "deductionsReason":"Test-deductionsReason",
+    "deliveryCityId":0,
+    "deliveryUnitId":0,
+    "receiveCityId":0,
+    "receiveUnitId":0,
+    "creator":0,
+    "createDate":"2018-05-08 10:54:06",
+    "corpId":0
+  }
+}

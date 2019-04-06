@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.RouteDetailMapper">
+    <resultMap id="BaseResultMap" type="com.tilchina.timp.model.RouteDetail">
+        <id column="ROUTE_DETAIL_ID" jdbcType="BIGINT" property="routeDetailId"/>
+        <result column="ROUTE_DETAIL_ID" jdbcType="BIGINT" property="routeDetailId"/>
+        <result column="ROUTE_ID" jdbcType="BIGINT" property="routeId"/>
+        <result column="CITY_AREA_ID" jdbcType="BIGINT" property="cityAreaId"/>
+        <result column="CORP_ID" jdbcType="BIGINT" property="corpId"/>
+
+        <result column="REF_CITY_AREA_CODE" jdbcType="VARCHAR" property="refCityAreaCode"/>
+        <result column="REF_CITY_AREA_NAME" jdbcType="VARCHAR" property="refCityAreaName"/>
+        <!--<result column="REF_SET_CITY_NAME" jdbcType="VARCHAR" property="refSetCityName"/>-->
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    ROUTE_DETAIL_ID, ROUTE_ID, CITY_AREA_ID, CORP_ID
+    </sql>
+
+    <sql id="Query_Column_List">
+		a.ROUTE_DETAIL_ID, a.ROUTE_ID, a.CITY_AREA_ID, a.CORP_ID
+	</sql>
+
+    <sql id="List_Column_List">
+        a.ROUTE_DETAIL_ID, a.ROUTE_ID, a.CITY_AREA_ID, a.CORP_ID, b.CA_CODE as REF_CITY_AREA_CODE, b.CA_NAME as REF_CITY_AREA_NAME
+    </sql>
+
+    <sql id="Example_Where_Clause">
+        where del = 0
+        <trim suffixOverrides=",">
+            <if test="routeDetailId != null and routeDetailId != ''">
+                and ROUTE_DETAIL_ID = #{routeDetailId}
+            </if>
+            <if test="routeId != null and routeId != ''">
+                and ROUTE_ID = #{routeId}
+            </if>
+            <if test="cityAreaId != null and cityAreaId != ''">
+                and CITY_AREA_ID = #{cityAreaId}
+            </if>
+            <if test="corpId != null and corpId != ''">
+                and CORP_ID = #{corpId}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from vr_route_detail
+        where ROUTE_DETAIL_ID = #{routeDetailId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from vr_route_detail where ROUTE_DETAIL_ID = #{routeDetailId}
+  </delete>
+    <insert id="insert" parameterType="com.tilchina.timp.model.RouteDetail" keyProperty="routeDetailId"
+            useGeneratedKeys="true">
+    insert into vr_route_detail
+	(ROUTE_ID, CITY_AREA_ID, CORP_ID)
+	values
+	(#{routeId,jdbcType=BIGINT}, #{cityAreaId,jdbcType=BIGINT}, #{corpId,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tilchina.timp.model.RouteDetail" keyProperty="routeDetailId"
+            useGeneratedKeys="true">
+        insert into vr_route_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeId != null">
+                ROUTE_ID,
+            </if>
+            <if test="cityAreaId != null">
+                CITY_AREA_ID,
+            </if>
+            <if test="corpId != null">
+                CORP_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeId != null">
+                #{routeId,jdbcType=BIGINT},
+            </if>
+            <if test="cityAreaId != null">
+                #{cityAreaId,jdbcType=BIGINT},
+            </if>
+            <if test="corpId != null">
+                #{corpId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.RouteDetail">
+        update vr_route_detail
+        <set>
+            <if test="routeId != null">
+                ROUTE_ID = #{routeId,jdbcType=BIGINT},
+            </if>
+            <if test="cityAreaId != null">
+                CITY_AREA_ID = #{cityAreaId,jdbcType=BIGINT},
+            </if>
+            <if test="corpId != null">
+                CORP_ID = #{corpId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where ROUTE_DETAIL_ID = #{routeDetailId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.RouteDetail">
+    update vr_route_detail set 
+	  ROUTE_ID = #{routeId,jdbcType=BIGINT}, CITY_AREA_ID = #{cityAreaId,jdbcType=BIGINT}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where ROUTE_DETAIL_ID = #{routeDetailId,jdbcType=BIGINT}
+  </update>
+
+    <select id="selectList" resultMap="BaseResultMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List"/>
+        from vr_route_detail
+        <include refid="Example_Where_Clause"/>
+        <if test="orderByClause != null and orderByClause != ''">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByRouteType" resultMap="BaseResultMap" parameterType="Object">
+        select
+        <include refid="Query_Column_List"/>
+        from vr_route_detail a
+        join vr_route b on a.ROUTE_ID = b.ROUTE_ID
+        where a.del = 0 and a.del = 0
+        and b.ROUTE_TYPE = #{routeType,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByRouteId" resultMap="BaseResultMap" parameterType="Object">
+        select
+        <include refid="List_Column_List"/>
+        from vr_route_detail a
+        join vr_city_area b on a.city_area_id = b.city_area_id
+        where ROUTE_ID = #{routeId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByRouteId" parameterType="java.lang.Long">
+        delete  from vr_route_detail where ROUTE_ID = #{routeId,jdbcType=BIGINT}
+    </delete>
+</mapper>   

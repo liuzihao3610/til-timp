@@ -1,0 +1,11 @@
+{
+  "data":{
+    "quotationPriceId":0,
+    "quotationId":0,
+    "quotationDetailId":0,
+    "quotationAmount":0,
+    "quotationPrice":0,
+    "corpId":0,
+    "flag":0
+  }
+}

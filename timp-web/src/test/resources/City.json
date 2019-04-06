@@ -1,0 +1,11 @@
+{
+  "data":{
+    "cityId":0,
+    "cityCode":"Test-cityCode",
+    "cityName":"Test-cityName",
+    "cityType":0,
+    "upCityId":0,
+    "corpId":0,
+    "flag":0
+  }
+}

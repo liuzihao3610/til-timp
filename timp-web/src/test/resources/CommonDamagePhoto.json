@@ -1,0 +1,10 @@
+{
+  "data":{
+    "damagePhotoId":0,
+    "damageId":0,
+    "damageDetailId":0,
+    "photoType":0,
+    "photoPath":"Test-photoPath",
+    "photoDesc":"Test-photoDesc"
+  }
+}

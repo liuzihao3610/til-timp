@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransporterMapper">
+	<resultMap id="BaseResultMap" type="com.tilchina.timp.model.Transporter">
+		<id column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId"/>
+		<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="transporterCode"/>
+		<result column="TRACTOR_ID" jdbcType="BIGINT" property="tractorId"/>
+		<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="tractirPlateCode"/>
+		<result column="TRACTIR_VIN" jdbcType="VARCHAR" property="tractirVin"/>
+		<result column="ENGINE_CODE" jdbcType="VARCHAR" property="engineCode"/>
+		<result column="TRAILER_ID" jdbcType="BIGINT" property="trailerId"/>
+		<result column="TRAILER_PLATE_CODE" jdbcType="VARCHAR" property="trailerPlateCode"/>
+		<result column="TRAILER_VIN" jdbcType="VARCHAR" property="trailerVin"/>
+		<result column="CONTRACTOR_ID" jdbcType="BIGINT" property="contractorId"/>
+		<result column="CONTRACTOR_END_DATE" jdbcType="TIMESTAMP" property="contractorEndDate"/>
+		<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus"/>
+		<result column="CREATOR" jdbcType="BIGINT" property="creator"/>
+		<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate"/>
+		<result column="CHECKER" jdbcType="BIGINT" property="checker"/>
+		<result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate"/>
+		<result column="CORP_ID" jdbcType="BIGINT" property="corpId"/>
+		<result column="FLAG" jdbcType="INTEGER" property="flag"/>
+		<result column="TRUCKS_TYPE" jdbcType="INTEGER" property="trucksType"/>
+		<result column="WEIGHT_COUNT" jdbcType="DOUBLE" property="weightCount"/>
+		<result column="CHECK_LOADWEIGHT" jdbcType="DOUBLE" property="checkLoadweight"/>
+		<result column="TRUCKS_LONG" jdbcType="DOUBLE" property="trucksLong"/>
+		<result column="TRUCKS_WIDTH" jdbcType="DOUBLE" property="trucksWidth"/>
+		<result column="TRUCKS_HIGH" jdbcType="DOUBLE" property="trucksHigh"/>
+		<result column="AXLE_COUNT" jdbcType="INTEGER" property="axleCount"/>
+		<result column="TRUCK_TYPE" jdbcType="INTEGER" property="truckType"/>
+		<result column="LONG_EMPTY_FUEL_CONSUMPTION" jdbcType="DOUBLE" property="longEmptyFuelConsumption"/>
+		<result column="LONG_HEAVY_FUEL_CONSUMPTION" jdbcType="DOUBLE" property="longHeavyFuelConsumption"/>
+		<result column="LONG_EMPTY_FUEL_CONSUMPTION_WITH_CONTAINER" jdbcType="DOUBLE"
+		        property="longEmptyFuelConsumptionWithContainer"/>
+		<result column="LONG_HEAVY_FUEL_CONSUMPTION_WITH_CONTAINER" jdbcType="DOUBLE"
+		        property="longHeavyFuelConsumptionWithContainer"/>
+		<result column="CITY_FUEL_CONSUMPTION" jdbcType="DOUBLE" property="cityFuelConsumption"/>
+		<result column="CITY_FUEL_CONSUMPTION_WITH_CONTAINER" jdbcType="DOUBLE"
+		        property="cityFuelConsumptionWithContainer"/>
+
+		<result column="TRACTOR_NAME" jdbcType="VARCHAR" property="refTractorName"/>
+		<result column="TRAILER_NAME" jdbcType="VARCHAR" property="refTrailerName"/>
+		<result column="CONTRACTOR_NAME" jdbcType="VARCHAR" property="refContractorName"/>
+		<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName"/>
+		<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName"/>
+		<result column="CHECKER_NAME" jdbcType="VARCHAR" property="refCheckerName"/>
+		<result column="CONTRACTOR_CODE" jdbcType="VARCHAR" property="refContractorCode"/>
+		<result column="TRACTOR_TYPE" jdbcType="INTEGER" property="refTractorType"/>
+		<result column="TRACTOR_CODE" jdbcType="INTEGER" property="refTractorCode"/>
+		<result column="MAX_QUANTITY" jdbcType="INTEGER" property="refMaxQuantity"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		TRANSPORTER_ID,
+		TRANSPORTER_CODE,
+		TRACTOR_ID,
+		TRACTIR_PLATE_CODE,
+		TRACTIR_VIN,
+		ENGINE_CODE,
+		TRAILER_ID,
+		TRAILER_PLATE_CODE,
+		TRAILER_VIN,
+		CONTRACTOR_ID,
+		CONTRACTOR_END_DATE,
+		BILL_STATUS,
+		CREATOR,
+		CREATE_DATE,
+		CHECKER,
+		CHECK_DATE,
+		CORP_ID,
+		FLAG,
+		TRUCKS_TYPE,
+		WEIGHT_COUNT,
+		CHECK_LOADWEIGHT,
+		TRUCKS_LONG,
+		TRUCKS_WIDTH,
+		TRUCKS_HIGH,
+		AXLE_COUNT,
+		TRUCK_TYPE,
+		LONG_EMPTY_FUEL_CONSUMPTION,
+		LONG_HEAVY_FUEL_CONSUMPTION,
+		LONG_EMPTY_FUEL_CONSUMPTION_WITH_CONTAINER,
+		LONG_HEAVY_FUEL_CONSUMPTION_WITH_CONTAINER,
+		CITY_FUEL_CONSUMPTION,
+		CITY_FUEL_CONSUMPTION_WITH_CONTAINER
+	</sql>
+
+	<sql id="Refer_Column_List">
+		transporter.TRANSPORTER_ID, transporter.TRANSPORTER_CODE, tractor.TRACTOR_NAME,
+		contractor.USER_NAME AS CONTRACTOR_NAME, contractor.USER_CODE AS CONTRACTOR_CODE,
+		trailer.MAX_QUANTITY, trailer.TRAILER_NAME, user.USER_NAME, transporter.BILL_STATUS
+	</sql>
+
+	<sql id="Query_Column_List">
+		transporter.TRANSPORTER_ID,
+		transporter.TRANSPORTER_CODE,
+		transporter.TRACTOR_ID,
+		transporter.TRACTIR_PLATE_CODE,
+		transporter.TRACTIR_VIN,
+		transporter.ENGINE_CODE,
+		transporter.TRAILER_ID,
+		transporter.TRAILER_PLATE_CODE,
+		transporter.TRAILER_VIN,
+		transporter.CONTRACTOR_ID,
+		transporter.CONTRACTOR_END_DATE,
+		transporter.BILL_STATUS,
+		transporter.CREATOR,
+		transporter.CREATE_DATE,
+		transporter.CHECKER,
+		transporter.CHECK_DATE,
+		transporter.CORP_ID,
+		transporter.FLAG,
+		transporter.TRUCKS_TYPE,
+		transporter.WEIGHT_COUNT,
+		transporter.CHECK_LOADWEIGHT,
+		transporter.TRUCKS_LONG,
+		transporter.TRUCKS_WIDTH,
+		transporter.TRUCKS_HIGH,
+		transporter.AXLE_COUNT,
+		transporter.TRUCK_TYPE,
+		transporter.LONG_EMPTY_FUEL_CONSUMPTION,
+		transporter.LONG_HEAVY_FUEL_CONSUMPTION,
+		transporter.LONG_EMPTY_FUEL_CONSUMPTION_WITH_CONTAINER,
+		transporter.LONG_HEAVY_FUEL_CONSUMPTION_WITH_CONTAINER,
+		transporter.CITY_FUEL_CONSUMPTION,
+		transporter.CITY_FUEL_CONSUMPTION_WITH_CONTAINER,
+		user.USER_NAME,
+		trailer.TRAILER_NAME,
+		trailer.MAX_QUANTITY,
+		contractor.USER_CODE AS CONTRACTOR_CODE,
+		contractor.USER_NAME AS CONTRACTOR_NAME,
+		creator.USER_NAME as CREATE_NAME,
+		checker.USER_NAME as CHECKER_NAME,
+		corp.CORP_NAME,
+		tractor.TRACTOR_CODE,
+		tractor.TRACTOR_NAME
+	</sql>
+
+	<sql id="Example_Where_Clause">
+		where transporter.del = 0
+		<trim suffixOverrides=",">
+			<if test="transporterId != null and transporterId != ''">
+				and transporter.TRANSPORTER_ID = #{transporterId}
+			</if>
+			<if test="transporterCode != null and transporterCode != ''">
+				and (transporter.TRANSPORTER_CODE = #{transporterCode}
+				or transporter.TRANSPORTER_CODE like concat('%', #{transporterCode},'%'))
+			</if>
+			<if test="tractorId != null and tractorId != ''">
+				and transporter.TRACTOR_ID = #{tractorId}
+			</if>
+			<if test="tractirPlateCode != null and tractirPlateCode != ''">
+				and (transporter.TRACTIR_PLATE_CODE = #{tractirPlateCode}
+				or transporter.TRACTIR_PLATE_CODE like concat('%', #{tractirPlateCode}, '%'))
+			</if>
+			<if test="tractirVin != null and tractirVin != ''">
+				and transporter.TRACTIR_VIN = #{tractirVin}
+			</if>
+			<if test="engineCode != null and engineCode != ''">
+				and transporter.ENGINE_CODE = #{engineCode}
+			</if>
+			<if test="trailerId != null and trailerId != ''">
+				and transporter.TRAILER_ID = #{trailerId}
+			</if>
+			<if test="trailerPlateCode != null and trailerPlateCode != ''">
+				and (transporter.TRAILER_PLATE_CODE = #{trailerPlateCode}
+				or transporter.TRAILER_PLATE_CODE like concat(concat('%',#{trailerPlateCode}),'%'))
+			</if>
+			<if test="trailerVin != null and trailerVin != ''">
+				and transporter.TRAILER_VIN = #{trailerVin}
+			</if>
+			<if test="contractorId != null and contractorId != ''">
+				and transporter.CONTRACTOR_ID = #{contractorId}
+			</if>
+			<if test="contractorEndDate != null and contractorEndDate != ''">
+				and transporter.CONTRACTOR_END_DATE = #{contractorEndDate}
+			</if>
+			<if test="billStatus != null and billStatus != ''">
+				and transporter.BILL_STATUS = #{billStatus}
+			</if>
+			<if test="creator != null and creator != ''">
+				and transporter.CREATOR = #{creator}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				and transporter.CREATE_DATE = #{createDate}
+			</if>
+			<if test="checker != null and checker != ''">
+				and transporter.CHECKER = #{checker}
+			</if>
+			<if test="checkDate != null and checkDate != ''">
+				and transporter.CHECK_DATE = #{checkDate}
+			</if>
+			<if test="corpId != null and corpId != ''">
+				and transporter.CORP_ID = #{corpId}
+			</if>
+			<if test="flag != null and flag != ''">
+				and transporter.FLAG = #{flag}
+			</if>
+			<if test="trucksType != null and trucksType != ''">
+				and transporter.TRUCKS_TYPE = #{trucksType}
+			</if>
+			<if test="weightCount != null and weightCount != ''">
+				and transporter.WEIGHT_COUNT = #{weightCount}
+			</if>
+			<if test="checkLoadweight != null and checkLoadweight != ''">
+				and transporter.CHECK_LOADWEIGHT = #{checkLoadweight}
+			</if>
+			<if test="trucksLong != null and trucksLong != ''">
+				and transporter.TRUCKS_LONG = #{trucksLong}
+			</if>
+			<if test="trucksWidth != null and trucksWidth != ''">
+				and transporter.TRUCKS_WIDTH = #{trucksWidth}
+			</if>
+			<if test="trucksHigh != null and trucksHigh != ''">
+				and transporter.TRUCKS_HIGH = #{trucksHigh}
+			</if>
+			<if test="axleCount != null and axleCount != ''">
+				and transporter.AXLE_COUNT = #{axleCount}
+			</if>
+			<if test="truckType != null and truckType != ''">
+				and transporter.TRUCK_TYPE = #{truckType}
+			</if>
+			<if test="longEmptyFuelConsumption != null and longEmptyFuelConsumption != ''">
+				and transporter.LONG_EMPTY_FUEL_CONSUMPTION = #{longEmptyFuelConsumption}
+			</if>
+			<if test="longHeavyFuelConsumption != null and longHeavyFuelConsumption != ''">
+				and transporter.LONG_HEAVY_FUEL_CONSUMPTION = #{longHeavyFuelConsumption}
+			</if>
+			<if test="longEmptyFuelConsumptionWithContainer != null and longEmptyFuelConsumptionWithContainer != ''">
+				and transporter.LONG_EMPTY_FUEL_CONSUMPTION_WITH_CONTAINER = #{longEmptyFuelConsumptionWithContainer}
+			</if>
+			<if test="longHeavyFuelConsumptionWithContainer != null and longHeavyFuelConsumptionWithContainer != ''">
+				and transporter.LONG_HEAVY_FUEL_CONSUMPTION_WITH_CONTAINER = #{longHeavyFuelConsumptionWithContainer}
+			</if>
+			<if test="cityFuelConsumption != null and cityFuelConsumption != ''">
+				and transporter.CITY_FUEL_CONSUMPTION = #{cityFuelConsumption}
+			</if>
+			<if test="cityFuelConsumptionWithContainer != null and cityFuelConsumptionWithContainer != ''">
+				and transporter.CITY_FUEL_CONSUMPTION_WITH_CONTAINER = #{cityFuelConsumptionWithContainer}
+			</if>
+
+			<if test="refTractorName != null and refTractorName != ''">
+				and (
+				tractor.TRACTOR_NAME like concat('%', #{refTractorName}, '%')
+				)
+			</if>
+			<if test="refTrailerName  != null and refTrailerName  != ''">
+				and (
+				trailer.TRAILER_NAME like concat('%', #{refTrailerName}, '%')
+				)
+			</if>
+			<if test="refMaxQuantity != null and refMaxQuantity != ''">
+				and (
+				trailer.MAX_QUANTITY like concat('%', #{refMaxQuantity}, '%')
+				)
+			</if>
+
+			<if test="refContractorName  != null and refContractorName  != ''">
+				and (
+				contractor.USER_NAME like concat('%', #{refContractorName}, '%')
+				)
+			</if>
+
+			<if test="startTime != null and startTime != ''">
+				<![CDATA[ and transporter.CREATE_DATE  >=  #{startTime}  ]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+				<![CDATA[ and transporter.CREATE_DATE  <=  #{endTime}  ]]>
+			</if>
+
+			<if test="searchContent != null and searchContent != ''">
+				and (
+				transporter.TRACTIR_PLATE_CODE like concat(concat('%',#{searchContent}),'%')
+				or transporter.TRAILER_PLATE_CODE like concat(concat('%',#{searchContent}),'%')
+				or transporter.TRANSPORTER_CODE like concat(concat('%',#{transporterCode}),'%')
+				or contractor.USER_NAME like concat(concat('%',#{searchContent}),'%')
+				)
+			</if>
+
+		</trim>
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Query_Column_List"/>
+		from tc_transporter transporter
+		join bd_tractor tractor on tractor.TRACTOR_ID = transporter.TRACTOR_ID
+		left join bd_trailer trailer on trailer.TRAILER_ID = transporter.TRAILER_ID
+		join SYS_CORP corp on corp.CORP_ID = transporter.CORP_ID
+		join bd_user creator ON creator.USER_ID = transporter.creator
+		left join bd_user checker ON checker.USER_ID = transporter.checker
+		left join bd_user contractor ON contractor.USER_ID = transporter.CONTRACTOR_ID
+		left join bd_user user on user.USER_ID = transporter.CONTRACTOR_ID
+		where transporter.del = 0
+		and transporter.TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from tc_transporter
+		where TRANSPORTER_ID = #{transporterId}
+	</delete>
+
+	<insert id="insert" parameterType="com.tilchina.timp.model.Transporter" keyProperty="transporterId"
+	        useGeneratedKeys="true">
+		insert into tc_transporter
+		(TRANSPORTER_CODE, TRACTOR_ID, TRACTIR_PLATE_CODE, TRACTIR_VIN, ENGINE_CODE, TRAILER_ID, TRAILER_PLATE_CODE, TRAILER_VIN,
+		 CONTRACTOR_ID, CONTRACTOR_END_DATE, BILL_STATUS, CREATOR, CREATE_DATE, CHECKER, CHECK_DATE, CORP_ID, FLAG, TRUCKS_TYPE,
+		 WEIGHT_COUNT, CHECK_LOADWEIGHT, TRUCKS_LONG, TRUCKS_WIDTH, TRUCKS_HIGH, AXLE_COUNT, TRUCK_TYPE, LONG_EMPTY_FUEL_CONSUMPTION,
+		 LONG_HEAVY_FUEL_CONSUMPTION, LONG_EMPTY_FUEL_CONSUMPTION_WITH_CONTAINER, LONG_HEAVY_FUEL_CONSUMPTION_WITH_CONTAINER,
+		 CITY_FUEL_CONSUMPTION, CITY_FUEL_CONSUMPTION_WITH_CONTAINER)
+		values
+			(#{transporterCode,jdbcType=VARCHAR}, #{tractorId,jdbcType=BIGINT}, #{tractirPlateCode,jdbcType=VARCHAR},
+				#{tractirVin,jdbcType=VARCHAR},
+				#{engineCode,jdbcType=VARCHAR}, #{trailerId,jdbcType=BIGINT}, #{trailerPlateCode,jdbcType=VARCHAR},
+				#{trailerVin,jdbcType=VARCHAR}, #{contractorId,jdbcType=BIGINT},
+				#{contractorEndDate,jdbcType=TIMESTAMP},
+				#{billStatus,jdbcType=INTEGER}, #{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP},
+				#{checker,jdbcType=BIGINT},
+				#{checkDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER},
+				#{trucksType,jdbcType=INTEGER},
+				#{weightCount,jdbcType=DOUBLE}, #{checkLoadweight,jdbcType=DOUBLE}, #{trucksLong,jdbcType=DOUBLE},
+				#{trucksWidth,jdbcType=DOUBLE},
+				#{trucksHigh,jdbcType=DOUBLE}, #{axleCount,jdbcType=INTEGER}, #{truckType,jdbcType=INTEGER},
+				#{longEmptyFuelConsumption,jdbcType=DOUBLE}, #{longHeavyFuelConsumption,jdbcType=DOUBLE},
+				#{longEmptyFuelConsumptionWithContainer,jdbcType=DOUBLE},
+				#{longHeavyFuelConsumptionWithContainer,jdbcType=DOUBLE}, #{cityFuelConsumption,jdbcType=DOUBLE},
+				#{cityFuelConsumptionWithContainer,jdbcType=DOUBLE})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.tilchina.timp.model.Transporter" keyProperty="transporterId" useGeneratedKeys="true">
+		insert into tc_transporter
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="transporterCode != null">
+				TRANSPORTER_CODE,
+			</if>
+			<if test="tractorId != null">
+				TRACTOR_ID,
+			</if>
+			<if test="tractirPlateCode != null">
+				TRACTIR_PLATE_CODE,
+			</if>
+			<if test="tractirVin != null">
+				TRACTIR_VIN,
+			</if>
+			<if test="engineCode != null">
+				ENGINE_CODE,
+			</if>
+			<if test="trailerId != null">
+				TRAILER_ID,
+			</if>
+			<if test="trailerPlateCode != null">
+				TRAILER_PLATE_CODE,
+			</if>
+			<if test="trailerVin != null">
+				TRAILER_VIN,
+			</if>
+			<if test="contractorId != null">
+				CONTRACTOR_ID,
+			</if>
+			<if test="contractorEndDate != null">
+				CONTRACTOR_END_DATE,
+			</if>
+			<if test="billStatus != null">
+				BILL_STATUS,
+			</if>
+			<if test="creator != null">
+				CREATOR,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+			<if test="checker != null">
+				CHECKER,
+			</if>
+			<if test="checkDate != null">
+				CHECK_DATE,
+			</if>
+			<if test="corpId != null">
+				CORP_ID,
+			</if>
+			<if test="flag != null">
+				FLAG,
+			</if>
+			<if test="trucksType != null">
+				TRUCKS_TYPE,
+			</if>
+			<if test="weightCount != null">
+				WEIGHT_COUNT,
+			</if>
+			<if test="checkLoadweight != null">
+				CHECK_LOADWEIGHT,
+			</if>
+			<if test="trucksLong != null">
+				TRUCKS_LONG,
+			</if>
+			<if test="trucksWidth != null">
+				TRUCKS_WIDTH,
+			</if>
+			<if test="trucksHigh != null">
+				TRUCKS_HIGH,
+			</if>
+			<if test="axleCount != null">
+				AXLE_COUNT,
+			</if>
+			<if test="truckType != null">
+				TRUCK_TYPE,
+			</if>
+			<if test="longEmptyFuelConsumption != null">
+				LONG_EMPTY_FUEL_CONSUMPTION,
+			</if>
+			<if test="longHeavyFuelConsumption != null">
+				LONG_HEAVY_FUEL_CONSUMPTION,
+			</if>
+			<if test="longEmptyFuelConsumptionWithContainer != null">
+				LONG_EMPTY_FUEL_CONSUMPTION_WITH_CONTAINER,
+			</if>
+			<if test="longHeavyFuelConsumptionWithContainer != null">
+				LONG_HEAVY_FUEL_CONSUMPTION_WITH_CONTAINER,
+			</if>
+			<if test="cityFuelConsumption != null">
+				CITY_FUEL_CONSUMPTION,
+			</if>
+			<if test="cityFuelConsumptionWithContainer != null">
+				CITY_FUEL_CONSUMPTION_WITH_CONTAINER,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="transporterCode != null">
+				#{transporterCode,jdbcType=VARCHAR},
+			</if>
+			<if test="tractorId != null">
+				#{tractorId,jdbcType=BIGINT},
+			</if>
+			<if test="tractirPlateCode != null">
+				#{tractirPlateCode,jdbcType=VARCHAR},
+			</if>
+			<if test="tractirVin != null">
+				#{tractirVin,jdbcType=VARCHAR},
+			</if>
+			<if test="engineCode != null">
+				#{engineCode,jdbcType=VARCHAR},
+			</if>
+			<if test="trailerId != null">
+				#{trailerId,jdbcType=BIGINT},
+			</if>
+			<if test="trailerPlateCode != null">
+				#{trailerPlateCode,jdbcType=VARCHAR},
+			</if>
+			<if test="trailerVin != null">
+				#{trailerVin,jdbcType=VARCHAR},
+			</if>
+			<if test="contractorId != null">
+				#{contractorId,jdbcType=BIGINT},
+			</if>
+			<if test="contractorEndDate != null">
+				#{contractorEndDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="billStatus != null">
+				#{billStatus,jdbcType=INTEGER},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=BIGINT},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="checker != null">
+				#{checker,jdbcType=BIGINT},
+			</if>
+			<if test="checkDate != null">
+				#{checkDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="corpId != null">
+				#{corpId,jdbcType=BIGINT},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=INTEGER},
+			</if>
+			<if test="trucksType != null">
+				#{trucksType,jdbcType=INTEGER},
+			</if>
+			<if test="weightCount != null">
+				#{weightCount,jdbcType=DOUBLE},
+			</if>
+			<if test="checkLoadweight != null">
+				#{checkLoadweight,jdbcType=DOUBLE},
+			</if>
+			<if test="trucksLong != null">
+				#{trucksLong,jdbcType=DOUBLE},
+			</if>
+			<if test="trucksWidth != null">
+				#{trucksWidth,jdbcType=DOUBLE},
+			</if>
+			<if test="trucksHigh != null">
+				#{trucksHigh,jdbcType=DOUBLE},
+			</if>
+			<if test="axleCount != null">
+				#{axleCount,jdbcType=INTEGER},
+			</if>
+			<if test="truckType != null">
+				#{truckType,jdbcType=INTEGER},
+			</if>
+			<if test="longEmptyFuelConsumption != null">
+				#{longEmptyFuelConsumption,jdbcType=DOUBLE},
+			</if>
+			<if test="longHeavyFuelConsumption != null">
+				#{longHeavyFuelConsumption,jdbcType=DOUBLE},
+			</if>
+			<if test="longEmptyFuelConsumptionWithContainer != null">
+				#{longEmptyFuelConsumptionWithContainer,jdbcType=DOUBLE},
+			</if>
+			<if test="longHeavyFuelConsumptionWithContainer != null">
+				#{longHeavyFuelConsumptionWithContainer,jdbcType=DOUBLE},
+			</if>
+			<if test="cityFuelConsumption != null">
+				#{cityFuelConsumption,jdbcType=DOUBLE},
+			</if>
+			<if test="cityFuelConsumptionWithContainer != null">
+				#{cityFuelConsumptionWithContainer,jdbcType=DOUBLE},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.Transporter">
+		update tc_transporter
+		<set>
+			<if test="tractorId != null">
+				TRACTOR_ID = #{tractorId,jdbcType=BIGINT},
+			</if>
+			<if test="tractirPlateCode != null">
+				TRACTIR_PLATE_CODE = #{tractirPlateCode,jdbcType=VARCHAR},
+			</if>
+			<if test="tractirVin != null">
+				TRACTIR_VIN = #{tractirVin,jdbcType=VARCHAR},
+			</if>
+			<if test="engineCode != null">
+				ENGINE_CODE = #{engineCode,jdbcType=VARCHAR},
+			</if>
+			<!--<if test="trailerId != null">-->
+			TRAILER_ID = #{trailerId,jdbcType=BIGINT},
+			<!-- </if>-->
+			<if test="trailerPlateCode != null">
+				TRAILER_PLATE_CODE = #{trailerPlateCode,jdbcType=VARCHAR},
+			</if>
+			<if test="trailerVin != null">
+				TRAILER_VIN = #{trailerVin,jdbcType=VARCHAR},
+			</if>
+			CONTRACTOR_ID = #{contractorId,jdbcType=BIGINT},
+			CONTRACTOR_END_DATE = #{contractorEndDate,jdbcType=TIMESTAMP},
+			<!--  <if test="contractorId != null">
+			   CONTRACTOR_ID = #{contractorId,jdbcType=BIGINT},
+			 </if> -->
+			<!-- <if test="contractorEndDate != null">
+			  CONTRACTOR_END_DATE = #{contractorEndDate,jdbcType=TIMESTAMP},
+			</if> -->
+			<if test="billStatus != null">
+				BILL_STATUS = #{billStatus,jdbcType=INTEGER},
+			</if>
+			<if test="checker != null">
+				CHECKER = #{checker,jdbcType=BIGINT},
+			</if>
+			<if test="checkDate != null">
+				CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="flag != null">
+				FLAG = #{flag,jdbcType=INTEGER},
+			</if>
+			<if test="trucksType != null">
+				TRUCKS_TYPE = #{trucksType,jdbcType=INTEGER},
+			</if>
+			<if test="weightCount != null">
+				WEIGHT_COUNT = #{weightCount,jdbcType=DOUBLE},
+			</if>
+			<if test="checkLoadweight != null">
+				CHECK_LOADWEIGHT = #{checkLoadweight,jdbcType=DOUBLE},
+			</if>
+			<if test="trucksLong != null">
+				TRUCKS_LONG = #{trucksLong,jdbcType=DOUBLE},
+			</if>
+			<if test="trucksWidth != null">
+				TRUCKS_WIDTH = #{trucksWidth,jdbcType=DOUBLE},
+			</if>
+			<if test="trucksHigh != null">
+				TRUCKS_HIGH = #{trucksHigh,jdbcType=DOUBLE},
+			</if>
+			<if test="axleCount != null">
+				AXLE_COUNT = #{axleCount,jdbcType=INTEGER},
+			</if>
+			<if test="truckType != null">
+				TRUCK_TYPE = #{truckType,jdbcType=INTEGER},
+			</if>
+			<if test="longEmptyFuelConsumption != null">
+				LONG_EMPTY_FUEL_CONSUMPTION = #{longEmptyFuelConsumption,jdbcType=DOUBLE},
+			</if>
+			<if test="longHeavyFuelConsumption != null">
+				LONG_HEAVY_FUEL_CONSUMPTION = #{longHeavyFuelConsumption,jdbcType=DOUBLE},
+			</if>
+			<if test="longEmptyFuelConsumptionWithContainer != null">
+				LONG_EMPTY_FUEL_CONSUMPTION_WITH_CONTAINER = #{longEmptyFuelConsumptionWithContainer,jdbcType=DOUBLE},
+			</if>
+			<if test="longHeavyFuelConsumptionWithContainer != null">
+				LONG_HEAVY_FUEL_CONSUMPTION_WITH_CONTAINER = #{longHeavyFuelConsumptionWithContainer,jdbcType=DOUBLE},
+			</if>
+			<if test="cityFuelConsumption != null">
+				CITY_FUEL_CONSUMPTION = #{cityFuelConsumption,jdbcType=DOUBLE},
+			</if>
+			<if test="cityFuelConsumptionWithContainer != null">
+				CITY_FUEL_CONSUMPTION_WITH_CONTAINER = #{cityFuelConsumptionWithContainer,jdbcType=DOUBLE},
+			</if>
+		</set>
+		where TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.Transporter" >
+		update tc_transporter set
+			TRANSPORTER_CODE = #{transporterCode,jdbcType=VARCHAR}, TRACTOR_ID = #{tractorId,jdbcType=BIGINT}, TRACTIR_PLATE_CODE = #{tractirPlateCode,jdbcType=VARCHAR},
+			TRACTIR_VIN = #{tractirVin,jdbcType=VARCHAR}, ENGINE_CODE = #{engineCode,jdbcType=VARCHAR},
+			TRAILER_ID = #{trailerId,jdbcType=BIGINT}, TRAILER_PLATE_CODE = #{trailerPlateCode,jdbcType=VARCHAR},
+			TRAILER_VIN = #{trailerVin,jdbcType=VARCHAR}, CONTRACTOR_ID = #{contractorId,jdbcType=BIGINT}, CONTRACTOR_END_DATE = #{contractorEndDate,jdbcType=TIMESTAMP},
+			BILL_STATUS = #{billStatus,jdbcType=INTEGER}, CREATOR = #{creator,jdbcType=BIGINT},
+			CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, CHECKER = #{checker,jdbcType=BIGINT}, CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP},
+			CORP_ID = #{corpId,jdbcType=BIGINT}, FLAG = #{flag,jdbcType=INTEGER}, TRUCKS_TYPE = #{trucksType,jdbcType=INTEGER},
+			WEIGHT_COUNT = #{weightCount,jdbcType=DOUBLE}, CHECK_LOADWEIGHT = #{checkLoadweight,jdbcType=DOUBLE},
+			TRUCKS_LONG = #{trucksLong,jdbcType=DOUBLE}, TRUCKS_WIDTH = #{trucksWidth,jdbcType=DOUBLE}, TRUCKS_HIGH = #{trucksHigh,jdbcType=DOUBLE},
+			AXLE_COUNT = #{axleCount,jdbcType=INTEGER}, TRUCK_TYPE = #{truckType,jdbcType=INTEGER},
+			LONG_EMPTY_FUEL_CONSUMPTION = #{longEmptyFuelConsumption,jdbcType=DOUBLE}, LONG_HEAVY_FUEL_CONSUMPTION = #{longHeavyFuelConsumption,jdbcType=DOUBLE},
+			LONG_EMPTY_FUEL_CONSUMPTION_WITH_CONTAINER = #{longEmptyFuelConsumptionWithContainer,jdbcType=DOUBLE},
+			LONG_HEAVY_FUEL_CONSUMPTION_WITH_CONTAINER = #{longHeavyFuelConsumptionWithContainer,jdbcType=DOUBLE},
+			CITY_FUEL_CONSUMPTION = #{cityFuelConsumption,jdbcType=DOUBLE}, CITY_FUEL_CONSUMPTION_WITH_CONTAINER = #{cityFuelConsumptionWithContainer,jdbcType=DOUBLE}
+		where TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateCheck" parameterType="com.tilchina.timp.model.Transporter">
+		update tc_transporter
+		<set>
+			<if test="billStatus != null">
+				BILL_STATUS = #{billStatus,jdbcType=INTEGER},
+			</if>
+			CHECKER = #{checker,jdbcType=BIGINT},
+			CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP},
+		</set>
+		where TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}
+	</update>
+
+	<delete id="deleteByIdList" parameterType="java.lang.Long">
+		delete from tc_transporter
+		where TRANSPORTER_ID in
+		<foreach collection="array" item="item" open="(" separator="," close=")">
+			<if test="item != null and item != ''">
+				#{item,jdbcType=BIGINT}
+			</if>
+		</foreach>
+	</delete>
+
+	<update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long">
+		update tc_transporter
+		set
+			DEL = 1
+		WHERE TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}
+	</update>
+
+	<update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+		update tc_transporter set
+		DEL = 1
+		WHERE TRANSPORTER_ID in
+		<foreach collection="array" item="item" open="(" separator="," close=")">
+			<if test="item != null and item != ''">
+				#{item,jdbcType=BIGINT}
+			</if>
+		</foreach>
+	</update>
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Query_Column_List"/>
+		from tc_transporter transporter
+		join bd_tractor tractor on tractor.TRACTOR_ID = transporter.TRACTOR_ID
+		left join bd_trailer trailer on trailer.TRAILER_ID = transporter.TRAILER_ID
+		join SYS_CORP corp on corp.CORP_ID = transporter.CORP_ID
+		left join bd_user contractor ON contractor.USER_ID = transporter.CONTRACTOR_ID
+		join bd_user creator ON creator.USER_ID = transporter.creator
+		left join bd_user checker ON checker.USER_ID = transporter.checker
+		left join bd_user user on user.USER_ID = transporter.CONTRACTOR_ID
+		<include refid="Example_Where_Clause"/>
+		order by transporter.CREATE_DATE DESC
+	</select>
+
+	<!-- 这是根据承包人查询车辆信息 -->
+	<!--
+	<select id="selectByDriverId" resultMap="BaseResultMap"  parameterType="Object">
+	  select
+	  <include refid="Query_Column_List"/>
+	  from tc_transporter transporter
+	  join bd_tractor tractor on   tractor.TRACTOR_ID = transporter.TRACTOR_ID
+	  left join bd_trailer trailer  on	trailer.TRAILER_ID = transporter.TRAILER_ID
+	  join SYS_CORP corp on corp.CORP_ID = transporter.CORP_ID
+	  join bd_user creator ON creator.USER_ID = transporter.creator
+	  left join bd_user checker ON checker.USER_ID = transporter.checker
+	  left join bd_user user on  user.USER_ID =  transporter.CONTRACTOR_ID
+	  where transporter.CONTRACTOR_ID = #{driverId,jdbcType=BIGINT}
+	</select>
+	-->
+	<select id="selectByContractorId" resultMap="BaseResultMap" parameterType="Object">
+		select
+			a.TRANSPORTER_ID,
+			a.TRANSPORTER_CODE,
+			a.TRACTOR_ID,
+			a.TRACTIR_PLATE_CODE,
+			a.TRACTIR_VIN,
+			a.ENGINE_CODE,
+			a.TRAILER_ID,
+			a.TRAILER_PLATE_CODE,
+			a.TRAILER_VIN,
+			a.CONTRACTOR_ID,
+			a.CONTRACTOR_END_DATE,
+			a.BILL_STATUS,
+			a.CREATOR,
+			a.CREATE_DATE,
+			a.CHECKER,
+			a.CHECK_DATE,
+			a.CORP_ID,
+			a.FLAG,
+			a.TRUCKS_TYPE,
+			a.WEIGHT_COUNT,
+			a.CHECK_LOADWEIGHT,
+			a.TRUCKS_LONG,
+			a.TRUCKS_WIDTH,
+			a.TRUCKS_HIGH,
+			a.AXLE_COUNT,
+			tractor.TRACTOR_NAME,
+			tractor.TRACTOR_CODE
+		from tc_transporter a
+			left join tc_transporter_status b on a.TRANSPORTER_ID = b.TRANSPORTER_ID
+			left join bd_tractor tractor on tractor.TRACTOR_ID = a.TRACTOR_ID
+		where a.del = 0
+		      and a.CONTRACTOR_ID = #{contractorId,jdbcType=BIGINT}
+		order by a.CREATE_DATE desc
+		limit 1
+	</select>
+
+	<select id="selectByDriverId" resultMap="BaseResultMap" parameterType="Object">
+		select
+			a.TRANSPORTER_ID,
+			a.TRANSPORTER_CODE,
+			a.TRACTOR_ID,
+			a.TRACTIR_PLATE_CODE,
+			a.TRACTIR_VIN,
+			a.ENGINE_CODE,
+			a.TRAILER_ID,
+			a.TRAILER_PLATE_CODE,
+			a.TRAILER_VIN,
+			a.CONTRACTOR_ID,
+			a.CONTRACTOR_END_DATE,
+			a.BILL_STATUS,
+			a.CREATOR,
+			a.CREATE_DATE,
+			a.CHECKER,
+			a.CHECK_DATE,
+			a.CORP_ID,
+			a.FLAG,
+			a.TRUCKS_TYPE,
+			a.WEIGHT_COUNT,
+			a.CHECK_LOADWEIGHT,
+			a.TRUCKS_LONG,
+			a.TRUCKS_WIDTH,
+			a.TRUCKS_HIGH,
+			a.AXLE_COUNT,
+			tractor.TRACTOR_NAME,
+			tractor.TRACTOR_CODE
+		from tc_transporter a
+			left join tc_transporter_status b on a.TRANSPORTER_ID = b.TRANSPORTER_ID
+			left join bd_tractor tractor on tractor.TRACTOR_ID = a.TRACTOR_ID
+		where b.DRIVER_ID = #{driverId,jdbcType=BIGINT}
+		order by b.ts desc
+		limit 1
+	</select>
+
+	<select id="selectRefer" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Refer_Column_List"/>
+		from tc_transporter transporter
+		join bd_tractor tractor on tractor.TRACTOR_ID = transporter.TRACTOR_ID
+		left join bd_trailer trailer on trailer.TRAILER_ID = transporter.TRAILER_ID
+		join SYS_CORP corp on corp.CORP_ID = transporter.CORP_ID
+		join bd_user creator ON creator.USER_ID = transporter.creator
+		left join bd_user contractor ON contractor.USER_ID = transporter.CONTRACTOR_ID
+		left join bd_user checker ON checker.USER_ID = transporter.checker
+		left join bd_user user on user.USER_ID = transporter.CONTRACTOR_ID
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<update id="updateContractorById" parameterType="java.util.Map">
+		update tc_transporter
+		set CONTRACTOR_ID = #{contractorId}
+		where TRANSPORTER_ID = #{transporterId}
+	</update>
+
+</mapper>   

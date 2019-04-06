@@ -1,0 +1,18 @@
+{
+  "data":{
+    "dealerReceiptId":0,
+    "dealerReceiptCode":"Test-dealerReceiptCode",
+    "carId":0,
+    "carVin":"Test-carVin",
+    "orderId":0,
+    "orderDetailId":0,
+    "transportOrderId":0,
+    "transportOrderDetailId":0,
+    "damageSign":0,
+    "unitId":0,
+    "remark":"Test-remark",
+    "userId":0,
+    "receptionDate":"2018-03-22 08:11:15",
+    "corpId":0
+  }
+}

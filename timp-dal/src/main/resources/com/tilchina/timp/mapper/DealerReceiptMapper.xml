@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.DealerReceiptMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.DealerReceipt" >
+    <id column="DEALER_RECEIPT_ID" jdbcType="BIGINT" property="dealerReceiptId" />
+	<result column="DEALER_RECEIPT_ID" jdbcType="BIGINT" property="dealerReceiptId" />
+	<result column="DEALER_RECEIPT_CODE" jdbcType="VARCHAR" property="dealerReceiptCode" />
+	<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_DETAIL_ID" jdbcType="BIGINT" property="transportOrderDetailId" />
+	<result column="DAMAGE_SIGN" jdbcType="INTEGER" property="damageSign" />
+	<result column="UNIT_ID" jdbcType="BIGINT" property="unitId" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="USER_ID" jdbcType="BIGINT" property="userId" />
+	<result column="RECEPTION_DATE" jdbcType="TIMESTAMP" property="receptionDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="CAR_NAME" jdbcType="VARCHAR" property="refCarName" />
+	<result column="ORDER_CODE" jdbcType="VARCHAR" property="refOrderCode" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="refTransportOrderCode" />
+	<result column="UNIT_NAME" jdbcType="VARCHAR" property="refUnitName" />
+	<result column="USER_NAME" jdbcType="VARCHAR" property="refUserName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    DEALER_RECEIPT_ID, DEALER_RECEIPT_CODE, CAR_ID, CAR_VIN, ORDER_ID, ORDER_DETAIL_ID, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_DETAIL_ID, 	DAMAGE_SIGN, UNIT_ID, REMARK, USER_ID, RECEPTION_DATE, CORP_ID
+  </sql>
+   
+   <sql id="Query_Column_List">
+   	dealerreceipt.DEALER_RECEIPT_ID,dealerreceipt.DEALER_RECEIPT_CODE,dealerreceipt.CAR_ID,car.CAR_NAME,dealerreceipt.CAR_VIN,dealerreceipt.ORDER_ID,
+   	ord.ORDER_CODE,dealerreceipt.ORDER_DETAIL_ID,dealerreceipt.TRANSPORT_ORDER_ID,transportorder.TRANSPORT_ORDER_CODE,dealerreceipt.TRANSPORT_ORDER_DETAIL_ID,
+   	dealerreceipt.DAMAGE_SIGN,dealerreceipt.UNIT_ID,unit.UNIT_NAME,dealerreceipt.REMARK,dealerreceipt.USER_ID,us.USER_NAME,dealerreceipt.RECEPTION_DATE,
+   	dealerreceipt.CORP_ID,corp.CORP_NAME
+   </sql>
+  <sql id="Example_Where_Clause">
+    where dealerreceipt.del = 0
+    <trim  suffixOverrides="," >
+      <if test="dealerReceiptId != null and dealerReceiptId != ''" >
+        and dealerreceipt.DEALER_RECEIPT_ID = #{dealerReceiptId}
+      </if>
+      <if test="dealerReceiptCode != null and dealerReceiptCode != ''" >
+        and dealerreceipt.DEALER_RECEIPT_CODE = #{dealerReceiptCode}
+      </if>
+      <if test="carId != null and carId != ''" >
+        and dealerreceipt.CAR_ID = #{carId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and dealerreceipt.CAR_VIN = #{carVin}
+      </if>
+      <if test="orderId != null and orderId != ''" >
+        and dealerreceipt.ORDER_ID = #{orderId}
+      </if>
+      <if test="orderDetailId != null and orderDetailId != ''" >
+        and dealerreceipt.ORDER_DETAIL_ID = #{orderDetailId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and dealerreceipt.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="transportOrderDetailId != null and transportOrderDetailId != ''" >
+        and dealerreceipt.TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId}
+      </if>
+      <if test="damageSign != null and damageSign != ''" >
+        and dealerreceipt.DAMAGE_SIGN = #{damageSign}
+      </if>
+      <if test="unitId != null and unitId != ''" >
+        and dealerreceipt.UNIT_ID = #{unitId}
+      </if>
+      <if test="remark != null and remark != ''" >
+        and dealerreceipt.REMARK = #{remark}
+      </if>
+      <if test="userId != null and userId != ''" >
+        and dealerreceipt.USER_ID = #{userId}
+      </if>
+      <if test="receptionDate != null and receptionDate != ''" >
+        and dealerreceipt.RECEPTION_DATE = #{receptionDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and dealerreceipt.CORP_ID = #{corpId}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (dealerreceipt.DEALER_RECEIPT_CODE  LIKE CONCAT('%',#{searchContent},'%')
+        	or dealerreceipt.REMARK LIKE CONCAT('%',#{searchContent},'%')
+        	or ord.ORDER_CODE=#{searchContent}
+        	or unit.UNIT_NAME=#{searchContent}
+        	or us.USER_NAME=#{searchContent}
+        	)
+      </if>
+      <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and dealerreceipt.RECEPTION_DATE  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and dealerreceipt.RECEPTION_DATE  <=  #{endTime}  ]]>
+	  </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM sr_dealer_receipt dealerreceipt
+		JOIN bd_car car ON dealerreceipt.CAR_ID=car.CAR_ID
+		JOIN om_order ord ON dealerreceipt.ORDER_ID=ord.ORDER_ID
+		JOIN om_transport_order transportorder ON dealerreceipt.TRANSPORT_ORDER_ID=transportorder.TRANSPORT_ORDER_ID
+		JOIN bd_unit unit ON dealerreceipt.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user us ON dealerreceipt.USER_ID=us.USER_ID
+		JOIN sys_corp corp ON dealerreceipt.CORP_ID=corp.CORP_ID
+    where dealerreceipt.DEALER_RECEIPT_ID = #{dealerReceiptId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update SR_DEALER_RECEIPT set DEL=1 where DEALER_RECEIPT_ID = #{dealerReceiptId}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update SR_DEALER_RECEIPT	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	DEALER_RECEIPT_ID in
+  	 		<foreach item="dealerReceiptId" collection="array" open="(" separator="," close=")">
+  	 			#{dealerReceiptId}
+  	 		</foreach>
+  		</if>
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.DealerReceipt" keyProperty="dealerReceiptId" useGeneratedKeys="true">
+    insert into SR_DEALER_RECEIPT	(DEALER_RECEIPT_CODE, CAR_ID, CAR_VIN, ORDER_ID, ORDER_DETAIL_ID, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_DETAIL_ID, DAMAGE_SIGN, 	UNIT_ID, REMARK, USER_ID, RECEPTION_DATE, CORP_ID)	values	(#{dealerReceiptCode,jdbcType=VARCHAR}, #{carId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR}, #{orderId,jdbcType=BIGINT}, 	#{orderDetailId,jdbcType=BIGINT}, #{transportOrderId,jdbcType=BIGINT}, #{transportOrderDetailId,jdbcType=BIGINT}, 	#{damageSign,jdbcType=INTEGER}, #{unitId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 	#{receptionDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.DealerReceipt" keyProperty="dealerReceiptId" useGeneratedKeys="true">
+    insert into SR_DEALER_RECEIPT	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="dealerReceiptCode != null">	    DEALER_RECEIPT_CODE, 	  </if>	  <if test="carId != null">	    CAR_ID, 	  </if>	  <if test="carVin != null">	    CAR_VIN, 	  </if>	  <if test="orderId != null">	    ORDER_ID, 	  </if>	  <if test="orderDetailId != null">	    ORDER_DETAIL_ID, 	  </if>	  <if test="transportOrderId != null">	    TRANSPORT_ORDER_ID, 	  </if>	  <if test="transportOrderDetailId != null">	    TRANSPORT_ORDER_DETAIL_ID, 	  </if>	  <if test="damageSign != null">	    DAMAGE_SIGN, 	  </if>	  <if test="unitId != null">	    UNIT_ID, 	  </if>	  <if test="remark != null">	    REMARK, 	  </if>	  <if test="userId != null">	    USER_ID, 	  </if>	  <if test="receptionDate != null">	    RECEPTION_DATE, 	  </if>	  <if test="corpId != null">	    CORP_ID, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="dealerReceiptCode != null">	    #{dealerReceiptCode,jdbcType=VARCHAR}, 	  </if>	  <if test="carId != null">	    #{carId,jdbcType=BIGINT}, 	  </if>	  <if test="carVin != null">	    #{carVin,jdbcType=VARCHAR}, 	  </if>	  <if test="orderId != null">	    #{orderId,jdbcType=BIGINT}, 	  </if>	  <if test="orderDetailId != null">	    #{orderDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="transportOrderId != null">	    #{transportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="transportOrderDetailId != null">	    #{transportOrderDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="damageSign != null">	    #{damageSign,jdbcType=INTEGER}, 	  </if>	  <if test="unitId != null">	    #{unitId,jdbcType=BIGINT}, 	  </if>	  <if test="remark != null">	    #{remark,jdbcType=VARCHAR}, 	  </if>	  <if test="userId != null">	    #{userId,jdbcType=BIGINT}, 	  </if>	  <if test="receptionDate != null">	    #{receptionDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.DealerReceipt" >
+	update SR_DEALER_RECEIPT	<set>
+		<!--	  <if test="dealerReceiptCode != null">	    DEALER_RECEIPT_CODE = #{dealerReceiptCode,jdbcType=VARCHAR}, 	  </if>
+	    -->	  <if test="carId != null">	    CAR_ID = #{carId,jdbcType=BIGINT}, 	  </if>	  <if test="carVin != null">	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 	  </if>	  <if test="orderId != null">	    ORDER_ID = #{orderId,jdbcType=BIGINT}, 	  </if>	  <if test="orderDetailId != null">	    ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="transportOrderId != null">	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="transportOrderDetailId != null">	    TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="damageSign != null">	    DAMAGE_SIGN = #{damageSign,jdbcType=INTEGER}, 	  </if>	  <if test="unitId != null">	    UNIT_ID = #{unitId,jdbcType=BIGINT}, 	  </if>	  <if test="remark != null">	    REMARK = #{remark,jdbcType=VARCHAR}, 	  </if>	  <if test="userId != null">	    USER_ID = #{userId,jdbcType=BIGINT}, 	  </if>	  <if test="receptionDate != null">	    RECEPTION_DATE = #{receptionDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="corpId != null">	    CORP_ID = #{corpId,jdbcType=BIGINT}, 	  </if>	</set>	where DEALER_RECEIPT_ID = #{dealerReceiptId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.DealerReceipt" >
+    update SR_DEALER_RECEIPT set 	  DEALER_RECEIPT_CODE = #{dealerReceiptCode,jdbcType=VARCHAR}, CAR_ID = #{carId,jdbcType=BIGINT}, CAR_VIN = #{carVin,jdbcType=VARCHAR}, 	  ORDER_ID = #{orderId,jdbcType=BIGINT}, ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 	  TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}, 	  DAMAGE_SIGN = #{damageSign,jdbcType=INTEGER}, UNIT_ID = #{unitId,jdbcType=BIGINT}, REMARK = #{remark,jdbcType=VARCHAR}, 	  USER_ID = #{userId,jdbcType=BIGINT}, RECEPTION_DATE = #{receptionDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}	where DEALER_RECEIPT_ID = #{dealerReceiptId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    FROM sr_dealer_receipt dealerreceipt
+		JOIN bd_car car ON dealerreceipt.CAR_ID=car.CAR_ID
+		JOIN om_order ord ON dealerreceipt.ORDER_ID=ord.ORDER_ID
+		JOIN om_transport_order transportorder ON dealerreceipt.TRANSPORT_ORDER_ID=transportorder.TRANSPORT_ORDER_ID
+		JOIN bd_unit unit ON dealerreceipt.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user us ON dealerreceipt.USER_ID=us.USER_ID
+		JOIN sys_corp corp ON dealerreceipt.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by dealerreceipt.RECEPTION_DATE DESC
+  </select>
+  
+    <select id="getList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    FROM sr_dealer_receipt dealerreceipt
+		JOIN bd_car car ON dealerreceipt.CAR_ID=car.CAR_ID
+		JOIN om_order ord ON dealerreceipt.ORDER_ID=ord.ORDER_ID
+		JOIN om_transport_order transportorder ON dealerreceipt.TRANSPORT_ORDER_ID=transportorder.TRANSPORT_ORDER_ID
+		JOIN bd_unit unit ON dealerreceipt.UNIT_ID=unit.UNIT_ID
+		JOIN bd_user us ON dealerreceipt.USER_ID=us.USER_ID
+		JOIN sys_corp corp ON dealerreceipt.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by dealerreceipt.RECEPTION_DATE DESC
+  </select>
+  	
+</mapper>   

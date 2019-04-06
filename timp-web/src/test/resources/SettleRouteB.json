@@ -1,0 +1,11 @@
+{
+  "data":{
+    "settleRouteBId":0,
+    "settleRouteId":0,
+    "sequence":0,
+    "cityId":0,
+    "cityName":"Test-cityName",
+    "remark":"Test-remark",
+    "corpId":0
+  }
+}

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.LoadingReservationDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.LoadingReservationDetail" >
+    <id column="LOADING_RESERVATION_DATAIL_ID" jdbcType="BIGINT" property="loadingReservationDatailId" />
+	<result column="LOADING_RESERVATION_ID" jdbcType="BIGINT" property="loadingReservationId" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_DETAIL_ID" jdbcType="BIGINT" property="transportOrderDetailId" />
+	<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="RESERVATION_CODE" jdbcType="VARCHAR" property="refLoadingReservationCode" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="refTransportOrderCode" />
+	<result column="CAR_NAME" jdbcType="VARCHAR" property="refCarName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" /> 
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName" />
+	<result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="refCategoryName" /> 
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    LOADING_RESERVATION_DATAIL_ID, LOADING_RESERVATION_ID, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_DETAIL_ID, CAR_ID, CAR_VIN, 
+	REMARK, CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List" >
+    lrd.LOADING_RESERVATION_DATAIL_ID, lrd.LOADING_RESERVATION_ID, lr.RESERVATION_CODE, lrd.TRANSPORT_ORDER_ID, tr.TRANSPORT_ORDER_CODE,
+    lrd.TRANSPORT_ORDER_DETAIL_ID, lrd.CAR_ID, lrd.CAR_VIN, car.CAR_NAME, brand.BRAND_NAME,ctype.CAR_TYPE_NAME, lrd. REMARK,lrd.CORP_ID,corp.CORP_NAME
+  </sql> 
+  
+  <sql id="Example_Where_Clause">
+    where lrd.del = 0
+    <trim  suffixOverrides="," >
+      <if test="loadingReservationDatailId != null and loadingReservationDatailId != ''" >
+        and lrd.LOADING_RESERVATION_DATAIL_ID = #{loadingReservationDatailId}
+      </if>
+      <if test="loadingReservationId != null and loadingReservationId != ''" >
+        and lrd.LOADING_RESERVATION_ID = #{loadingReservationId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and lrd.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="transportOrderDetailId != null and transportOrderDetailId != ''" >
+        and TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId}
+      </if>
+      <if test="carId != null and carId != ''" >
+        and lrd.CAR_ID = #{carId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and lrd.CAR_VIN = #{carVin}
+      </if>
+      <if test="remark != null and remark != ''" >
+        and lrd.REMARK = #{remark}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and lrd.CORP_ID = #{corpId}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (
+        tr.TRANSPORT_ORDER_CODE  like concat(concat('%',#{searchContent}),'%')
+        or lr.RESERVATION_CODE  like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+	from OM_LOADING_RESERVATION_DETAIL lrd
+	join OM_LOADING_RESERVATION lr on lr.LOADING_RESERVATION_ID = lrd.LOADING_RESERVATION_ID
+	join BD_CAR car on car.CAR_ID = lrd.CAR_ID
+	join OM_TRANSPORT_ORDER tr on tr.TRANSPORT_ORDER_ID = lrd.TRANSPORT_ORDER_ID
+	join OM_TRANSPORT_ORDER_DETAIL trd on trd.TRANSPORT_ORDER_DETAIL_ID = lrd.TRANSPORT_ORDER_DETAIL_ID
+	join SYS_CORP corp on corp.CORP_ID = lrd.CORP_ID
+	join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+    where lrd.LOADING_RESERVATION_DATAIL_ID = #{loadingReservationDatailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from om_loading_reservation_detail where LOADING_RESERVATION_DATAIL_ID = #{loadingReservationDatailId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.LoadingReservationDetail" keyProperty="loadingReservationDatailId" useGeneratedKeys="true">
+    insert into om_loading_reservation_detail
+	(LOADING_RESERVATION_ID, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_DETAIL_ID, CAR_ID, CAR_VIN, REMARK, CORP_ID)
+	values
+	(#{loadingReservationId,jdbcType=BIGINT}, #{transportOrderId,jdbcType=BIGINT}, #{transportOrderDetailId,jdbcType=BIGINT}, 
+	#{carId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.LoadingReservationDetail" keyProperty="loadingReservationDatailId" useGeneratedKeys="true">
+    insert into om_loading_reservation_detail
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="loadingReservationId != null">
+	    LOADING_RESERVATION_ID, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID, 
+	  </if>
+	  <if test="transportOrderDetailId != null">
+	    TRANSPORT_ORDER_DETAIL_ID, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="loadingReservationId != null">
+	    #{loadingReservationId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderDetailId != null">
+	    #{transportOrderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carId != null">
+	    #{carId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.LoadingReservationDetail" >
+	update om_loading_reservation_detail
+	<set>
+	  <if test="loadingReservationId != null">
+	    LOADING_RESERVATION_ID = #{loadingReservationId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderDetailId != null">
+	    TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID = #{carId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK = #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where LOADING_RESERVATION_DATAIL_ID = #{loadingReservationDatailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.LoadingReservationDetail" >
+    update om_loading_reservation_detail set 
+	  LOADING_RESERVATION_ID = #{loadingReservationId,jdbcType=BIGINT}, TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 
+	  TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}, CAR_ID = #{carId,jdbcType=BIGINT}, CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  REMARK = #{remark,jdbcType=VARCHAR}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where LOADING_RESERVATION_DATAIL_ID = #{loadingReservationDatailId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByLoadingId" parameterType="java.lang.Long">
+    update om_loading_reservation_detail set 
+      DEL = 1 
+    WHERE LOADING_RESERVATION_ID = #{loadingReservationId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long">
+    update om_loading_reservation_detail set 
+      DEL = 1 
+    WHERE LOADING_RESERVATION_DATAIL_ID = #{loadingReservationDatailId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+    update om_loading_reservation_detail set 
+	  DEL = 1
+	WHERE LOADING_RESERVATION_DATAIL_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+  <update id="logicDeleteByTransportOrderId" parameterType="java.lang.Long">
+    update om_loading_reservation_detail set 
+      DEL = 1 
+    WHERE TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByTransportOrderIdsList" parameterType="java.lang.Long">
+    update om_loading_reservation_detail set 
+	  DEL = 1
+	WHERE TRANSPORT_ORDER_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from OM_LOADING_RESERVATION_DETAIL lrd
+	left join OM_LOADING_RESERVATION lr on lr.LOADING_RESERVATION_ID = lrd.LOADING_RESERVATION_ID
+	left join BD_CAR car on car.CAR_ID = lrd.CAR_ID
+	left join OM_TRANSPORT_ORDER tr on tr.TRANSPORT_ORDER_ID = lrd.TRANSPORT_ORDER_ID
+	left join OM_TRANSPORT_ORDER_DETAIL trd on trd.TRANSPORT_ORDER_DETAIL_ID = lrd.TRANSPORT_ORDER_DETAIL_ID
+	left join SYS_CORP corp on corp.CORP_ID = lrd.CORP_ID
+	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selecByLoadingReservationIdtList" resultMap="BaseResultMap"  parameterType="java.lang.Long">
+	select
+	<include refid="Query_Column_List"/>
+	from OM_LOADING_RESERVATION_DETAIL lrd
+	left join OM_LOADING_RESERVATION lr on lr.LOADING_RESERVATION_ID = lrd.LOADING_RESERVATION_ID
+	left join BD_CAR car on car.CAR_ID = lrd.CAR_ID
+	left join OM_TRANSPORT_ORDER tr on tr.TRANSPORT_ORDER_ID = lrd.TRANSPORT_ORDER_ID
+	left join OM_TRANSPORT_ORDER_DETAIL trd on trd.TRANSPORT_ORDER_DETAIL_ID = lrd.TRANSPORT_ORDER_DETAIL_ID
+	left join SYS_CORP corp on corp.CORP_ID = lrd.CORP_ID
+	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+	 where lrd.del = 0 and lrd.LOADING_RESERVATION_ID = #{loadingReservationId,jdbcType=BIGINT}
+  </select>
+  	
+</mapper>   

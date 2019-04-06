@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransporterStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransporterStatus" >
+    <id column="TRANSPORTER_STATUS_ID" jdbcType="BIGINT" property="transporterStatusId" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="TRANSPORTER_STATUS" jdbcType="INTEGER" property="transporterStatus" />
+	<result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+	<result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="LOCATION" jdbcType="VARCHAR" property="location" />
+	<result column="LNG" jdbcType="DOUBLE" property="lng" />
+	<result column="LAT" jdbcType="DOUBLE" property="lat" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+	<result column="TRAILER_PLATE_CODE" jdbcType="VARCHAR" property="refTrailerPlateCode" />
+	
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANSPORTER_STATUS_ID, TRANSPORTER_ID, DRIVER_ID, TRANSPORTER_STATUS, START_DATE, END_DATE, REMARK, LOCATION, LNG, LAT, 
+	CREATOR, CREATE_DATE, CORP_ID, FLAG
+  </sql>
+  
+  <sql id="Refer_Column_List" >
+	ts.TRANSPORTER_STATUS_ID,tr.TRANSPORTER_CODE ,user.USER_NAME as DRIVER_NAME,
+	user.USER_CODE as DRIVER_CODE, tr.TRACTIR_PLATE_CODE, ts.START_DATE, ts.END_DATE,ts.TRANSPORTER_STATUS
+  </sql>
+   
+  <sql id="Query_Column_List" >
+	ts.TRANSPORTER_STATUS_ID, ts.TRANSPORTER_ID,tr.TRANSPORTER_CODE ,tr.TRACTIR_PLATE_CODE,tr.TRAILER_PLATE_CODE ,
+	ts.DRIVER_ID,user.USER_NAME as DRIVER_NAME,user.USER_CODE as DRIVER_CODE, tr.TRACTIR_PLATE_CODE,
+	ts.TRANSPORTER_STATUS, ts.START_DATE, ts.END_DATE, ts.REMARK, 
+    ts.LOCATION, ts.LNG, ts.LAT, ts.CREATOR,creator.USER_NAME as CREATE_NAME, ts.CREATE_DATE, ts.CORP_ID,corp.CORP_NAME, ts.FLAG  
+  </sql>
+  
+  <sql id="updateById_Where_Clause">
+    where 
+    <trim  suffixOverrides="," >
+      <if test="transporterId != null and transporterId != ''" >
+         TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+         DRIVER_ID = #{driverId}
+      </if>
+    </trim>
+  </sql>   
+  
+  <sql id="Example_Where_Clause">
+    where ts.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transporterStatusId != null and transporterStatusId != ''" >
+        and ts.TRANSPORTER_STATUS_ID = #{transporterStatusId}
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and ts.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and ts.DRIVER_ID = #{driverId}
+      </if>
+      <if test="transporterStatus != null and transporterStatus != ''" >
+        and ts.TRANSPORTER_STATUS = #{transporterStatus}
+      </if>
+		<if test="startDate != null and startDate != ''" >
+			and ts.START_DATE = #{startDate}
+		</if>
+		<if test="endDate != null and endDate != ''" >
+			and ts.END_DATE = #{endDate}
+
+		</if>
+
+      <if test="remark != null and remark != ''" >
+        and ts.REMARK = #{remark}
+      </if>
+      <if test="location != null and location != ''" >
+        and ts.LOCATION = #{location}
+      </if>
+      <if test="lng != null and lng != ''" >
+        and ts.LNG = #{lng}
+      </if>
+      <if test="lat != null and lat != ''" >
+        and ts.LAT = #{lat}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and ts.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and ts.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and ts.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and ts.FLAG = #{flag}
+      </if>
+		<if test="refTractirPlateCode != null and refTractirPlateCode != ''" >
+			and (tr.TRACTIR_PLATE_CODE like concat(concat('%',#{refTractirPlateCode}),'%') )
+		</if>
+		<if test="refTrailerPlateCode != null and refTrailerPlateCode != ''" >
+			and (tr.TRAILER_PLATE_CODE   like concat(concat('%',#{refTrailerPlateCode}),'%') )
+		</if>
+		<if test="refDriverName != null and refDriverName != ''" >
+			and (user.USER_NAME like concat(concat('%',#{refDriverName}),'%') )
+		</if>
+		<if test="refDriverCode != null and refDriverCode != ''" >
+			and (user.USER_CODE like concat(concat('%',#{refDriverCode}),'%') )
+		</if>
+		<if test="startTime != null and startTime != ''">
+			<![CDATA[ and ts.CREATE_DATE  >=  #{startTime}  ]]>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			<![CDATA[ and ts.CREATE_DATE  <=  #{endTime}  ]]>
+		</if>
+		<if test="refStartTime != null and refStartTime != ''" >
+			<![CDATA[  and ( ts.START_DATE  >=  #{refStartTime} ) ]]>
+		</if>
+		<if test="refEndTime != null and refEndTime != ''" >
+			<![CDATA[ and ( ts.END_DATE  <=  #{refEndTime} ) ]]>
+		</if>
+		<if test="refStartDate != null and refStartDate != ''" >
+			<![CDATA[  and ( ts.END_DATE  >=  #{refStartDate} ) ]]>
+		</if>
+		<if test="refEndDate != null and refEndDate != ''" >
+			<![CDATA[ and ( ts.START_DATE  <=  #{refEndDate} ) ]]>
+		</if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (
+        user.USER_NAME like concat(concat('%',#{searchContent}),'%')
+        or user.USER_CODE like concat(concat('%',#{searchContent}),'%')
+        or tr.TRACTIR_PLATE_CODE like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+      from	tc_transporter_status ts
+	  left join bd_user user ON user.USER_ID =  ts.DRIVER_ID and user.USER_TYPE = 1
+	  join  tc_transporter tr on   tr.TRANSPORTER_ID = ts.TRANSPORTER_ID
+  	  join bd_user creator ON creator.USER_ID =   ts.CREATOR
+	  join SYS_CORP corp on corp.CORP_ID =  ts.CORP_ID
+    where ts.del = 0
+    and ts.TRANSPORTER_STATUS_ID = #{transporterStatusId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from tc_transporter_status where TRANSPORTER_STATUS_ID = #{transporterStatusId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.TransporterStatus" keyProperty="transporterStatusId" useGeneratedKeys="true">
+    insert into tc_transporter_status
+	(TRANSPORTER_ID, DRIVER_ID, TRANSPORTER_STATUS, START_DATE, END_DATE, REMARK, LOCATION, LNG, LAT, CREATOR, CREATE_DATE, 
+	CORP_ID, FLAG)
+	values
+	(#{transporterId,jdbcType=BIGINT}, #{driverId,jdbcType=BIGINT}, #{transporterStatus,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, 
+	#{endDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{lng,jdbcType=DOUBLE}, 
+	#{lat,jdbcType=DOUBLE}, #{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT}, 
+	#{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.TransporterStatus" keyProperty="transporterStatusId" useGeneratedKeys="true">
+    insert into tc_transporter_status
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID, 
+	  </if>
+	  <if test="transporterStatus != null">
+	    TRANSPORTER_STATUS, 
+	  </if>
+	  <if test="startDate != null">
+	    START_DATE, 
+	  </if>
+	  <if test="endDate != null">
+	    END_DATE, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="location != null">
+	    LOCATION, 
+	  </if>
+	  <if test="lng != null">
+	    LNG, 
+	  </if>
+	  <if test="lat != null">
+	    LAT, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="transporterId != null">
+	    #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterStatus != null">
+	    #{transporterStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="startDate != null">
+	    #{startDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="endDate != null">
+	    #{endDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="location != null">
+	    #{location,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="lng != null">
+	    #{lng,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="lat != null">
+	    #{lat,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.TransporterStatus" >
+	update tc_transporter_status
+	<set>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterStatus != null">
+	    TRANSPORTER_STATUS = #{transporterStatus,jdbcType=INTEGER}, 
+	  </if>
+	  START_DATE = #{startDate,jdbcType=TIMESTAMP}, 
+	  REMARK = #{remark,jdbcType=VARCHAR},
+	  END_DATE = #{endDate,jdbcType=TIMESTAMP},  
+	  <!-- <if test="startDate != null">
+	    START_DATE = #{startDate,jdbcType=TIMESTAMP}, 
+	  </if> -->
+	 <!--  <if test="endDate != null">
+	    END_DATE = #{endDate,jdbcType=TIMESTAMP}, 
+	   </if> -->
+	  <!-- <if test="remark != null">
+	    REMARK = #{remark,jdbcType=VARCHAR}, 
+	  </if> -->
+	  <if test="location != null">
+	    LOCATION = #{location,jdbcType=VARCHAR}, 
+	  </if>
+	  LNG = #{lng,jdbcType=DOUBLE}, 
+	  LAT = #{lat,jdbcType=DOUBLE}, 
+	  <!-- <if test="lng != null">
+	    LNG = #{lng,jdbcType=DOUBLE}, 
+	  </if> -->
+	  <!-- <if test="lat != null">
+	    LAT = #{lat,jdbcType=DOUBLE}, 
+	  </if> -->
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where TRANSPORTER_STATUS_ID = #{transporterStatusId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.TransporterStatus" >
+    update tc_transporter_status set 
+	  TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, TRANSPORTER_STATUS = #{transporterStatus,jdbcType=INTEGER}, 
+	  START_DATE = #{startDate,jdbcType=TIMESTAMP}, END_DATE = #{endDate,jdbcType=TIMESTAMP}, 
+	  REMARK = #{remark,jdbcType=VARCHAR}, LOCATION = #{location,jdbcType=VARCHAR}, LNG = #{lng,jdbcType=DOUBLE}, LAT = #{lat,jdbcType=DOUBLE}, 
+	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  FLAG = #{flag,jdbcType=INTEGER}
+	where TRANSPORTER_STATUS_ID = #{transporterStatusId,jdbcType=BIGINT}
+  </update>
+  	
+  <update id="updateById" parameterType="Object">
+    update tc_transporter_status set 
+      TRANSPORTER_STATUS = #{transporterStatus,jdbcType=INTEGER}
+    <include refid="updateById_Where_Clause"/>
+  </update>
+  
+    <update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long" >
+    update tc_transporter_status set 
+	  DEL = 1
+	where TRANSPORTER_STATUS_ID = #{transporterStatusId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+    update tc_transporter_status set 
+	  DEL = 1
+	WHERE TRANSPORTER_STATUS_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from tc_transporter_status ts
+	left join bd_user user ON user.USER_ID =  ts.DRIVER_ID
+	join  tc_transporter tr on   tr.TRANSPORTER_ID = ts.TRANSPORTER_ID
+  	join bd_user creator ON creator.USER_ID =   ts.CREATOR
+	join SYS_CORP corp on corp.CORP_ID =  ts.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by ts.CREATE_DATE DESC
+  </select>
+  
+    <select id="selectRefer" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Refer_Column_List"/>
+	from tc_transporter_status ts
+	left join bd_user user ON user.USER_ID =  ts.DRIVER_ID
+	join  tc_transporter tr on   tr.TRANSPORTER_ID = ts.TRANSPORTER_ID
+  	join bd_user creator ON creator.USER_ID =   ts.CREATOR
+	join SYS_CORP corp on corp.CORP_ID =  ts.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+   <select id="selectByTransporterId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+      from	tc_transporter_status ts
+	  left join bd_user user ON user.USER_ID =  ts.DRIVER_ID and user.USER_TYPE = 1
+	  join  tc_transporter tr on   tr.TRANSPORTER_ID = ts.TRANSPORTER_ID
+  	  join bd_user creator ON creator.USER_ID =   ts.CREATOR
+	  join SYS_CORP corp on corp.CORP_ID =  ts.CORP_ID
+    where ts.TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}
+  </select>
+  
+</mapper>   

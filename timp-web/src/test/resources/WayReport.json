@@ -1,0 +1,15 @@
+{
+  "data":{
+    "reportId":0,
+    "reportStatus":0,
+    "reportDate":"2018-04-27 10:03:39",
+    "driverId":0,
+    "transporterId":0,
+    "location":"Test-location",
+    "originLng":0,
+    "originLat":0,
+    "lng":0,
+    "lat":0,
+    "corpId":0
+  }
+}

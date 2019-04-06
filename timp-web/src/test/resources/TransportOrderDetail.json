@@ -1,0 +1,22 @@
+{
+  "data":{
+    "transportOrderDetailId":0,
+    "transportOrderId":0,
+    "transportOrderCode":"Test-transportOrderCode",
+    "carVin":"Test-carVin",
+    "sendUnitId":0,
+    "receiveUnitId":0,
+    "examination":0,
+    "checkpointId":0,
+    "claimLoadingDate":"2018-03-28 12:36:09",
+    "realityLoadingDate":"2018-03-28 12:36:09",
+    "claimDeliveryDate":"2018-03-28 12:36:09",
+    "realityDeliveryDate":"2018-03-28 12:36:09",
+    "arriveDateInside":"2018-03-28 12:36:09",
+    "arriveDateBesides":"2018-03-28 12:36:09",
+    "signDate":"2018-03-28 12:36:09",
+    "driverId":0,
+    "corpId":0,
+    "flag":0
+  }
+}

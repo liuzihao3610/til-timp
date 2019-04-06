@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CityAreaDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.CityAreaDetail" >
+    <id column="CITY_AREA_DETAIL_ID" jdbcType="BIGINT" property="cityAreaDetailId" />
+	<result column="CITY_AREA_DETAIL_ID" jdbcType="BIGINT" property="cityAreaDetailId" />
+	<result column="CITY_AREA_ID" jdbcType="BIGINT" property="cityAreaId" />
+	<result column="UNIT_ID" jdbcType="BIGINT" property="unitId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+
+	  <result column="REF_UNIT_NAME" jdbcType="VARCHAR" property="refUnitName" />
+	  <result column="REF_PROVINCE" jdbcType="VARCHAR" property="refProvince" />
+	  <result column="REF_CITY" jdbcType="VARCHAR" property="refCity" />
+	  <result column="REF_AREA" jdbcType="VARCHAR" property="refArea" />
+	  <result column="REF_UNIT_ADDRESS" jdbcType="VARCHAR" property="refUnitAddress" />
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CITY_AREA_DETAIL_ID, CITY_AREA_ID, UNIT_ID, CORP_ID
+  </sql>
+
+	<sql id="Query_Column_List" >
+		a.CITY_AREA_DETAIL_ID, a.CITY_AREA_ID, a.UNIT_ID, a.CORP_ID, b.UNIT_NAME as REF_UNIT_NAME,
+		b.ADDRESS as REF_UNIT_ADDRESS,c.CITY_NAME as REF_PROVINCE,d.CITY_NAME as REF_CITY, e.CITY_NAME as REF_AREA
+
+	</sql>
+   
+  <sql id="Example_Where_Clause">
+    where del = 0
+    <trim  suffixOverrides="," >
+      <if test="cityAreaDetailId != null and cityAreaDetailId != ''" >
+        and CITY_AREA_DETAIL_ID = #{cityAreaDetailId}
+      </if>
+      <if test="cityAreaId != null and cityAreaId != ''" >
+        and CITY_AREA_ID = #{cityAreaId}
+      </if>
+      <if test="unitId != null and unitId != ''" >
+        and UNIT_ID = #{unitId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and CORP_ID = #{corpId}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Base_Column_List"/>
+    from vr_city_area_detail
+    where CITY_AREA_DETAIL_ID = #{cityAreaDetailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from vr_city_area_detail where CITY_AREA_DETAIL_ID = #{cityAreaDetailId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.CityAreaDetail" keyProperty="cityAreaDetailId" useGeneratedKeys="true">
+    insert into vr_city_area_detail
+	(CITY_AREA_ID, UNIT_ID, CORP_ID)
+	values
+	(#{cityAreaId,jdbcType=BIGINT}, #{unitId,jdbcType=BIGINT}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.CityAreaDetail" keyProperty="cityAreaDetailId" useGeneratedKeys="true">
+    insert into vr_city_area_detail
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="cityAreaId != null">
+	    CITY_AREA_ID, 
+	  </if>
+	  <if test="unitId != null">
+	    UNIT_ID, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="cityAreaId != null">
+	    #{cityAreaId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="unitId != null">
+	    #{unitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.CityAreaDetail" >
+	update vr_city_area_detail
+	<set>
+	  <if test="cityAreaId != null">
+	    CITY_AREA_ID = #{cityAreaId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="unitId != null">
+	    UNIT_ID = #{unitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where CITY_AREA_DETAIL_ID = #{cityAreaDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.CityAreaDetail" >
+    update vr_city_area_detail set 
+	  CITY_AREA_ID = #{cityAreaId,jdbcType=BIGINT}, UNIT_ID = #{unitId,jdbcType=BIGINT}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where CITY_AREA_DETAIL_ID = #{cityAreaDetailId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Base_Column_List"/>
+	from vr_city_area_detail
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+
+	<select id="selectByCityAreaId" resultMap="BaseResultMap"  parameterType="Object">
+		select
+		<include refid="Query_Column_List"/>
+		from vr_city_area_detail a
+		join bd_unit b on a.unit_id = b.unit_id
+		join bd_city c on b.province_id = c.city_id
+		join bd_city d on b.city_id = d.city_id
+		join bd_city e on b.area_id = e.city_id
+		where a.CITY_AREA_ID = #{cityAreaId,jdbcType=BIGINT}
+	</select>
+
+	<delete id="deleteDetailsByCityAreaId" parameterType="java.lang.Long">
+		delete  from vr_city_area_detail where CITY_AREA_ID = #{cityAreaId,jdbcType=BIGINT}
+	</delete>
+  	
+</mapper>   

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CardRechargeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.CardRechargeRecord" >
+    <id column="CARD_RECHARGE_RECORD_ID" jdbcType="BIGINT" property="cardRechargeRecordId" />
+	<result column="CARD_RECHARGE_RECORD_ID" jdbcType="BIGINT" property="cardRechargeRecordId" />
+	<result column="CARD_RESOURCE_ID" jdbcType="BIGINT" property="cardResourceId" />
+	<result column="BALANCE_BEFORE_RECHARGE" jdbcType="DECIMAL" property="balanceBeforeRecharge" />
+	<result column="RECHARGE_MONEY" jdbcType="DECIMAL" property="rechargeMoney" />
+	<result column="DEDUCTION" jdbcType="INTEGER" property="deduction" />
+	<result column="USER_ID" jdbcType="BIGINT" property="userId" />
+	<result column="RECHARGE_DATE" jdbcType="TIMESTAMP" property="rechargeDate" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="CARD_RESOURCE_CODE" jdbcType="VARCHAR" property="refCardResourceCode" />
+	<result column="USER_NAME" jdbcType="VARCHAR" property="refUserName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CARD_RECHARGE_RECORD_ID, CARD_RESOURCE_ID, BALANCE_BEFORE_RECHARGE, RECHARGE_MONEY, DEDUCTION, USER_ID, RECHARGE_DATE, 	CREATOR, CREATE_DATE,CORP_ID
+  </sql>
+  <sql id="Query_Column_List" >
+    crr.CARD_RECHARGE_RECORD_ID,crr.CARD_RESOURCE_ID,cr.CARD_RESOURCE_CODE,crr.BALANCE_BEFORE_RECHARGE,crr.RECHARGE_MONEY,
+    crr.DEDUCTION,crr.USER_ID,us.USER_NAME,crr.RECHARGE_DATE,crr.CREATOR, u.USER_NAME AS CREATE_NAME,crr.CREATE_DATE,
+    crr.CORP_ID,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where crr.del = 0
+    <trim  suffixOverrides="," >
+      <if test="cardRechargeRecordId != null and cardRechargeRecordId != ''" >
+        and crr.CARD_RECHARGE_RECORD_ID = #{cardRechargeRecordId}
+      </if>
+      <if test="cardResourceId != null and cardResourceId != ''" >
+        and crr.CARD_RESOURCE_ID = #{cardResourceId}
+      </if>
+      <if test="balanceBeforeRecharge != null and balanceBeforeRecharge != ''" >
+        and crr.BALANCE_BEFORE_RECHARGE = #{balanceBeforeRecharge}
+      </if>
+      <if test="rechargeMoney != null and rechargeMoney != ''" >
+        and crr.RECHARGE_MONEY = #{rechargeMoney}
+      </if>
+      <if test="deduction != null and deduction != ''" >
+        and crr.DEDUCTION = #{deduction}
+      </if>
+      <if test="userId != null and userId != ''" >
+        and crr.USER_ID = #{userId}
+      </if>
+      <if test="rechargeDate != null and rechargeDate != ''" >
+        and crr.RECHARGE_DATE = #{rechargeDate}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and crr.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and crr.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and crr.CORP_ID = #{corpId}
+      </if>      
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Base_Column_List"/>
+    from am_card_recharge_record crr
+    	JOIN am_card_resource cr ON crr.CARD_RESOURCE_ID=cr.CARD_RESOURCE_ID
+		JOIN bd_user us ON crr.USER_ID=us.USER_ID
+		JOIN bd_user u ON crr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON crr.CORP_ID=corp.CORP_ID
+    where crr.DEL=0 AND crr.CARD_RECHARGE_RECORD_ID = #{cardRechargeRecordId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update am_card_recharge_record set DEL=1 where CARD_RECHARGE_RECORD_ID = #{cardRechargeRecordId}
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.CardRechargeRecord" keyProperty="cardRechargeRecordId" useGeneratedKeys="true">
+    insert into am_card_recharge_record	(CARD_RESOURCE_ID, BALANCE_BEFORE_RECHARGE, RECHARGE_MONEY, DEDUCTION, USER_ID, RECHARGE_DATE, CREATOR, CREATE_DATE,CORP_ID)	values	(#{cardResourceId,jdbcType=BIGINT}, #{balanceBeforeRecharge,jdbcType=DECIMAL}, #{rechargeMoney,jdbcType=DECIMAL}, #{deduction,jdbcType=INTEGER}, 	#{userId,jdbcType=BIGINT}, #{rechargeDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=BIGINT}, 	#{createDate,jdbcType=TIMESTAMP},#{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.CardRechargeRecord" keyProperty="cardRechargeRecordId" useGeneratedKeys="true">
+    insert into am_card_recharge_record	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="cardResourceId != null">	    CARD_RESOURCE_ID, 	  </if>	  <if test="balanceBeforeRecharge != null">	    BALANCE_BEFORE_RECHARGE, 	  </if>	  <if test="rechargeMoney != null">	    RECHARGE_MONEY, 	  </if>	  <if test="deduction != null">	    DEDUCTION, 	  </if>	  <if test="userId != null">	    USER_ID, 	  </if>	  <if test="rechargeDate != null">	    RECHARGE_DATE, 	  </if>	  <if test="creator != null">	    CREATOR, 	  </if>	  <if test="createDate != null">	    CREATE_DATE, 	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="cardResourceId != null">	    #{cardResourceId,jdbcType=BIGINT}, 	  </if>	  <if test="balanceBeforeRecharge != null">	    #{balanceBeforeRecharge,jdbcType=DECIMAL}, 	  </if>	  <if test="rechargeMoney != null">	    #{rechargeMoney,jdbcType=DECIMAL}, 	  </if>	  <if test="deduction != null">	    #{deduction,jdbcType=INTEGER}, 	  </if>	  <if test="userId != null">	    #{userId,jdbcType=BIGINT}, 	  </if>	  <if test="rechargeDate != null">	    #{rechargeDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="creator != null">	    #{creator,jdbcType=BIGINT}, 	  </if>	  <if test="createDate != null">	    #{createDate,jdbcType=TIMESTAMP}, 	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.CardRechargeRecord" >
+	update am_card_recharge_record	<set>	  <if test="cardResourceId != null">	    CARD_RESOURCE_ID = #{cardResourceId,jdbcType=BIGINT}, 	  </if>	  <if test="balanceBeforeRecharge != null">	    BALANCE_BEFORE_RECHARGE = #{balanceBeforeRecharge,jdbcType=DECIMAL}, 	  </if>	  <if test="rechargeMoney != null">	    RECHARGE_MONEY = #{rechargeMoney,jdbcType=DECIMAL}, 	  </if>	  <if test="deduction != null">	    DEDUCTION = #{deduction,jdbcType=INTEGER}, 	  </if>	  <if test="userId != null">	    USER_ID = #{userId,jdbcType=BIGINT}, 	  </if>	  <if test="rechargeDate != null">	    RECHARGE_DATE = #{rechargeDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="creator != null">	    CREATOR = #{creator,jdbcType=BIGINT}, 	  </if>	  <if test="createDate != null">	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>	</set>	where CARD_RECHARGE_RECORD_ID = #{cardRechargeRecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.CardRechargeRecord" >
+    update am_card_recharge_record set 	  CARD_RESOURCE_ID = #{cardResourceId,jdbcType=BIGINT}, BALANCE_BEFORE_RECHARGE = #{balanceBeforeRecharge,jdbcType=DECIMAL}, 	  RECHARGE_MONEY = #{rechargeMoney,jdbcType=DECIMAL}, DEDUCTION = #{deduction,jdbcType=INTEGER}, USER_ID = #{userId,jdbcType=BIGINT}, 	  RECHARGE_DATE = #{rechargeDate,jdbcType=TIMESTAMP}, CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+	  CORP_ID = #{corpId,jdbcType=BIGINT}	where CARD_RECHARGE_RECORD_ID = #{cardRechargeRecordId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from am_card_recharge_record crr
+    	JOIN am_card_resource cr ON crr.CARD_RESOURCE_ID=cr.CARD_RESOURCE_ID
+		JOIN bd_user us ON crr.USER_ID=us.USER_ID
+		JOIN bd_user u ON crr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON crr.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by crr.CREATE_DATE DESC
+  </select>
+  	
+</mapper>   

@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransporterAndDriverMapper">
+	<resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransporterAndDriver">
+		<id column="TRANSPORTER_AND_DRIVER_ID" jdbcType="BIGINT" property="transporterAndDriverId"/>
+		<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId"/>
+		<result column="ASSISTANT_DRIVER_ID" jdbcType="BIGINT" property="assistantDriverId"/>
+		<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId"/>
+		<result column="CREATOR" jdbcType="BIGINT" property="creator"/>
+		<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate"/>
+		<result column="CORP_ID" jdbcType="BIGINT" property="corpId"/>
+		<result column="FLAG" jdbcType="INTEGER" property="flag"/>
+		<result column="START_CONTRACTING_TIME" jdbcType="TIMESTAMP" property="startContractingTime"/>
+		<result column="END_CONTRACTING_TIME" jdbcType="TIMESTAMP" property="endContractingTime"/>
+		<result column="CONTRACTING_STATUS" jdbcType="INTEGER" property="contractingStatus"/>
+
+		<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode"/>
+		<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName"/>
+		<result column="ASSISTANT_DRIVER_NAME" jdbcType="VARCHAR" property="refAssistantDriverName"/>
+		<result column="TRAILER_PLATE_CODE" jdbcType="VARCHAR" property="refTrailerPlateCode"/>
+		<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode"/>
+		<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName"/>
+		<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName"/>
+		<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName"/>
+		<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode"/>
+		<result column="ASSISTANT_DRIVER_CODE" jdbcType="VARCHAR" property="refAssistantDriverCode"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		TRANSPORTER_AND_DRIVER_ID,
+		TRANSPORTER_ID,
+		DRIVER_ID,
+		ASSISTANT_DRIVER_ID,
+		CREATOR,
+		CREATE_DATE,
+		CORP_ID,
+		FLAG,
+		START_CONTRACTING_TIME,
+		END_CONTRACTING_TIME,
+		CONTRACTING_STATUS
+	</sql>
+
+	<sql id="Refer_Column_List">
+		td.TRANSPORTER_AND_DRIVER_ID, td.TRANSPORTER_ID, td.DRIVER_ID, td.ASSISTANT_DRIVER_ID,
+		driver.USER_NAME as DRIVER_NAME, driver.USER_CODE as DRIVER_CODE,
+		assistant.USER_NAME as ASSISTANT_DRIVER_NAME, assistant.USER_CODE as ASSISTANT_DRIVER_CODE,
+		td.ASSISTANT_DRIVER_ID, tr.TRANSPORTER_CODE,
+		tr.TRACTIR_PLATE_CODE, tr.TRAILER_PLATE_CODE
+	</sql>
+
+	<sql id="App_Column_List">
+		tr.TRACTIR_PLATE_CODE, tr.TRANSPORTER_ID, brand.BRAND_NAME
+	</sql>
+
+	<sql id="Query_Column_List">
+		td.TRANSPORTER_AND_DRIVER_ID,
+		td.TRANSPORTER_ID,
+		tr.TRANSPORTER_CODE,
+		td.DRIVER_ID,
+		td.ASSISTANT_DRIVER_ID,
+		driver.USER_NAME as DRIVER_NAME,
+		driver.USER_CODE as DRIVER_CODE,
+		assistant.USER_NAME as ASSISTANT_DRIVER_NAME,
+		assistant.USER_CODE as ASSISTANT_DRIVER_CODE,
+		tr.TRACTIR_PLATE_CODE,
+		tr.TRAILER_PLATE_CODE,
+		td.CREATOR,
+		creator.USER_NAME as CREATE_NAME,
+		td.CREATE_DATE,
+		td.CORP_ID,
+		corp.CORP_NAME,
+		td.FLAG,
+		td.START_CONTRACTING_TIME,
+		td.END_CONTRACTING_TIME,
+		td.CONTRACTING_STATUS
+	</sql>
+
+	<sql id="Vindicate_Where_Clause">
+		where td.del = 0
+		<trim suffixOverrides=",">
+			<if test="transporterId != null and transporterId != ''">
+				and td.TRANSPORTER_ID = #{transporterId}
+			</if>
+			<if test="driverId != null and driverId != ''">
+				and td.DRIVER_ID = #{driverId}
+			</if>
+		</trim>
+	</sql>
+
+	<sql id="Example_Where_Clause">
+		where td.del = 0
+		<trim suffixOverrides=",">
+			<if test="transporterAndDriverId != null and transporterAndDriverId != ''">
+				and td.TRANSPORTER_AND_DRIVER_ID = #{transporterAndDriverId}
+			</if>
+			<if test="transporterId != null and transporterId != ''">
+				and td.TRANSPORTER_ID = #{transporterId}
+			</if>
+			<if test="driverId != null and driverId != ''">
+				and td.DRIVER_ID = #{driverId}
+			</if>
+			<if test="assistantDriverId != null and assistantDriverId != ''">
+				and td.ASSISTANT_DRIVER_ID = #{assistantDriverId}
+			</if>
+			<if test="creator != null and creator != ''">
+				and td.CREATOR = #{creator}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				and td.CREATE_DATE = #{createDate}
+			</if>
+			<if test="corpId != null and corpId != ''">
+				and td.CORP_ID = #{corpId}
+			</if>
+			<if test="flag != null and flag != ''">
+				and td.FLAG = #{flag}
+			</if>
+			<if test="startContractingTime != null and startContractingTime != ''" >
+				and START_CONTRACTING_TIME = #{startContractingTime}
+			</if>
+			<if test="endContractingTime != null and endContractingTime != ''" >
+				and END_CONTRACTING_TIME = #{endContractingTime}
+			</if>
+			<if test="contractingStatus != null and contractingStatus != ''" >
+				and CONTRACTING_STATUS = #{contractingStatus}
+			</if>
+			<if test="refDriverName != null and refDriverName != ''">
+				and (
+				driver.USER_NAME like concat(concat('%',#{refDriverName}),'%')
+				)
+			</if>
+			<if test="refAssistantDriverName != null and refAssistantDriverName != ''">
+				and (
+				assistant.USER_NAME like concat(concat('%',#{refAssistantDriverName}),'%')
+				)
+			</if>
+			<if test="refAssistantDriverCode  != null and refAssistantDriverCode != ''">
+				and (
+				assistant.USER_CODE like concat(concat('%',#{refAssistantDriverCode}),'%')
+				)
+			</if>
+			<if test="refTractirPlateCode != null and refTractirPlateCode != ''">
+				and (
+				tr.TRACTIR_PLATE_CODE like concat(concat('%',#{refTractirPlateCode}),'%')
+				)
+			</if>
+			<if test="refTrailerPlateCode != null and refTrailerPlateCode != ''">
+				and (
+				tr.TRAILER_PLATE_CODE like concat(concat('%',#{refTrailerPlateCode}),'%')
+				)
+			</if>
+			<if test="startTime != null and startTime != ''">
+				<![CDATA[ and td.CREATE_DATE  >=  #{startTime}  ]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+				<![CDATA[ and td.CREATE_DATE  <=  #{endTime}  ]]>
+			</if>
+			<if test="searchContent != null and searchContent != ''">
+				and (
+				driver.USER_NAME like concat(concat('%',#{searchContent}),'%')
+				or driver.USER_CODE like concat(concat('%',#{searchContent}),'%')
+				or tr.TRACTIR_PLATE_CODE like concat(concat('%',#{searchContent}),'%')
+				or tr.TRAILER_PLATE_CODE like concat(concat('%',#{searchContent}),'%')
+				)
+			</if>
+		</trim>
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Query_Column_List"/>
+		from tc_transporter_and_driver td
+		join tc_transporter tr on tr.TRANSPORTER_ID = td.TRANSPORTER_ID
+		JOIN bd_user creator ON creator.USER_ID = td.CREATOR
+		JOIN bd_user driver ON driver.USER_ID = td.DRIVER_ID
+		left JOIN bd_user assistant ON assistant.USER_ID = td.ASSISTANT_DRIVER_ID
+		join SYS_CORP corp on corp.CORP_ID = td.CORP_ID
+		where td.del = 0
+		and td.TRANSPORTER_AND_DRIVER_ID = #{transporterAndDriverId,jdbcType=BIGINT}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from TC_TRANSPORTER_AND_DRIVER
+		where TRANSPORTER_AND_DRIVER_ID = #{transporterAndDriverId}
+	</delete>
+
+	<insert id="insert" parameterType="com.tilchina.timp.model.TransporterAndDriver" keyProperty="transporterAndDriverId" useGeneratedKeys="true">
+		insert into tc_transporter_and_driver
+		(TRANSPORTER_ID, DRIVER_ID, ASSISTANT_DRIVER_ID, CREATOR, CREATE_DATE, CORP_ID, FLAG, START_CONTRACTING_TIME, END_CONTRACTING_TIME,
+		 CONTRACTING_STATUS)
+		values
+			(#{transporterId,jdbcType=BIGINT}, #{driverId,jdbcType=BIGINT}, #{assistantDriverId,jdbcType=BIGINT}, #{creator,jdbcType=BIGINT},
+			 #{createDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER}, #{startContractingTime,jdbcType=TIMESTAMP},
+			 #{endContractingTime,jdbcType=TIMESTAMP}, #{contractingStatus,jdbcType=INTEGER})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.tilchina.timp.model.TransporterAndDriver" keyProperty="transporterAndDriverId" useGeneratedKeys="true">
+		insert into tc_transporter_and_driver
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="transporterId != null">
+				TRANSPORTER_ID,
+			</if>
+			<if test="driverId != null">
+				DRIVER_ID,
+			</if>
+			<if test="assistantDriverId != null">
+				ASSISTANT_DRIVER_ID,
+			</if>
+			<if test="creator != null">
+				CREATOR,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+			<if test="corpId != null">
+				CORP_ID,
+			</if>
+			<if test="flag != null">
+				FLAG,
+			</if>
+			<if test="startContractingTime != null">
+				START_CONTRACTING_TIME,
+			</if>
+			<if test="endContractingTime != null">
+				END_CONTRACTING_TIME,
+			</if>
+			<if test="contractingStatus != null">
+				CONTRACTING_STATUS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="transporterId != null">
+				#{transporterId,jdbcType=BIGINT},
+			</if>
+			<if test="driverId != null">
+				#{driverId,jdbcType=BIGINT},
+			</if>
+			<if test="assistantDriverId != null">
+				#{assistantDriverId,jdbcType=BIGINT},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=BIGINT},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="corpId != null">
+				#{corpId,jdbcType=BIGINT},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=INTEGER},
+			</if>
+			<if test="startContractingTime != null">
+				#{startContractingTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endContractingTime != null">
+				#{endContractingTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="contractingStatus != null">
+				#{contractingStatus,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.TransporterAndDriver" >
+		update tc_transporter_and_driver
+		<set>
+			<if test="transporterId != null">
+				TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT},
+			</if>
+			<if test="driverId != null">
+				DRIVER_ID = #{driverId,jdbcType=BIGINT},
+			</if>
+			<if test="assistantDriverId != null">
+				ASSISTANT_DRIVER_ID = #{assistantDriverId,jdbcType=BIGINT},
+			</if>
+			<if test="creator != null">
+				CREATOR = #{creator,jdbcType=BIGINT},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="corpId != null">
+				CORP_ID = #{corpId,jdbcType=BIGINT},
+			</if>
+			<if test="flag != null">
+				FLAG = #{flag,jdbcType=INTEGER},
+			</if>
+			<if test="startContractingTime != null">
+				START_CONTRACTING_TIME = #{startContractingTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endContractingTime != null">
+				END_CONTRACTING_TIME = #{endContractingTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="contractingStatus != null">
+				CONTRACTING_STATUS = #{contractingStatus,jdbcType=INTEGER},
+			</if>
+		</set>
+		where TRANSPORTER_AND_DRIVER_ID = #{transporterAndDriverId,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.TransporterAndDriver" >
+		update tc_transporter_and_driver set
+			TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, ASSISTANT_DRIVER_ID = #{assistantDriverId,jdbcType=BIGINT},
+			CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+			CORP_ID = #{corpId,jdbcType=BIGINT}, FLAG = #{flag,jdbcType=INTEGER}, START_CONTRACTING_TIME = #{startContractingTime,jdbcType=TIMESTAMP},
+			END_CONTRACTING_TIME = #{endContractingTime,jdbcType=TIMESTAMP}, CONTRACTING_STATUS = #{contractingStatus,jdbcType=INTEGER}
+		where TRANSPORTER_AND_DRIVER_ID = #{transporterAndDriverId,jdbcType=BIGINT}
+	</update>
+
+	<update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long">
+		update TC_TRANSPORTER_AND_DRIVER
+		set
+			DEL = 1
+		WHERE TRANSPORTER_AND_DRIVER_ID = #{transporterAndDriverId,jdbcType=BIGINT}
+	</update>
+
+	<update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+		update TC_TRANSPORTER_AND_DRIVER set
+		DEL = 1
+		WHERE TRANSPORTER_AND_DRIVER_ID in
+		<foreach collection="array" item="item" open="(" separator="," close=")">
+			<if test="item != null and item != ''">
+				#{item,jdbcType=BIGINT}
+			</if>
+		</foreach>
+	</update>
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Query_Column_List"/>
+		from tc_transporter_and_driver td
+		join tc_transporter tr on tr.TRANSPORTER_ID = td.TRANSPORTER_ID
+		JOIN bd_user creator ON creator.USER_ID = td.CREATOR
+		JOIN bd_user driver ON driver.USER_ID = td.DRIVER_ID
+		left JOIN bd_user assistant ON assistant.USER_ID = td.ASSISTANT_DRIVER_ID
+		join SYS_CORP corp on corp.CORP_ID = td.CORP_ID
+		<include refid="Example_Where_Clause"/>
+		order by td.CREATE_DATE DESC
+	</select>
+
+	<select id="selectByKeyId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Query_Column_List"/>
+		from tc_transporter_and_driver td
+		join tc_transporter tr on tr.TRANSPORTER_ID = td.TRANSPORTER_ID
+		JOIN bd_user creator ON creator.USER_ID = td.CREATOR
+		JOIN bd_user driver ON driver.USER_ID = td.DRIVER_ID
+		left JOIN bd_user assistant ON assistant.USER_ID = td.ASSISTANT_DRIVER_ID
+		join SYS_CORP corp on corp.CORP_ID = td.CORP_ID
+		<include refid="Vindicate_Where_Clause"/>
+	</select>
+
+	<select id="selectRefer" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Refer_Column_List"/>
+		from tc_transporter_and_driver td
+		join tc_transporter tr on tr.TRANSPORTER_ID = td.TRANSPORTER_ID
+		JOIN bd_user creator ON creator.USER_ID = td.CREATOR
+		JOIN bd_user driver ON driver.USER_ID = td.DRIVER_ID
+		left JOIN bd_user assistant ON assistant.USER_ID = td.ASSISTANT_DRIVER_ID
+		join SYS_CORP corp on corp.CORP_ID = td.CORP_ID
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<select id="selectByAppDriverId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="App_Column_List"/>
+		from tc_transporter_and_driver td
+		left join tc_transporter tr on tr.TRANSPORTER_ID = td.TRANSPORTER_ID
+		left JOIN bd_user creator ON creator.USER_ID = td.CREATOR
+		left JOIN bd_user driver ON driver.USER_ID = td.DRIVER_ID
+		left JOIN bd_tractor tractor ON tractor.TRACTOR_ID = tr.TRACTOR_ID
+		left JOIN bd_user assistant ON assistant.USER_ID = td.ASSISTANT_DRIVER_ID
+		left join SYS_CORP corp on corp.CORP_ID = td.CORP_ID
+		left join bd_brand brand on tractor.BRAND_ID = brand.BRAND_ID
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<!--
+	通过轿运车ID将记录置为失效状态
+	新增记录时，通过参照选择轿运车和司机，默认为有效状态；保存前，获取该轿运车有效的承包记录，如果存在，置为失效状态，同时更新承包时间止为当前时间
+	-->
+	<update id="setInvalidStatusByTransporterId" parameterType="java.lang.Long">
+		update tc_transporter_and_driver
+		set CONTRACTING_STATUS = 1,
+			END_CONTRACTING_TIME = current_timestamp
+		where TRANSPORTER_AND_DRIVER_ID in
+		      (select temp.g from (select TRANSPORTER_AND_DRIVER_ID from tc_transporter_and_driver where TRANSPORTER_ID = #{transporterId}) temp)
+	</update>
+
+	<!--通过ID将记录置为失效状态-->
+	<update id="setInvalidStatusById" parameterType="java.lang.Long">
+		update tc_transporter_and_driver
+		set CONTRACTING_STATUS = 1,
+			END_CONTRACTING_TIME = current_timestamp
+		where TRANSPORTER_AND_DRIVER_ID = #{transporterAndDriverId}
+	</update>
+</mapper>   

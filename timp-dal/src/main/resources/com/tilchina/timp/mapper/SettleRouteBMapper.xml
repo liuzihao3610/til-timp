@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.SettleRouteBMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.SettleRouteB" >
+    <id column="SETTLE_ROUTE_B_ID" jdbcType="BIGINT" property="settleRouteBId" />
+	<result column="SETTLE_ROUTE_B_ID" jdbcType="BIGINT" property="settleRouteBId" />
+	<result column="SETTLE_ROUTE_ID" jdbcType="BIGINT" property="settleRouteId" />
+	<result column="SEQUENCE" jdbcType="INTEGER" property="sequence" />
+	<result column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+	<result column="CITY_NAME" jdbcType="VARCHAR" property="cityName" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+
+	  <result column="SETTLE_ROUTE_NAME" jdbcType="VARCHAR" property="refSettleRouteName" />
+	  <result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    SETTLE_ROUTE_B_ID, SETTLE_ROUTE_ID, SEQUENCE, CITY_ID, CITY_NAME, REMARK, CORP_ID
+  </sql>
+  <sql id="Query_Column_List" >
+    b.SETTLE_ROUTE_B_ID, b.SETTLE_ROUTE_ID, b.SEQUENCE, b.CITY_ID, b.CITY_NAME, b.REMARK, b.CORP_ID,
+    settleroute.SETTLE_ROUTE_NAME,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where b.del = 0
+    <trim  suffixOverrides="," >
+      <if test="settleRouteBId != null and settleRouteBId != ''" >
+        and b.SETTLE_ROUTE_B_ID = #{settleRouteBId}
+      </if>
+      <if test="settleRouteId != null and settleRouteId != ''" >
+        and b.SETTLE_ROUTE_ID = #{settleRouteId}
+      </if>
+      <if test="sequence != null and sequence != ''" >
+        and b.SEQUENCE = #{sequence}
+      </if>
+      <if test="cityId != null and cityId != ''" >
+        and b.CITY_ID = #{cityId}
+      </if>
+      <if test="cityName != null and cityName != ''" >
+        and b.CITY_NAME LIKE CONCAT('%',#{cityName},'%')
+      </if>
+      <if test="remark != null and remark != ''" >
+        and b.REMARK LIKE CONCAT('%',#{remark},'%')
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and b.CORP_ID = #{corpId}
+      </if>
+		<if test="searchContent != null and searchContent != ''" >
+			and (b.CITY_NAME LIKE CONCAT('%',#{searchContent},'%')
+				or settleroute.SETTLE_ROUTE_NAME LIKE CONCAT('%',#{searchContent},'%')
+			)
+		</if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from bd_settle_route_b b
+	  left join bd_settle_route settleroute on settleroute.SETTLE_ROUTE_ID=b.SETTLE_ROUTE_ID
+	  left join  sys_corp corp on corp.CORP_ID=b.CORP_ID
+    where b.del=0 and b.SETTLE_ROUTE_B_ID = #{settleRouteBId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from bd_settle_route_b where SETTLE_ROUTE_B_ID = #{settleRouteBId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.SettleRouteB" keyProperty="settleRouteBId" useGeneratedKeys="true">
+    insert into bd_settle_route_b
+	(SETTLE_ROUTE_ID, SEQUENCE, CITY_ID, CITY_NAME, REMARK, CORP_ID)
+	values
+	(#{settleRouteId,jdbcType=BIGINT}, #{sequence,jdbcType=INTEGER}, #{cityId,jdbcType=BIGINT}, #{cityName,jdbcType=VARCHAR}, 
+	#{remark,jdbcType=VARCHAR}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.SettleRouteB" keyProperty="settleRouteBId" useGeneratedKeys="true">
+    insert into bd_settle_route_b
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="settleRouteId != null">
+	    SETTLE_ROUTE_ID, 
+	  </if>
+	  <if test="sequence != null">
+	    SEQUENCE, 
+	  </if>
+	  <if test="cityId != null">
+	    CITY_ID, 
+	  </if>
+	  <if test="cityName != null">
+	    CITY_NAME, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="settleRouteId != null">
+	    #{settleRouteId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="sequence != null">
+	    #{sequence,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="cityId != null">
+	    #{cityId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="cityName != null">
+	    #{cityName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.SettleRouteB" >
+	update bd_settle_route_b
+	<set>
+	  <if test="settleRouteId != null">
+	    SETTLE_ROUTE_ID = #{settleRouteId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="sequence != null">
+	    SEQUENCE = #{sequence,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="cityId != null">
+	    CITY_ID = #{cityId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="cityName != null">
+	    CITY_NAME = #{cityName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK = #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where SETTLE_ROUTE_B_ID = #{settleRouteBId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.SettleRouteB" >
+    update bd_settle_route_b set 
+	  SETTLE_ROUTE_ID = #{settleRouteId,jdbcType=BIGINT}, SEQUENCE = #{sequence,jdbcType=INTEGER}, CITY_ID = #{cityId,jdbcType=BIGINT}, 
+	  CITY_NAME = #{cityName,jdbcType=VARCHAR}, REMARK = #{remark,jdbcType=VARCHAR}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where SETTLE_ROUTE_B_ID = #{settleRouteBId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	  select
+	  <include refid="Query_Column_List"/>
+	  from bd_settle_route_b b
+	  left join bd_settle_route settleroute on settleroute.SETTLE_ROUTE_ID=b.SETTLE_ROUTE_ID
+	  left join  sys_corp corp on corp.CORP_ID=b.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by b.SEQUENCE
+  </select>
+
+	<select id="getBySettleRouteId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Query_Column_List"/>
+		from bd_settle_route_b b
+		left join bd_settle_route settleroute on settleroute.SETTLE_ROUTE_ID=b.SETTLE_ROUTE_ID
+		left join  sys_corp corp on corp.CORP_ID=b.CORP_ID
+		where b.del=0 and b.SETTLE_ROUTE_ID = #{settleRouteId,jdbcType=BIGINT}
+		order by b.SEQUENCE
+	</select>
+  	
+</mapper>   

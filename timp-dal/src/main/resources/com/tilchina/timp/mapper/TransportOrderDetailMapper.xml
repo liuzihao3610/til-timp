@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransportOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransportOrderDetail" >
+    <id column="TRANSPORT_ORDER_DETAIL_ID" jdbcType="BIGINT" property="transportOrderDetailId" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="transportOrderCode" />
+	<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="SEND_UNIT_ID" jdbcType="BIGINT" property="sendUnitId" />
+	<result column="RECEIVE_UNIT_ID" jdbcType="BIGINT" property="receiveUnitId" />
+	<result column="EXAMINATION" jdbcType="INTEGER" property="examination" />
+	<result column="EXAMINATION_LOCATION_ID" jdbcType="BIGINT" property="examinationLocationId" />
+	<result column="EXAMINATION_LOCATION_ID_ID" jdbcType="BIGINT" property="examinationLocationIdId" />
+	<result column="URGENT" jdbcType="INTEGER" property="urgent" />
+	<result column="CAR_STATUS" jdbcType="INTEGER" property="carStatus" />
+	<result column="CLAIM_LOADING_DATE" jdbcType="DATE" property="claimLoadingDate" />
+	<result column="REALITY_LOADING_DATE" jdbcType="DATE" property="realityLoadingDate" />
+	<result column="CLAIM_DELIVERY_DATE" jdbcType="DATE" property="claimDeliveryDate" />
+	<result column="REALITY_DELIVERY_DATE" jdbcType="DATE" property="realityDeliveryDate" />
+	<result column="ARRIVE_DATE_BESIDES" jdbcType="TIMESTAMP" property="arriveDateBesides" />
+	<result column="SIGN_DATE" jdbcType="TIMESTAMP" property="signDate" />
+    <result column="FREIGHT_ID" jdbcType="BIGINT" property="freightId" />
+	<result column="FREIGHT_FINAL_PRICE" jdbcType="DECIMAL" property="finalPrice" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="CAR_NAME" jdbcType="VARCHAR" property="refCarName" />
+	<result column="SEND_UNIT_NAME" jdbcType="VARCHAR" property="refSendUnitName" />
+	<result column="RECEIVE_UNIT_NAME" jdbcType="VARCHAR" property="refReceiveUnitName" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="CHECK_POINT_NAME" jdbcType="VARCHAR" property="refExaminationLocation" />
+    <result column="RECEIVE_CITY_ID" jdbcType="BIGINT" property="receiveCityId" />
+	<result column="RECEIVE_CITY_NAME" jdbcType="VARCHAR" property="refReceiveUnitCity" />
+	<result column="RECEIVE_ADDRESS" jdbcType="VARCHAR" property="refReceiveUnitAddr" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+    <result column="BRAND_ID" jdbcType="BIGINT" property="refBrandId" />
+
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName" />
+    <result column="CAR_TYPE_ID" jdbcType="BIGINT" property="refCarTypeId" />
+	<result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="refCategoryName" />
+
+    <result column="SEND_CITY_ID" jdbcType="BIGINT" property="sendCityId" />
+	<result column="SEND_CITY_NAME" jdbcType="VARCHAR" property="refSendUnitCity" />
+	<result column="SEND_ADDRESS" jdbcType="VARCHAR" property="refSendUnitAddr" />
+	<result column="RECEIVE_SPECIAL" jdbcType="INTEGER" property="refReceiveUnitSpecial" />
+	<result column="CAR_CODE" jdbcType="VARCHAR" property="refCarCode" />
+	<result column="TRANSFER_OFER_BILL_STATUS" jdbcType="INTEGER" property="refTransferOrderBillStatus" />
+    <result column="ACCOUNT_CITY_ID" jdbcType="BIGINT" property="accountCityId" />
+
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANSPORT_ORDER_DETAIL_ID, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE, CAR_ID, CAR_VIN,CAR_STATUS, SEND_UNIT_ID, RECEIVE_UNIT_ID, EXAMINATION, EXAMINATION_LOCATION_ID,
+	URGENT, CLAIM_LOADING_DATE, REALITY_LOADING_DATE, CLAIM_DELIVERY_DATE, REALITY_DELIVERY_DATE, 
+	ARRIVE_DATE_BESIDES, SIGN_DATE, DRIVER_ID, CORP_ID, FLAG
+  </sql>
+ 
+  <sql id="Query_Column_List" >
+ 	tod.TRANSPORT_ORDER_DETAIL_ID, tod.TRANSPORT_ORDER_ID, tod.CAR_ID,car.CAR_NAME, car.CAR_CODE, brand.BRAND_ID,brand.BRAND_NAME, tod.TRANSPORT_ORDER_CODE, tod.CAR_VIN,
+ 	tod.CAR_STATUS,tod.SEND_UNIT_ID, 
+	sunit.UNIT_NAME as SEND_UNIT_NAME,sunit.ADDRESS as SEND_ADDRESS,scity.CITY_NAME as SEND_CITY_NAME,scity.CITY_ID as SEND_CITY_ID,
+  	runit.UNIT_NAME as RECEIVE_UNIT_NAME, runit.ACCOUNT_CITY_ID, runit.ADDRESS as RECEIVE_ADDRESS,runit.SPECIAL as RECEIVE_SPECIAL,rcity.CITY_NAME as RECEIVE_CITY_NAME,rcity.CITY_ID as RECEIVE_CITY_ID,
+	ctype.CAR_TYPE_ID, ctype.CAR_TYPE_NAME,srto.BILL_STATUS as TRANSFER_OFER_BILL_STATUS,
+  	tod.RECEIVE_UNIT_ID,tod.EXAMINATION, tod.EXAMINATION_LOCATION_ID,tod.URGENT, cp.CHECK_POINT_NAME, 
+  	tod.CLAIM_LOADING_DATE, tod.REALITY_LOADING_DATE, tod.CLAIM_DELIVERY_DATE, tod.REALITY_DELIVERY_DATE,
+  	tod.ARRIVE_DATE_BESIDES, tod.SIGN_DATE, tod.DRIVER_ID, driver.USER_NAME as Driver_NAME,
+  	driver.USER_CODE as DRIVER_CODE,
+  	 tod.CORP_ID, corp.CORP_NAME, tod.FLAG
+  </sql>
+  
+  <sql id="Refer_Column_List" >
+ 	tod.TRANSPORT_ORDER_DETAIL_ID, tod.TRANSPORT_ORDER_ID, tod.CAR_ID,car.CAR_NAME, car.CAR_CODE, brand.BRAND_ID,brand.BRAND_NAME, tod.TRANSPORT_ORDER_CODE, tod.CAR_VIN,
+ 	tod.CAR_STATUS,tod.SEND_UNIT_ID, 
+	sunit.UNIT_NAME as SEND_UNIT_NAME,sunit.ADDRESS as SEND_ADDRESS,scity.CITY_NAME as SEND_CITY_NAME,scity.CITY_ID as SEND_CITY_ID,
+  	runit.UNIT_NAME as RECEIVE_UNIT_NAME, runit.ACCOUNT_CITY_ID, runit.ADDRESS as RECEIVE_ADDRESS,runit.SPECIAL as RECEIVE_SPECIAL,rcity.CITY_NAME as RECEIVE_CITY_NAME,rcity.CITY_ID as RECEIVE_CITY_ID,
+	ctype.CAR_TYPE_ID, ctype.CAR_TYPE_NAME,srto.BILL_STATUS as TRANSFER_OFER_BILL_STATUS,
+  	tod.RECEIVE_UNIT_ID,tod.EXAMINATION, tod.EXAMINATION_LOCATION_ID,tod.URGENT, cp.CHECK_POINT_NAME, 
+  	tod.CLAIM_LOADING_DATE, tod.REALITY_LOADING_DATE, tod.CLAIM_DELIVERY_DATE, tod.REALITY_DELIVERY_DATE,
+  	tod.ARRIVE_DATE_BESIDES, tod.SIGN_DATE, tod.DRIVER_ID, driver.USER_NAME as Driver_NAME,
+  	driver.USER_CODE as DRIVER_CODE, tod.CORP_ID, corp.CORP_NAME
+  </sql>
+  
+  <sql id="logicDelete_Where_Clause">
+    where del = 0
+    <trim  suffixOverrides="," >
+      <if test="transportOrderDetailId != null and transportOrderDetailId != ''" >
+         and TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+         and TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+    </trim>
+  </sql>
+  
+  <sql id="Refer_Where_Clause">
+      where tod.del = 0
+    <trim  suffixOverrides="," >
+      <if test="searchContent != null and searchContent != ''" >
+        and (
+        tod.CAR_VIN like concat(concat('%',#{searchContent}),'%')
+        or car.CAR_NAME like concat(concat('%',#{searchContent}),'%')
+		or brand.BRAND_NAME like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+   </trim>
+  </sql>
+  
+  <sql id="Example_Where_Clause">
+    where tod.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transportOrderDetailId != null and transportOrderDetailId != ''" >
+        and tod.TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and tod.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="transportOrderCode != null and transportOrderCode != ''" >
+        and (tod.TRANSPORT_ORDER_CODE = #{transportOrderCode}
+        or tso.TRANSPORT_ORDER_CODE like concat(concat('%',#{transportOrderCode}),'%'))
+      </if>
+      <if test="carId != null and carId != ''" >
+        and tod.CAR_ID = #{carId}
+      </if>
+      <if test="carStatus != null and carStatus != ''" >
+        and tod.CAR_STATUS = #{carStatus}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and tod.CAR_VIN = #{carVin}
+        or tod.CAR_VIN like concat(concat('%',#{carVin}),'%')
+      </if>
+      <if test="sendUnitId != null and sendUnitId != ''" >
+        and tod.SEND_UNIT_ID = #{sendUnitId}
+      </if>
+      <if test="receiveUnitId != null and receiveUnitId != ''" >
+        and tod.RECEIVE_UNIT_ID = #{receiveUnitId}
+      </if>
+      <if test="examination != null and examination != ''" >
+        and tod.EXAMINATION = #{examination}
+      </if>
+	  <if test="examinationLocationId != null and examinationLocationId != ''" >
+        and tod.EXAMINATION_LOCATION_ID = #{examinationLocationId}
+      </if>
+      <if test="URGENT != null and URGENT != ''" >
+        and tod.URGENT = #{urgent}
+      </if>
+      <if test="claimLoadingDate != null and claimLoadingDate != ''" >
+        and tod.CLAIM_LOADING_DATE = #{claimLoadingDate}
+      </if>
+      <if test="realityLoadingDate != null and realityLoadingDate != ''" >
+        and tod.REALITY_LOADING_DATE = #{realityLoadingDate}
+      </if>
+      <if test="claimDeliveryDate != null and claimDeliveryDate != ''" >
+        and tod.CLAIM_DELIVERY_DATE = #{claimDeliveryDate}
+      </if>
+      <if test="realityDeliveryDate != null and realityDeliveryDate != ''" >
+        and tod.REALITY_DELIVERY_DATE = #{realityDeliveryDate}
+      </if>
+      <if test="arriveDateBesides != null and arriveDateBesides != ''" >
+        and tod.ARRIVE_DATE_BESIDES = #{arriveDateBesides}
+      </if>
+      <if test="signDate != null and signDate != ''" >
+        and tod.SIGN_DATE = #{signDate}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and tod.DRIVER_ID = #{driverId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and tod.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and tod.FLAG = #{flag}
+      </if>
+       <if test="searchContent != null and searchContent != ''" >
+        and (
+        tod.TRANSPORT_ORDER_CODE like concat(concat('%',#{searchContent}),'%')
+        or driver.USER_NAME like concat(concat('%',#{searchContent}),'%')
+        or driver.USER_CODE like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+    </trim>
+  </sql>
+   
+   <sql id="App_Where_Clause">
+    where tod.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and tod.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and tod.CAR_VIN = #{carVin}
+        or tod.CAR_VIN like concat(concat('%',#{carVin}),'%')
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and ( tod.CAR_VIN like concat(concat('%',#{searchContent}),'%'))
+      </if>
+      
+    </trim>
+  </sql>
+  
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+	from om_transport_order_detail tod
+	left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+    where tod.del = 0
+    and tod.TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from om_transport_order_detail where TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.TransportOrderDetail" keyProperty="transportOrderDetailId" useGeneratedKeys="true">
+    insert into om_transport_order_detail
+	(TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE, CAR_ID, CAR_STATUS,CAR_VIN, SEND_UNIT_ID, RECEIVE_UNIT_ID, EXAMINATION,EXAMINATION_LOCATION_ID, URGENT, CLAIM_LOADING_DATE, 
+	REALITY_LOADING_DATE, CLAIM_DELIVERY_DATE, REALITY_DELIVERY_DATE, ARRIVE_DATE_BESIDES, 
+	SIGN_DATE, DRIVER_ID, CORP_ID, FLAG)
+	values
+	(#{transportOrderId,jdbcType=BIGINT}, #{transportOrderCode,jdbcType=VARCHAR},  #{carId,jdbcType=BIGINT}, #{carStatus,jdbcType=INTEGER},#{carVin,jdbcType=VARCHAR},
+	#{sendUnitId,jdbcType=BIGINT}, #{receiveUnitId,jdbcType=BIGINT}, #{examination,jdbcType=INTEGER}, #{examinationLocationId,jdbcType=BIGINT},#{urgent,jdbcType=INTEGER}, 
+	#{claimLoadingDate,jdbcType=DATE}, #{realityLoadingDate,jdbcType=DATE}, #{claimDeliveryDate,jdbcType=DATE}, 
+	#{realityDeliveryDate,jdbcType=DATE}, #{arriveDateBesides,jdbcType=TIMESTAMP}, 
+	#{signDate,jdbcType=TIMESTAMP}, #{driverId,jdbcType=BIGINT}, #{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.TransportOrderDetail" keyProperty="transportOrderDetailId" useGeneratedKeys="true">
+    insert into om_transport_order_detail
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    TRANSPORT_ORDER_CODE, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID, 
+	  </if>
+	  <if test="carStatus != null" >
+       CAR_STATUS,
+      </if>
+	  <if test="carVin != null">
+	    CAR_VIN, 
+	  </if>
+	  <if test="sendUnitId != null">
+	    SEND_UNIT_ID, 
+	  </if>
+	  <if test="receiveUnitId != null">
+	    RECEIVE_UNIT_ID, 
+	  </if>
+	  <if test="examination != null">
+	    EXAMINATION, 
+	  </if>
+	  <if test="examinationLocationId != null">
+	    EXAMINATION_LOCATION_ID, 
+	  </if>
+	  <if test="urgent != null">
+	    URGENT, 
+	  </if>
+	  <if test="claimLoadingDate != null">
+	    CLAIM_LOADING_DATE, 
+	  </if>
+	  <if test="realityLoadingDate != null">
+	    REALITY_LOADING_DATE, 
+	  </if>
+	  <if test="claimDeliveryDate != null">
+	    CLAIM_DELIVERY_DATE, 
+	  </if>
+	  <if test="realityDeliveryDate != null">
+	    REALITY_DELIVERY_DATE, 
+	  </if>
+	  <if test="arriveDateBesides != null">
+	    ARRIVE_DATE_BESIDES, 
+	  </if>
+	  <if test="signDate != null">
+	    SIGN_DATE, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="transportOrderId != null">
+	    #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    #{transportOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="carId != null">
+	    #{carId,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="carStatus != null">
+	    #{carStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="carVin != null">
+	    #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="sendUnitId != null">
+	    #{sendUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="receiveUnitId != null">
+	    #{receiveUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="examination != null">
+	    #{examination,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="examinationLocationId != null">
+	    #{examinationLocationId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="urgent != null">
+	    #{urgent,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="claimLoadingDate != null">
+	    #{claimLoadingDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="realityLoadingDate != null">
+	    #{realityLoadingDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="claimDeliveryDate != null">
+	    #{claimDeliveryDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="realityDeliveryDate != null">
+	    #{realityDeliveryDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="arriveDateBesides != null">
+	    #{arriveDateBesides,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="signDate != null">
+	    #{signDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="driverId != null">
+	    #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.TransportOrderDetail" >
+	update om_transport_order_detail
+	<set>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID = #{carId,jdbcType=BIGINT}, 
+	  </if>
+	   <if test="carStatus != null and carStatus != ''" >
+        CAR_STATUS = #{carStatus},
+      </if>
+	  <if test="carVin != null">
+	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="sendUnitId != null">
+	    SEND_UNIT_ID = #{sendUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="receiveUnitId != null">
+	    RECEIVE_UNIT_ID = #{receiveUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="examination != null">
+	    EXAMINATION = #{examination,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="examinationLocationId != null">
+	    EXAMINATION_LOCATION_ID = #{examinationLocationId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="urgent != null">
+	    URGENT = #{urgent,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="claimLoadingDate != null">
+	    CLAIM_LOADING_DATE = #{claimLoadingDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="realityLoadingDate != null">
+	    REALITY_LOADING_DATE = #{realityLoadingDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="claimDeliveryDate != null">
+	    CLAIM_DELIVERY_DATE = #{claimDeliveryDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="realityDeliveryDate != null">
+	    REALITY_DELIVERY_DATE = #{realityDeliveryDate,jdbcType=DATE}, 
+	  </if>
+	<!--  <if test="arriveDateBesides != null">-->
+	    ARRIVE_DATE_BESIDES = #{arriveDateBesides,jdbcType=TIMESTAMP}, 
+	  <!--</if>-->
+	  <if test="signDate != null">
+	    SIGN_DATE = #{signDate,jdbcType=TIMESTAMP}, 
+	  </if>
+		<if test="freightId != null">
+			FREIGHT_ID = #{freightId,jdbcType=BIGINT},
+		</if>
+		<if test="finalPrice != null">
+			FREIGHT_FINAL_PRICE = #{finalPrice,jdbcType=DECIMAL},
+		</if>
+	  <if test="driverId != null">
+	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.TransportOrderDetail" >
+    update om_transport_order_detail set 
+	  TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 
+	  CAR_ID = #{carId,jdbcType=BIGINT},CAR_STATUS = #{carStatus}, CAR_VIN = #{carVin,jdbcType=VARCHAR}, SEND_UNIT_ID = #{sendUnitId,jdbcType=BIGINT}, 
+	  RECEIVE_UNIT_ID = #{receiveUnitId,jdbcType=BIGINT}, EXAMINATION = #{examination,jdbcType=INTEGER},EXAMINATION_LOCATION_ID = #{examinationLocationId,jdbcType=BIGINT}, 
+	  URGENT = #{urgent,jdbcType=INTEGER}, 
+	  CLAIM_LOADING_DATE = #{claimLoadingDate,jdbcType=DATE}, REALITY_LOADING_DATE = #{realityLoadingDate,jdbcType=DATE}, 
+	  CLAIM_DELIVERY_DATE = #{claimDeliveryDate,jdbcType=DATE}, REALITY_DELIVERY_DATE = #{realityDeliveryDate,jdbcType=DATE}, 
+	  ARRIVE_DATE_BESIDES = #{arriveDateBesides,jdbcType=TIMESTAMP}, 
+	  SIGN_DATE = #{signDate,jdbcType=TIMESTAMP}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  FLAG = #{flag,jdbcType=INTEGER}
+	where TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}
+  </update>
+  
+    <update id="logicDeleteByPrimaryKey" parameterType="com.tilchina.timp.model.TransportOrderDetail">
+    update om_transport_order_detail set 
+      DEL = 1 
+    <include refid="logicDelete_Where_Clause"/>
+  </update>
+  
+  <update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+    update om_transport_order_detail set 
+	  DEL = 1
+	WHERE TRANSPORT_ORDER_DETAIL_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+    <update id="logicDeleteByTransportOrderKeyList" parameterType="java.lang.Long">
+    update om_transport_order_detail set 
+	  DEL = 1
+	WHERE TRANSPORT_ORDER_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+   <select id="selectByOrderKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+    where tod.TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </select>
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+    
+  </select>
+    <select id="appSelectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN 
+	<include refid="App_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+  <resultMap id="LoadingInfo" type="com.tilchina.timp.model.Loading">
+    <result column="SEND_UNIT_ID" property="sendUnitId"/>  
+    <result column="CAR_COUNT" property="CarCount" />
+    <result column="RECEIVE_UNIT_ID" property="receiveUnitId"/>  
+    <result column="HANDING_COUNT" property="handingCount" />
+  </resultMap> 
+  
+  <select id="selectLoadingCount" resultMap="LoadingInfo"  parameterType="Object">
+	select 
+	tod.SEND_UNIT_ID,count(tod.CAR_VIN) AS CAR_COUNT,tod.RECEIVE_UNIT_ID,count(tod.RECEIVE_UNIT_ID) AS HANDING_COUNT 
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+	<include refid="Unit_Where_Clause"/>
+	group by tod.SEND_UNIT_ID,tod.RECEIVE_UNIT_ID
+  </select>
+  
+   <sql id="Unit_Where_Clause">
+    where tod.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transportOrderId != null and transportOrderId != ''" >
+         and tod.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="sendUnitId != null and sendUnitId != ''" >
+         and tod.SEND_UNIT_ID = #{sendUnitId}
+      </if>
+    </trim>
+  </sql>
+  
+   <select id="selectStartUnitCount" resultMap="LoadingInfo"  parameterType="java.lang.Long">
+	select 
+	tod.SEND_UNIT_ID,count(tod.CAR_VIN) AS CAR_COUNT
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+	where  tod.del = 0 and  tod.TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT} 
+	group by tod.SEND_UNIT_ID
+  </select>
+  
+    <select id="selectEndUnitCount" resultMap="LoadingInfo"  parameterType="java.lang.Long">
+	select 
+	tod.RECEIVE_UNIT_ID,count(tod.RECEIVE_UNIT_ID) AS HANDING_COUNT 
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+	where  tod.del = 0 and  tod.TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT} 
+	group by tod.RECEIVE_UNIT_ID
+  </select>
+    
+   <select id="queryByDriverId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+     where tod.del = 0  and tod.DRIVER_ID = #{driverId,jdbcType=BIGINT}
+  </select>
+  
+  	<sql id="carVin_Where_Clause">
+    where  del = 0
+    <trim  suffixOverrides="," >
+      <if test="carVin != null and carVin != ''" >
+         and CAR_VIN = #{carVin}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+         and TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+    </trim>
+  </sql>
+  
+	<select id="queryByCarVin" parameterType="Object" resultMap="BaseResultMap">
+		select  TRANSPORT_ORDER_ID,  TRANSPORT_ORDER_CODE
+		from om_transport_order_detail 
+		<include refid="carVin_Where_Clause"/>
+	</select>
+
+	<select id="selectByCarVin" parameterType="String" resultMap="BaseResultMap">
+		select detail.TRANSPORT_ORDER_ID, detail.TRANSPORT_ORDER_CODE
+		from om_transport_order_detail detail
+		where  detail.del = 0 and detail.CAR_VIN = #{carVin} 
+		order by detail.TS desc
+	</select>
+
+	<!--通过驾驶员ID和车架号查询子运单  -->
+	<select id="getDetail"  resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+      <include refid="Query_Column_List"/>
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+     where tod.del = 0  
+     <if test="driverId != null and driverId != ''">
+     	and tod.DRIVER_ID = #{driverId,jdbcType=BIGINT}
+     </if>
+     <if test="carVin != null and carVin != ''">
+     	and tod.CAR_VIN = #{carVin,jdbcType=VARCHAR}
+     </if>
+     <if test="carriageCorpId != null and carriageCorpId != ''">
+     	and tso.CARRIAGE_CORP_ID = #{carriageCorpId,jdbcType=BIGINT}
+     </if>
+     order by tod.TRANSPORT_ORDER_ID DESC limit 1
+  </select>
+  
+  <select id="getTransOrder"  resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+      <include refid="Query_Column_List"/>
+	from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+    where tod.DEL=0 AND tod.TRANSPORT_ORDER_ID = #{transportOrderId} AND tod.CAR_VIN = #{carVin} ORDER BY tod.CLAIM_LOADING_DATE DESC limit 1
+  </select>
+  
+    <select id="selectRefer" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Refer_Column_List"/>
+	from om_transport_order_detail tod
+	left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+	left join bd_car car on car.CAR_ID =  tod.CAR_ID
+  	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+  	left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+	left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+	left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+  	left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+  	left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+  	left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+  	left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+  	left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+  	left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID 
+	and  srto.CAR_VIN =  tod.CAR_VIN
+	<include refid="Refer_Where_Clause"/>
+		order by tod.TRANSPORT_ORDER_DETAIL_ID DESC
+  </select>
+
+	<sql id="Scan_Column_List" >
+	car.CAR_NAME AS refCarName, car.CAR_CODE AS refCarCode,brand.BRAND_NAME AS refBrandName,tod.CAR_VIN AS carVin,
+ 	tod.CAR_STATUS carStatus, ctype.CAR_TYPE_NAME AS refCarTypeName
+  </sql>
+	<select id="getLoadList"  resultType="java.util.Map" parameterType="java.lang.Long">
+		select
+		<include refid="Scan_Column_List"/>
+		from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+		left join bd_car car on car.CAR_ID =  tod.CAR_ID
+		left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+		left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		where tod.DRIVER_ID=#{driverId,jdbcType=BIGINT}
+		and tso.BILL_STATUS=3
+		ORDER BY tod.CAR_STATUS
+	</select>
+
+	<select id="getArrivalList"  resultType="java.util.Map" parameterType="java.lang.Long">
+		select
+		<include refid="Scan_Column_List"/>
+		from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+		left join bd_car car on car.CAR_ID =  tod.CAR_ID
+		left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+		left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		where tod.DRIVER_ID=#{driverId,jdbcType=BIGINT}
+		and tso.BILL_STATUS=4
+		ORDER BY tod.CAR_STATUS
+	</select>
+
+	<select id="selectByCorpIds" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Refer_Column_List"/>
+		from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+		left join bd_car car on car.CAR_ID =  tod.CAR_ID
+		left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+		left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+		left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+		left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+		left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+		left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+		left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+		left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+		left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+		left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID
+		and  srto.CAR_VIN =  tod.CAR_VIN
+		<include refid="CorpIds_Where_Clause"/>
+		order by tod.TRANSPORT_ORDER_DETAIL_ID DESC
+	</select>
+
+	<sql id="CorpIds_Where_Clause">
+		where tod.DEL = 0
+		<trim  suffixOverrides="," >
+			and tso.BILL_STATUS != 5
+			<if test="searchContent != null and searchContent != ''" >
+				and (
+				tod.CAR_VIN like concat(concat('%',#{searchContent}),'%')
+				or car.CAR_NAME like concat(concat('%',#{searchContent}),'%')
+				or brand.BRAND_NAME like concat(concat('%',#{searchContent}),'%')
+				)
+			</if>
+			<if test="list.size > 0" >
+				and tod.CORP_ID in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+		</trim>
+	</sql>
+
+
+<!--	<select id="selectByCorpIds" parameterType="java.util.List" resultMap="BaseResultMap">
+		select
+		<include refid="Refer_Column_List"/>
+		from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+		left join bd_car car on car.CAR_ID =  tod.CAR_ID
+		left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+		left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+		left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+		left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+		left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+		left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+		left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+		left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+		left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+		left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID
+		and  srto.CAR_VIN =  tod.CAR_VIN
+		where tod.DEL = 0
+		and tod.CORP_ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		order by tod.TRANSPORT_ORDER_DETAIL_ID DESC
+	</select>-->
+
+	<select id="selectByDetaiIds" parameterType="java.util.List" resultMap="BaseResultMap">
+		select
+		<include refid="Refer_Column_List"/>
+		from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+		left join bd_car car on car.CAR_ID =  tod.CAR_ID
+		left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+		left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+		left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+		left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+		left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+		left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+		left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+		left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+		left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+		left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID
+		and  srto.CAR_VIN =  tod.CAR_VIN
+		where tod.DEL = 0
+		<if test="list.size > 0" >
+			and tod.TRANSPORT_ORDER_DETAIL_ID in
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		order by tod.TRANSPORT_ORDER_DETAIL_ID DESC
+	</select>
+
+	<select id="selectByFreightId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+		<include refid="Query_Column_List"/>
+		from om_transport_order_detail tod
+		left join om_transport_order tso on tso.TRANSPORT_ORDER_ID =  tod.TRANSPORT_ORDER_ID
+		left join bd_car car on car.CAR_ID =  tod.CAR_ID
+		left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+		left join bd_unit sunit on sunit.UNIT_ID =  tod.SEND_UNIT_ID
+		left join bd_unit runit on runit.UNIT_ID =  tod.RECEIVE_UNIT_ID
+		left join BD_USER driver on driver.USER_ID = tod.DRIVER_ID
+		left join bd_check_point cp on cp.CHECK_POINT_ID = tod.EXAMINATION_LOCATION_ID
+		left join SYS_CORP corp on corp.CORP_ID =  tod.CORP_ID
+		left join bd_category category on category.CATEGORY_ID = car.CATEGORY_ID
+		left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+		left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+		left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		left join sr_transfer_order srto on srto.TRANSPORT_ORDER_DETAIL_ID = tod.TRANSPORT_ORDER_DETAIL_ID
+		where tod.del = 0
+		and tod.FREIGHT_ID = #{freightId}
+	</select>
+
+</mapper>   

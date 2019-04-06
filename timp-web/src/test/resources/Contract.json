@@ -1,0 +1,23 @@
+{
+  "data":{
+    "contractId":0,
+    "contractNumber":"Test-contractNumber",
+    "contractType":0,
+    "partya":0,
+    "partyb":0,
+    "partyaManager":0,
+    "partybManager":0,
+    "signingDate":"2018-05-06 02:30:39",
+    "signingPlace":0,
+    "contractStartDate":"2018-05-06 02:30:39",
+    "contractEndDate":"2018-05-06 02:30:39",
+    "contractAttachment":"Test-contractAttachment",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-05-06 02:30:39",
+    "checker":0,
+    "checkDate":"2018-05-06 02:30:39",
+    "corpId":0,
+    "flag":0
+  }
+}

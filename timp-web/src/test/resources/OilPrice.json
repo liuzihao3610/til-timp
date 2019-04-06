@@ -1,0 +1,11 @@
+{
+  "data":{
+    "oilPriceId":0,
+    "oilName":"Test-oilName",
+    "oilType":0,
+    "labeling":"Test-labeling",
+    "price":0,
+    "corpId":0,
+    "flag":0
+  }
+}

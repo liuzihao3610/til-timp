@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.OilDepotSupplyRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.OilDepotSupplyRecord" >
+    <id column="OIL_DEPOT_SUPPLY_RECORD_ID" jdbcType="BIGINT" property="oilDepotSupplyRecordId" />
+	<result column="OIL_DEPOT_SUPPLY_RECORD_ID" jdbcType="BIGINT" property="oilDepotSupplyRecordId" />
+	<result column="OIL_DEPOT_ID" jdbcType="BIGINT" property="oilDepotId" />
+	<result column="ALLOWANCE_BEFORE_SUPPLY" jdbcType="DOUBLE" property="allowanceBeforeSupply" />
+	<result column="OIL_SUPPLY" jdbcType="DOUBLE" property="oilSupply" />
+	<result column="UNIT_PRICE" jdbcType="DECIMAL" property="unitPrice" />
+	<result column="TOTAL_PRICE" jdbcType="DECIMAL" property="totalPrice" />
+	<result column="MANAGE_PERSON" jdbcType="BIGINT" property="managePerson" />
+	<result column="SUPPLY_DATE" jdbcType="TIMESTAMP" property="supplyDate" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="OIL_DEPOT_CODE" jdbcType="VARCHAR" property="refOilDepotCode" />
+    <result column="OIL_DEPOT_TYPE" jdbcType="INTEGER" property="refOilDepotType" />
+    <result column="OIL_LABEL" jdbcType="VARCHAR" property="refOilLabel" />
+	<result column="MANAGE_PERSON_NAME" jdbcType="VARCHAR" property="refManagePersonName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    OIL_DEPOT_SUPPLY_RECORD_ID, OIL_DEPOT_ID, ALLOWANCE_BEFORE_SUPPLY, OIL_SUPPLY, UNIT_PRICE, TOTAL_PRICE, MANAGE_PERSON, 
+	SUPPLY_DATE, CREATOR, CREATE_DATE,CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List" >
+    odsr.OIL_DEPOT_SUPPLY_RECORD_ID,odsr.OIL_DEPOT_ID,od.OIL_DEPOT_CODE,od.OIL_DEPOT_TYPE,od.OIL_LABEL,odsr.ALLOWANCE_BEFORE_SUPPLY,odsr.OIL_SUPPLY,odsr.UNIT_PRICE,
+    odsr.TOTAL_PRICE,odsr.MANAGE_PERSON,us.USER_NAME AS MANAGE_PERSON_NAME,odsr.SUPPLY_DATE,odsr.CREATOR,u.USER_NAME AS CREATE_NAME,
+    odsr.CREATE_DATE,odsr.CORP_ID,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where odsr.del = 0
+    <trim  suffixOverrides="," >
+      <if test="oilDepotSupplyRecordId != null and oilDepotSupplyRecordId != ''" >
+        and odsr.OIL_DEPOT_SUPPLY_RECORD_ID = #{oilDepotSupplyRecordId}
+      </if>
+      <if test="oilDepotId != null and oilDepotId != ''" >
+        and odsr.OIL_DEPOT_ID = #{oilDepotId}
+      </if>
+	  <if test="refOilDepotCode != null and refOilDepotCode != ''" >
+		and od.OIL_DEPOT_CODE LIKE CONCAT('%',#{refOilDepotCode},'%')
+	  </if>
+      <if test="allowanceBeforeSupply != null and allowanceBeforeSupply != ''" >
+        and odsr.ALLOWANCE_BEFORE_SUPPLY = #{allowanceBeforeSupply}
+      </if>
+      <if test="oilSupply != null and oilSupply != ''" >
+        and odsr.OIL_SUPPLY = #{oilSupply}
+      </if>
+      <if test="unitPrice != null and unitPrice != ''" >
+        and odsr.UNIT_PRICE = #{unitPrice}
+      </if>
+      <if test="totalPrice != null and totalPrice != ''" >
+        and odsr.TOTAL_PRICE = #{totalPrice}
+      </if>
+      <if test="managePerson != null and managePerson != ''" >
+        and odsr.MANAGE_PERSON = #{managePerson}
+      </if>
+		<if test="refManagePersonName != null and refManagePersonName != ''" >
+			and us.USER_NAME LIKE CONCAT('%',#{refOilDepotCode},'%')
+		</if>
+      <if test="supplyDate != null and supplyDate != ''" >
+        and odsr.SUPPLY_DATE = #{supplyDate}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and odsr.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and odsr.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and odsr.CORP_ID = #{corpId}
+      </if>
+		<if test="refCorpName != null and refCorpName != ''" >
+			and corp.CORP_NAME LIKE CONCAT('%',#{refCorpName},'%')
+		</if>
+		<if test="refOilDepotType != null and refOilDepotType != ''" >
+			and od.OIL_DEPOT_TYPE LIKE CONCAT('%',#{refOilDepotType},'%')
+		</if>
+		<if test="refOilLabel != null and refOilLabel != ''" >
+			and od.OIL_LABEL LIKE CONCAT('%',#{refOilLabel},'%')
+		</if>
+		<if test="startTime != null and startTime != ''">
+			<![CDATA[ and odsr.CREATE_DATE  >=  #{startTime}  ]]>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			<![CDATA[ and odsr.CREATE_DATE  <=  #{endTime}  ]]>
+		</if>
+		<if test="searchContent != null and searchContent != ''" >
+			and (od.OIL_DEPOT_CODE LIKE CONCAT('%',#{searchContent},'%')
+				or us.USER_NAME LIKE CONCAT('%',#{searchContent},'%')
+			)
+		</if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from am_oil_depot_supply_record odsr
+		JOIN am_oil_depot od ON odsr.OIL_DEPOT_ID=od.OIL_DEPOT_ID
+		JOIN bd_user us ON odsr.MANAGE_PERSON=us.USER_ID
+		JOIN bd_user u ON odsr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON odsr.CORP_ID=corp.CORP_ID
+    where odsr.DEL=0 AND odsr.OIL_DEPOT_SUPPLY_RECORD_ID = #{oilDepotSupplyRecordId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update am_oil_depot_supply_record set DEL=1 where OIL_DEPOT_SUPPLY_RECORD_ID = #{oilDepotSupplyRecordId}
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.OilDepotSupplyRecord" keyProperty="oilDepotSupplyRecordId" useGeneratedKeys="true">
+    insert into am_oil_depot_supply_record
+	(OIL_DEPOT_ID, ALLOWANCE_BEFORE_SUPPLY, OIL_SUPPLY, UNIT_PRICE, TOTAL_PRICE, MANAGE_PERSON, SUPPLY_DATE, CREATOR, CREATE_DATE,CORP_ID)
+	values
+	(#{oilDepotId,jdbcType=BIGINT}, #{allowanceBeforeSupply,jdbcType=DOUBLE}, #{oilSupply,jdbcType=DOUBLE}, #{unitPrice,jdbcType=DECIMAL}, 
+	#{totalPrice,jdbcType=DECIMAL}, #{managePerson,jdbcType=BIGINT}, #{supplyDate,jdbcType=TIMESTAMP}, 
+	#{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP},#{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.OilDepotSupplyRecord" keyProperty="oilDepotSupplyRecordId" useGeneratedKeys="true">
+    insert into am_oil_depot_supply_record
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="oilDepotId != null">
+	    OIL_DEPOT_ID, 
+	  </if>
+	  <if test="allowanceBeforeSupply != null">
+	    ALLOWANCE_BEFORE_SUPPLY, 
+	  </if>
+	  <if test="oilSupply != null">
+	    OIL_SUPPLY, 
+	  </if>
+	  <if test="unitPrice != null">
+	    UNIT_PRICE, 
+	  </if>
+	  <if test="totalPrice != null">
+	    TOTAL_PRICE, 
+	  </if>
+	  <if test="managePerson != null">
+	    MANAGE_PERSON, 
+	  </if>
+	  <if test="supplyDate != null">
+	    SUPPLY_DATE, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="oilDepotId != null">
+	    #{oilDepotId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="allowanceBeforeSupply != null">
+	    #{allowanceBeforeSupply,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="oilSupply != null">
+	    #{oilSupply,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="unitPrice != null">
+	    #{unitPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="totalPrice != null">
+	    #{totalPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="managePerson != null">
+	    #{managePerson,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="supplyDate != null">
+	    #{supplyDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.OilDepotSupplyRecord" >
+	update am_oil_depot_supply_record
+	<set>
+	  <if test="oilDepotId != null">
+	    OIL_DEPOT_ID = #{oilDepotId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="allowanceBeforeSupply != null">
+	    ALLOWANCE_BEFORE_SUPPLY = #{allowanceBeforeSupply,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="oilSupply != null">
+	    OIL_SUPPLY = #{oilSupply,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="unitPrice != null">
+	    UNIT_PRICE = #{unitPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="totalPrice != null">
+	    TOTAL_PRICE = #{totalPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="managePerson != null">
+	    MANAGE_PERSON = #{managePerson,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="supplyDate != null">
+	    SUPPLY_DATE = #{supplyDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where OIL_DEPOT_SUPPLY_RECORD_ID = #{oilDepotSupplyRecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.OilDepotSupplyRecord" >
+    update am_oil_depot_supply_record set 
+	  OIL_DEPOT_ID = #{oilDepotId,jdbcType=BIGINT}, ALLOWANCE_BEFORE_SUPPLY = #{allowanceBeforeSupply,jdbcType=DOUBLE}, OIL_SUPPLY = #{oilSupply,jdbcType=DOUBLE}, 
+	  UNIT_PRICE = #{unitPrice,jdbcType=DECIMAL}, TOTAL_PRICE = #{totalPrice,jdbcType=DECIMAL}, 
+	  MANAGE_PERSON = #{managePerson,jdbcType=BIGINT}, SUPPLY_DATE = #{supplyDate,jdbcType=TIMESTAMP}, CREATOR = #{creator,jdbcType=BIGINT}, 
+	  CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},CORP_ID = #{corpId,jdbcType=BIGINT}
+	where OIL_DEPOT_SUPPLY_RECORD_ID = #{oilDepotSupplyRecordId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    from am_oil_depot_supply_record odsr
+		JOIN am_oil_depot od ON odsr.OIL_DEPOT_ID=od.OIL_DEPOT_ID
+		JOIN bd_user us ON odsr.MANAGE_PERSON=us.USER_ID
+		JOIN bd_user u ON odsr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON odsr.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by odsr.CREATE_DATE DESC
+  </select>
+  	
+</mapper>   

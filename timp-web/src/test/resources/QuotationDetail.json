@@ -1,0 +1,21 @@
+{
+  "data":{
+    "quotationDetailId":0,
+    "quotationId":0,
+    "quotationPlan":0,
+    "sendCityId":0,
+    "recvCityId":0,
+    "jobType":0,
+    "distance":0,
+    "carBrandId":0,
+    "carTypeId":0,
+    "carModelId":0,
+    "leadTime":0,
+    "unitPrice":0,
+    "totalPrice":0,
+    "taxRate":0,
+    "priceDesc":"Test-priceDesc",
+    "corpId":0,
+    "flag":0
+  }
+}

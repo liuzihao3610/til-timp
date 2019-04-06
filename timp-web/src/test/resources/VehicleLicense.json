@@ -1,0 +1,17 @@
+{
+  "data":{
+    "licenseId":0,
+    "vehicleId":0,
+    "licenseNumber":"Test-licenseNumber",
+    "licenseType":0,
+    "startValidDate":"2018-07-17 02:01:18",
+    "endValidDate":"2018-07-17 02:01:18",
+    "licenseStatus":0,
+    "creator":0,
+    "createDate":"2018-07-17 02:01:18",
+    "checker":0,
+    "checkDate":"2018-07-17 02:01:18",
+    "corpId":0,
+    "flag":0
+  }
+}

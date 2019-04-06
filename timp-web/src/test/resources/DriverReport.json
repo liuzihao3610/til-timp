@@ -1,0 +1,19 @@
+{
+  "data":{
+    "driverReportId":0,
+    "driverId":0,
+    "driverStatus":0,
+    "transporterId":0,
+    "transporterStatus":0,
+    "location":"Test-location",
+    "lng":0,
+    "lat":0,
+    "startTime":"2018-03-29 09:19:23",
+    "endTime":"2018-03-29 09:19:23",
+    "remark":"Test-remark",
+    "creator":0,
+    "createDate":"2018-03-29 09:19:23",
+    "corpId":0,
+    "flag":0
+  }
+}

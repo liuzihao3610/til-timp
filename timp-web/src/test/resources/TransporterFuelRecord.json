@@ -1,0 +1,12 @@
+{
+  "data":{
+    "transporterFuelRecordId":0,
+    "oilDepotId":0,
+    "driverId":0,
+    "transporterId":0,
+    "fuelCharge":0,
+    "fuelDate":"2018-05-30 03:00:33",
+    "creator":0,
+    "createDate":"2018-05-30 03:00:33"
+  }
+}

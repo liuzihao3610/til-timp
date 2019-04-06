@@ -1,0 +1,19 @@
+{
+  "data":{
+    "quotationId":0,
+    "quotationNumber":"Test-quotationNumber",
+    "quotationType":0,
+    "contractId":0,
+    "customerId":0,
+    "vendorCorpId":0,
+    "quotationName":"Test-quotationName",
+    "quotationFile":"Test-quotationFile",
+    "effectiveDate":"2018-05-14 02:16:04",
+    "creator":0,
+    "createDate":"2018-05-14 02:16:04",
+    "checker":0,
+    "checkDate":"2018-05-14 02:16:04",
+    "corpId":0,
+    "flag":0
+  }
+}

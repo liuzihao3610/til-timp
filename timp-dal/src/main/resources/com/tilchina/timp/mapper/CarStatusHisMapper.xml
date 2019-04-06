@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CarStatusHisMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.CarStatusHis" >
+    <id column="CAR_STATUS_HIS_ID" jdbcType="BIGINT" property="carStatusHisId" />
+	<result column="CAR_STATUS_HIS_ID" jdbcType="BIGINT" property="carStatusHisId" />
+	<result column="CAR_STATUS_ID" jdbcType="BIGINT" property="carStatusId" />
+	<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="URGENT_STATUS" jdbcType="INTEGER" property="urgentStatus" />
+	<result column="CAR_TYPE_ID" jdbcType="BIGINT" property="carTypeId" />
+	<result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="carTypeName" />
+	<result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+	<result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
+	<result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+	<result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
+	<result column="ORDER_STATUS" jdbcType="INTEGER" property="orderStatus" />
+	<result column="DELIVERY_UNIT_ID" jdbcType="BIGINT" property="deliveryUnitId" />
+	<result column="DELIVERY_UNIT_NAME" jdbcType="VARCHAR" property="deliveryUnitName" />
+	<result column="RECEPTION_UNIT_ID" jdbcType="BIGINT" property="receptionUnitId" />
+	<result column="RECEPTION_UNIT_NAME" jdbcType="VARCHAR" property="receptionUnitName" />
+	<result column="ORIGINAL_ORDER_ID" jdbcType="BIGINT" property="originalOrderId" />
+	<result column="ORIGINAL_ORDER_DETAIL_ID" jdbcType="BIGINT" property="originalOrderDetailId" />
+	<result column="CUSTOMER_CORP_ID" jdbcType="BIGINT" property="customerCorpId" />
+	<result column="CUSTOMER_CORP_NAME" jdbcType="VARCHAR" property="customerCorpName" />
+	<result column="ORDER_BILL_DATE" jdbcType="TIMESTAMP" property="orderBillDate" />
+	<result column="ORIGINAL_DELIVERY_UNIT_ID" jdbcType="BIGINT" property="originalDeliveryUnitId" />
+	<result column="ORIGINAL_DELIVERY_UNIT_NAME" jdbcType="VARCHAR" property="originalDeliveryUnitName" />
+	<result column="ORIGINAL_RECEPTION_UNIT_ID" jdbcType="BIGINT" property="originalReceptionUnitId" />
+	<result column="ORIGINAL_RECEPTION_UNIT_NAME" jdbcType="VARCHAR" property="originalReceptionUnitName" />
+	<result column="DESTINED_LOAD_DATE" jdbcType="DATE" property="destinedLoadDate" />
+	<result column="DESTINED_RECEPTION_DATE" jdbcType="DATE" property="destinedReceptionDate" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="driverName" />
+	<result column="CUSTOMER_QUOTED_PRICE" jdbcType="DECIMAL" property="customerQuotedPrice" />
+	<result column="FREIGHT_PRICE" jdbcType="DECIMAL" property="freightPrice" />
+	<result column="CAR_STATUS_STATUS" jdbcType="INTEGER" property="carStatusStatus" />
+	<result column="SEQUENCE" jdbcType="BIGINT" property="sequence" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="CAR_NAME" jdbcType="VARCHAR" property="refCarName" />
+	<result column="ORDER_CODE" jdbcType="VARCHAR" property="refOrderCode" />
+	<result column="ORIGINAL_ORDER_CODE" jdbcType="VARCHAR" property="refOriginalOrderCode" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="refTransportOrderCode" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CAR_STATUS_HIS_ID, CAR_STATUS_ID, CAR_ID, CAR_VIN, URGENT_STATUS, CAR_TYPE_ID, CAR_TYPE_NAME, BRAND_ID, BRAND_NAME, 	CATEGORY_ID, CATEGORY_NAME, ORDER_ID, ORDER_DETAIL_ID, ORDER_STATUS, DELIVERY_UNIT_ID, DELIVERY_UNIT_NAME, RECEPTION_UNIT_ID, 	RECEPTION_UNIT_NAME, ORIGINAL_ORDER_ID, ORIGINAL_ORDER_DETAIL_ID, CUSTOMER_CORP_ID, CUSTOMER_CORP_NAME, 	ORDER_BILL_DATE, ORIGINAL_DELIVERY_UNIT_ID, ORIGINAL_DELIVERY_UNIT_NAME, ORIGINAL_RECEPTION_UNIT_ID, ORIGINAL_RECEPTION_UNIT_NAME, 	DESTINED_LOAD_DATE, DESTINED_RECEPTION_DATE, TRANSPORT_ORDER_ID, DRIVER_ID, DRIVER_NAME, CUSTOMER_QUOTED_PRICE, 	FREIGHT_PRICE, CAR_STATUS_STATUS, SEQUENCE, CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	carstatushis.CAR_STATUS_HIS_ID,carstatushis.CAR_STATUS_ID,carstatushis.CAR_ID,car.CAR_NAME,carstatushis.CAR_VIN,carstatushis.URGENT_STATUS,carstatushis.CAR_TYPE_ID,
+  	carstatushis.CAR_TYPE_NAME,carstatushis.BRAND_ID,carstatushis.BRAND_NAME,carstatushis.CATEGORY_ID,carstatushis.CATEGORY_NAME,carstatushis.ORDER_ID,ord.ORDER_CODE,
+  	carstatushis.ORDER_DETAIL_ID,carstatushis.ORDER_STATUS,carstatushis.DELIVERY_UNIT_ID,carstatushis.DELIVERY_UNIT_NAME,carstatushis.RECEPTION_UNIT_ID,
+  	carstatushis.RECEPTION_UNIT_NAME,carstatushis.ORIGINAL_ORDER_ID,o.ORDER_CODE AS ORIGINAL_ORDER_CODE,carstatushis.ORIGINAL_ORDER_DETAIL_ID,carstatushis.CUSTOMER_CORP_ID,
+  	carstatushis.CUSTOMER_CORP_NAME,carstatushis.ORDER_BILL_DATE,carstatushis.ORIGINAL_DELIVERY_UNIT_ID,carstatushis.ORIGINAL_DELIVERY_UNIT_NAME,
+  	carstatushis.ORIGINAL_RECEPTION_UNIT_ID,carstatushis.ORIGINAL_RECEPTION_UNIT_NAME,carstatushis.DESTINED_LOAD_DATE,carstatushis.DESTINED_RECEPTION_DATE,
+  	carstatushis.TRANSPORT_ORDER_ID,torder.TRANSPORT_ORDER_CODE,carstatushis.DRIVER_ID,carstatushis.DRIVER_NAME,carstatushis.CUSTOMER_QUOTED_PRICE,carstatushis.FREIGHT_PRICE,
+  	carstatushis.CAR_STATUS_STATUS,carstatushis.SEQUENCE,carstatushis.CORP_ID,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where carstatushis.del = 0
+    <trim  suffixOverrides="," >
+      <if test="carStatusHisId != null and carStatusHisId != ''" >
+        and carstatushis.CAR_STATUS_HIS_ID = #{carStatusHisId}
+      </if>
+      <if test="carStatusId != null and carStatusId != ''" >
+        and carstatushis.CAR_STATUS_ID = #{carStatusId}
+      </if>
+      <if test="carId != null and carId != ''" >
+        and carstatushis.CAR_ID = #{carId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and carstatushis.CAR_VIN = #{carVin}
+      </if>
+      <if test="urgentStatus != null and urgentStatus != ''" >
+        and carstatushis.URGENT_STATUS = #{urgentStatus}
+      </if>
+      <if test="carTypeId != null and carTypeId != ''" >
+        and carstatushis.CAR_TYPE_ID = #{carTypeId}
+      </if>
+      <if test="carTypeName != null and carTypeName != ''" >
+        and carstatushis.CAR_TYPE_NAME = #{carTypeName}
+      </if>
+      <if test="brandId != null and brandId != ''" >
+        and carstatushis.BRAND_ID = #{brandId}
+      </if>
+      <if test="brandName != null and brandName != ''" >
+        and carstatushis.BRAND_NAME = #{brandName}
+      </if>
+      <if test="categoryId != null and categoryId != ''" >
+        and carstatushis.CATEGORY_ID = #{categoryId}
+      </if>
+      <if test="categoryName != null and categoryName != ''" >
+        and carstatushis.CATEGORY_NAME = #{categoryName}
+      </if>
+      <if test="orderId != null and orderId != ''" >
+        and carstatushis.ORDER_ID = #{orderId}
+      </if>
+      <if test="orderDetailId != null and orderDetailId != ''" >
+        and carstatushis.ORDER_DETAIL_ID = #{orderDetailId}
+      </if>
+      <if test="orderStatus != null and orderStatus != ''" >
+        and carstatushis.ORDER_STATUS = #{orderStatus}
+      </if>
+      <if test="deliveryUnitId != null and deliveryUnitId != ''" >
+        and carstatushis.DELIVERY_UNIT_ID = #{deliveryUnitId}
+      </if>
+      <if test="deliveryUnitName != null and deliveryUnitName != ''" >
+        and carstatushis.DELIVERY_UNIT_NAME = #{deliveryUnitName}
+      </if>
+      <if test="receptionUnitId != null and receptionUnitId != ''" >
+        and carstatushis.RECEPTION_UNIT_ID = #{receptionUnitId}
+      </if>
+      <if test="receptionUnitName != null and receptionUnitName != ''" >
+        and carstatushis.RECEPTION_UNIT_NAME = #{receptionUnitName}
+      </if>
+      <if test="originalOrderId != null and originalOrderId != ''" >
+        and carstatushis.ORIGINAL_ORDER_ID = #{originalOrderId}
+      </if>
+      <if test="originalOrderDetailId != null and originalOrderDetailId != ''" >
+        and carstatushis.ORIGINAL_ORDER_DETAIL_ID = #{originalOrderDetailId}
+      </if>
+      <if test="customerCorpId != null and customerCorpId != ''" >
+        and carstatushis.CUSTOMER_CORP_ID = #{customerCorpId}
+      </if>
+      <if test="customerCorpName != null and customerCorpName != ''" >
+        and carstatushis.CUSTOMER_CORP_NAME = #{customerCorpName}
+      </if>
+      <if test="orderBillDate != null and orderBillDate != ''" >
+        and carstatushis.ORDER_BILL_DATE = #{orderBillDate}
+      </if>
+      <if test="originalDeliveryUnitId != null and originalDeliveryUnitId != ''" >
+        and carstatushis.ORIGINAL_DELIVERY_UNIT_ID = #{originalDeliveryUnitId}
+      </if>
+      <if test="originalDeliveryUnitName != null and originalDeliveryUnitName != ''" >
+        and carstatushis.ORIGINAL_DELIVERY_UNIT_NAME = #{originalDeliveryUnitName}
+      </if>
+      <if test="originalReceptionUnitId != null and originalReceptionUnitId != ''" >
+        and carstatushis.ORIGINAL_RECEPTION_UNIT_ID = #{originalReceptionUnitId}
+      </if>
+      <if test="originalReceptionUnitName != null and originalReceptionUnitName != ''" >
+        and carstatushis.ORIGINAL_RECEPTION_UNIT_NAME = #{originalReceptionUnitName}
+      </if>
+      <if test="destinedLoadDate != null and destinedLoadDate != ''" >
+        and carstatushis.DESTINED_LOAD_DATE = #{destinedLoadDate}
+      </if>
+      <if test="destinedReceptionDate != null and destinedReceptionDate != ''" >
+        and carstatushis.DESTINED_RECEPTION_DATE = #{destinedReceptionDate}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and carstatushis.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and carstatushis.DRIVER_ID = #{driverId}
+      </if>
+      <if test="driverName != null and driverName != ''" >
+        and carstatushis.DRIVER_NAME = #{driverName}
+      </if>
+      <if test="customerQuotedPrice != null and customerQuotedPrice != ''" >
+        and carstatushis.CUSTOMER_QUOTED_PRICE = #{customerQuotedPrice}
+      </if>
+      <if test="freightPrice != null and freightPrice != ''" >
+        and carstatushis.FREIGHT_PRICE = #{freightPrice}
+      </if>
+      <if test="carStatusStatus != null and carStatusStatus != ''" >
+        and carstatushis.CAR_STATUS_STATUS = #{carStatusStatus}
+      </if>
+      <if test="sequence != null and sequence != ''" >
+        and carstatushis.SEQUENCE = #{sequence}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and carstatushis.CORP_ID = #{corpId}
+      </if>
+      <if test="startTime != null and startTime != '' and endTime != null and endTime != ''" >
+        and carstatushis.ORDER_BILL_DATE BETWEEN #{startTime} AND #{endTime}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    SELECT
+      <include refid="Query_Column_List"/>
+    FROM om_car_status_his carstatushis
+		JOIN bd_car car ON carstatushis.CAR_ID=car.CAR_ID
+		JOIN om_order ord ON carstatushis.ORDER_ID=ord.ORDER_ID
+		JOIN om_order o ON carstatushis.ORIGINAL_ORDER_ID=o.ORDER_ID
+		JOIN om_transport_order torder ON carstatushis.TRANSPORT_ORDER_ID=torder.TRANSPORT_ORDER_ID
+		JOIN sys_corp corp ON carstatushis.CORP_ID=corp.CORP_ID
+    where carstatushis.CAR_STATUS_HIS_ID = #{carStatusHisId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update om_car_status_his set DEL=1 where CAR_STATUS_HIS_ID = #{carStatusHisId}
+  </update>
+  <update id="deleteByVin" parameterType="java.lang.String">
+    update om_car_status_his set DEL=1 where CAR_VIN= #{carVin}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update om_car_status_his	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	CAR_STATUS_HIS_ID in
+  	 		<foreach item="carStatusHisId" collection="array" open="(" separator="," close=")">
+  	 			#{carStatusHisId}
+  	 		</foreach>
+  		</if>
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.CarStatusHis" keyProperty="carStatusHisId" useGeneratedKeys="true">
+    insert into om_car_status_his	(CAR_STATUS_ID, CAR_ID, CAR_VIN, URGENT_STATUS, CAR_TYPE_ID, CAR_TYPE_NAME, BRAND_ID, BRAND_NAME, CATEGORY_ID, CATEGORY_NAME, 	ORDER_ID, ORDER_DETAIL_ID, ORDER_STATUS, DELIVERY_UNIT_ID, DELIVERY_UNIT_NAME, RECEPTION_UNIT_ID, RECEPTION_UNIT_NAME, 	ORIGINAL_ORDER_ID, ORIGINAL_ORDER_DETAIL_ID, CUSTOMER_CORP_ID, CUSTOMER_CORP_NAME, ORDER_BILL_DATE, 	ORIGINAL_DELIVERY_UNIT_ID, ORIGINAL_DELIVERY_UNIT_NAME, ORIGINAL_RECEPTION_UNIT_ID, ORIGINAL_RECEPTION_UNIT_NAME, 	DESTINED_LOAD_DATE, DESTINED_RECEPTION_DATE, TRANSPORT_ORDER_ID, DRIVER_ID, DRIVER_NAME, CUSTOMER_QUOTED_PRICE, 	FREIGHT_PRICE, CAR_STATUS_STATUS, SEQUENCE, CORP_ID)	values	(#{carStatusId,jdbcType=BIGINT}, #{carId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR}, #{urgentStatus,jdbcType=INTEGER}, 	#{carTypeId,jdbcType=BIGINT}, #{carTypeName,jdbcType=VARCHAR}, #{brandId,jdbcType=BIGINT}, #{brandName,jdbcType=VARCHAR}, 	#{categoryId,jdbcType=BIGINT}, #{categoryName,jdbcType=VARCHAR}, #{orderId,jdbcType=BIGINT}, #{orderDetailId,jdbcType=BIGINT}, 	#{orderStatus,jdbcType=INTEGER}, #{deliveryUnitId,jdbcType=BIGINT}, #{deliveryUnitName,jdbcType=VARCHAR}, 	#{receptionUnitId,jdbcType=BIGINT}, #{receptionUnitName,jdbcType=VARCHAR}, #{originalOrderId,jdbcType=BIGINT}, 	#{originalOrderDetailId,jdbcType=BIGINT}, #{customerCorpId,jdbcType=BIGINT}, #{customerCorpName,jdbcType=VARCHAR}, 	#{orderBillDate,jdbcType=TIMESTAMP}, #{originalDeliveryUnitId,jdbcType=BIGINT}, #{originalDeliveryUnitName,jdbcType=VARCHAR}, 	#{originalReceptionUnitId,jdbcType=BIGINT}, #{originalReceptionUnitName,jdbcType=VARCHAR}, 	#{destinedLoadDate,jdbcType=DATE}, #{destinedReceptionDate,jdbcType=DATE}, #{transportOrderId,jdbcType=BIGINT}, 	#{driverId,jdbcType=BIGINT}, #{driverName,jdbcType=VARCHAR}, #{customerQuotedPrice,jdbcType=DECIMAL}, #{freightPrice,jdbcType=DECIMAL}, 	#{carStatusStatus,jdbcType=INTEGER}, #{sequence,jdbcType=BIGINT}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.CarStatusHis" keyProperty="carStatusHisId" useGeneratedKeys="true">
+    insert into om_car_status_his	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="carStatusId != null">	    CAR_STATUS_ID, 	  </if>	  <if test="carId != null">	    CAR_ID, 	  </if>	  <if test="carVin != null">	    CAR_VIN, 	  </if>	  <if test="urgentStatus != null">	    URGENT_STATUS, 	  </if>	  <if test="carTypeId != null">	    CAR_TYPE_ID, 	  </if>	  <if test="carTypeName != null">	    CAR_TYPE_NAME, 	  </if>	  <if test="brandId != null">	    BRAND_ID, 	  </if>	  <if test="brandName != null">	    BRAND_NAME, 	  </if>	  <if test="categoryId != null">	    CATEGORY_ID, 	  </if>	  <if test="categoryName != null">	    CATEGORY_NAME, 	  </if>	  <if test="orderId != null">	    ORDER_ID, 	  </if>	  <if test="orderDetailId != null">	    ORDER_DETAIL_ID, 	  </if>	  <if test="orderStatus != null">	    ORDER_STATUS, 	  </if>	  <if test="deliveryUnitId != null">	    DELIVERY_UNIT_ID, 	  </if>	  <if test="deliveryUnitName != null">	    DELIVERY_UNIT_NAME, 	  </if>	  <if test="receptionUnitId != null">	    RECEPTION_UNIT_ID, 	  </if>	  <if test="receptionUnitName != null">	    RECEPTION_UNIT_NAME, 	  </if>	  <if test="originalOrderId != null">	    ORIGINAL_ORDER_ID, 	  </if>	  <if test="originalOrderDetailId != null">	    ORIGINAL_ORDER_DETAIL_ID, 	  </if>	  <if test="customerCorpId != null">	    CUSTOMER_CORP_ID, 	  </if>	  <if test="customerCorpName != null">	    CUSTOMER_CORP_NAME, 	  </if>	  <if test="orderBillDate != null">	    ORDER_BILL_DATE, 	  </if>	  <if test="originalDeliveryUnitId != null">	    ORIGINAL_DELIVERY_UNIT_ID, 	  </if>	  <if test="originalDeliveryUnitName != null">	    ORIGINAL_DELIVERY_UNIT_NAME, 	  </if>	  <if test="originalReceptionUnitId != null">	    ORIGINAL_RECEPTION_UNIT_ID, 	  </if>	  <if test="originalReceptionUnitName != null">	    ORIGINAL_RECEPTION_UNIT_NAME, 	  </if>	  <if test="destinedLoadDate != null">	    DESTINED_LOAD_DATE, 	  </if>	  <if test="destinedReceptionDate != null">	    DESTINED_RECEPTION_DATE, 	  </if>	  <if test="transportOrderId != null">	    TRANSPORT_ORDER_ID, 	  </if>	  <if test="driverId != null">	    DRIVER_ID, 	  </if>	  <if test="driverName != null">	    DRIVER_NAME, 	  </if>	  <if test="customerQuotedPrice != null">	    CUSTOMER_QUOTED_PRICE, 	  </if>	  <if test="freightPrice != null">	    FREIGHT_PRICE, 	  </if>	  <if test="carStatusStatus != null">	    CAR_STATUS_STATUS, 	  </if>	  <if test="sequence != null">	    SEQUENCE, 	  </if>	  <if test="corpId != null">	    CORP_ID, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="carStatusId != null">	    #{carStatusId,jdbcType=BIGINT}, 	  </if>	  <if test="carId != null">	    #{carId,jdbcType=BIGINT}, 	  </if>	  <if test="carVin != null">	    #{carVin,jdbcType=VARCHAR}, 	  </if>	  <if test="urgentStatus != null">	    #{urgentStatus,jdbcType=INTEGER}, 	  </if>	  <if test="carTypeId != null">	    #{carTypeId,jdbcType=BIGINT}, 	  </if>	  <if test="carTypeName != null">	    #{carTypeName,jdbcType=VARCHAR}, 	  </if>	  <if test="brandId != null">	    #{brandId,jdbcType=BIGINT}, 	  </if>	  <if test="brandName != null">	    #{brandName,jdbcType=VARCHAR}, 	  </if>	  <if test="categoryId != null">	    #{categoryId,jdbcType=BIGINT}, 	  </if>	  <if test="categoryName != null">	    #{categoryName,jdbcType=VARCHAR}, 	  </if>	  <if test="orderId != null">	    #{orderId,jdbcType=BIGINT}, 	  </if>	  <if test="orderDetailId != null">	    #{orderDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="orderStatus != null">	    #{orderStatus,jdbcType=INTEGER}, 	  </if>	  <if test="deliveryUnitId != null">	    #{deliveryUnitId,jdbcType=BIGINT}, 	  </if>	  <if test="deliveryUnitName != null">	    #{deliveryUnitName,jdbcType=VARCHAR}, 	  </if>	  <if test="receptionUnitId != null">	    #{receptionUnitId,jdbcType=BIGINT}, 	  </if>	  <if test="receptionUnitName != null">	    #{receptionUnitName,jdbcType=VARCHAR}, 	  </if>	  <if test="originalOrderId != null">	    #{originalOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="originalOrderDetailId != null">	    #{originalOrderDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="customerCorpId != null">	    #{customerCorpId,jdbcType=BIGINT}, 	  </if>	  <if test="customerCorpName != null">	    #{customerCorpName,jdbcType=VARCHAR}, 	  </if>	  <if test="orderBillDate != null">	    #{orderBillDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="originalDeliveryUnitId != null">	    #{originalDeliveryUnitId,jdbcType=BIGINT}, 	  </if>	  <if test="originalDeliveryUnitName != null">	    #{originalDeliveryUnitName,jdbcType=VARCHAR}, 	  </if>	  <if test="originalReceptionUnitId != null">	    #{originalReceptionUnitId,jdbcType=BIGINT}, 	  </if>	  <if test="originalReceptionUnitName != null">	    #{originalReceptionUnitName,jdbcType=VARCHAR}, 	  </if>	  <if test="destinedLoadDate != null">	    #{destinedLoadDate,jdbcType=DATE}, 	  </if>	  <if test="destinedReceptionDate != null">	    #{destinedReceptionDate,jdbcType=DATE}, 	  </if>	  <if test="transportOrderId != null">	    #{transportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="driverId != null">	    #{driverId,jdbcType=BIGINT}, 	  </if>	  <if test="driverName != null">	    #{driverName,jdbcType=VARCHAR}, 	  </if>	  <if test="customerQuotedPrice != null">	    #{customerQuotedPrice,jdbcType=DECIMAL}, 	  </if>	  <if test="freightPrice != null">	    #{freightPrice,jdbcType=DECIMAL}, 	  </if>	  <if test="carStatusStatus != null">	    #{carStatusStatus,jdbcType=INTEGER}, 	  </if>	  <if test="sequence != null">	    #{sequence,jdbcType=BIGINT}, 	  </if>	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.CarStatusHis" >
+	update om_car_status_his	<set>	  <if test="carStatusId != null">	    CAR_STATUS_ID = #{carStatusId,jdbcType=BIGINT}, 	  </if>	  <if test="carId != null">	    CAR_ID = #{carId,jdbcType=BIGINT}, 	  </if>	  <if test="carVin != null">	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 	  </if>	  <if test="urgentStatus != null">	    URGENT_STATUS = #{urgentStatus,jdbcType=INTEGER}, 	  </if>	  <if test="carTypeId != null">	    CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT}, 	  </if>	  <if test="carTypeName != null">	    CAR_TYPE_NAME = #{carTypeName,jdbcType=VARCHAR}, 	  </if>	  <if test="brandId != null">	    BRAND_ID = #{brandId,jdbcType=BIGINT}, 	  </if>	  <if test="brandName != null">	    BRAND_NAME = #{brandName,jdbcType=VARCHAR}, 	  </if>	  <if test="categoryId != null">	    CATEGORY_ID = #{categoryId,jdbcType=BIGINT}, 	  </if>	  <if test="categoryName != null">	    CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR}, 	  </if>	  <if test="orderId != null">	    ORDER_ID = #{orderId,jdbcType=BIGINT}, 	  </if>	  <if test="orderDetailId != null">	    ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="orderStatus != null">	    ORDER_STATUS = #{orderStatus,jdbcType=INTEGER}, 	  </if>	  <if test="deliveryUnitId != null">	    DELIVERY_UNIT_ID = #{deliveryUnitId,jdbcType=BIGINT}, 	  </if>	  <if test="deliveryUnitName != null">	    DELIVERY_UNIT_NAME = #{deliveryUnitName,jdbcType=VARCHAR}, 	  </if>	  <if test="receptionUnitId != null">	    RECEPTION_UNIT_ID = #{receptionUnitId,jdbcType=BIGINT}, 	  </if>	  <if test="receptionUnitName != null">	    RECEPTION_UNIT_NAME = #{receptionUnitName,jdbcType=VARCHAR}, 	  </if>	  <if test="originalOrderId != null">	    ORIGINAL_ORDER_ID = #{originalOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="originalOrderDetailId != null">	    ORIGINAL_ORDER_DETAIL_ID = #{originalOrderDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="customerCorpId != null">	    CUSTOMER_CORP_ID = #{customerCorpId,jdbcType=BIGINT}, 	  </if>	  <if test="customerCorpName != null">	    CUSTOMER_CORP_NAME = #{customerCorpName,jdbcType=VARCHAR}, 	  </if>	  <if test="orderBillDate != null">	    ORDER_BILL_DATE = #{orderBillDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="originalDeliveryUnitId != null">	    ORIGINAL_DELIVERY_UNIT_ID = #{originalDeliveryUnitId,jdbcType=BIGINT}, 	  </if>	  <if test="originalDeliveryUnitName != null">	    ORIGINAL_DELIVERY_UNIT_NAME = #{originalDeliveryUnitName,jdbcType=VARCHAR}, 	  </if>	  <if test="originalReceptionUnitId != null">	    ORIGINAL_RECEPTION_UNIT_ID = #{originalReceptionUnitId,jdbcType=BIGINT}, 	  </if>	  <if test="originalReceptionUnitName != null">	    ORIGINAL_RECEPTION_UNIT_NAME = #{originalReceptionUnitName,jdbcType=VARCHAR}, 	  </if>	  <if test="destinedLoadDate != null">	    DESTINED_LOAD_DATE = #{destinedLoadDate,jdbcType=DATE}, 	  </if>	  <if test="destinedReceptionDate != null">	    DESTINED_RECEPTION_DATE = #{destinedReceptionDate,jdbcType=DATE}, 	  </if>	  <if test="transportOrderId != null">	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="driverId != null">	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 	  </if>	  <if test="driverName != null">	    DRIVER_NAME = #{driverName,jdbcType=VARCHAR}, 	  </if>	  <if test="customerQuotedPrice != null">	    CUSTOMER_QUOTED_PRICE = #{customerQuotedPrice,jdbcType=DECIMAL}, 	  </if>	  <if test="freightPrice != null">	    FREIGHT_PRICE = #{freightPrice,jdbcType=DECIMAL}, 	  </if>	  <if test="carStatusStatus != null">	    CAR_STATUS_STATUS = #{carStatusStatus,jdbcType=INTEGER}, 	  </if>	  <if test="sequence != null">	    SEQUENCE = #{sequence,jdbcType=BIGINT}, 	  </if>	  <if test="corpId != null">	    CORP_ID = #{corpId,jdbcType=BIGINT}, 	  </if>	</set>	where CAR_STATUS_HIS_ID = #{carStatusHisId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.CarStatusHis" >
+    update om_car_status_his set 	  CAR_STATUS_ID = #{carStatusId,jdbcType=BIGINT}, CAR_ID = #{carId,jdbcType=BIGINT}, CAR_VIN = #{carVin,jdbcType=VARCHAR}, 	  URGENT_STATUS = #{urgentStatus,jdbcType=INTEGER}, CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT}, CAR_TYPE_NAME = #{carTypeName,jdbcType=VARCHAR}, 	  BRAND_ID = #{brandId,jdbcType=BIGINT}, BRAND_NAME = #{brandName,jdbcType=VARCHAR}, 	  CATEGORY_ID = #{categoryId,jdbcType=BIGINT}, CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR}, ORDER_ID = #{orderId,jdbcType=BIGINT}, 	  ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, ORDER_STATUS = #{orderStatus,jdbcType=INTEGER}, 	  DELIVERY_UNIT_ID = #{deliveryUnitId,jdbcType=BIGINT}, DELIVERY_UNIT_NAME = #{deliveryUnitName,jdbcType=VARCHAR}, 	  RECEPTION_UNIT_ID = #{receptionUnitId,jdbcType=BIGINT}, RECEPTION_UNIT_NAME = #{receptionUnitName,jdbcType=VARCHAR}, 	  ORIGINAL_ORDER_ID = #{originalOrderId,jdbcType=BIGINT}, ORIGINAL_ORDER_DETAIL_ID = #{originalOrderDetailId,jdbcType=BIGINT}, 	  CUSTOMER_CORP_ID = #{customerCorpId,jdbcType=BIGINT}, CUSTOMER_CORP_NAME = #{customerCorpName,jdbcType=VARCHAR}, 	  ORDER_BILL_DATE = #{orderBillDate,jdbcType=TIMESTAMP}, ORIGINAL_DELIVERY_UNIT_ID = #{originalDeliveryUnitId,jdbcType=BIGINT}, 	  ORIGINAL_DELIVERY_UNIT_NAME = #{originalDeliveryUnitName,jdbcType=VARCHAR}, ORIGINAL_RECEPTION_UNIT_ID = #{originalReceptionUnitId,jdbcType=BIGINT}, 	  ORIGINAL_RECEPTION_UNIT_NAME = #{originalReceptionUnitName,jdbcType=VARCHAR}, 	  DESTINED_LOAD_DATE = #{destinedLoadDate,jdbcType=DATE}, DESTINED_RECEPTION_DATE = #{destinedReceptionDate,jdbcType=DATE}, 	  TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, 	  DRIVER_NAME = #{driverName,jdbcType=VARCHAR}, CUSTOMER_QUOTED_PRICE = #{customerQuotedPrice,jdbcType=DECIMAL}, 	  FREIGHT_PRICE = #{freightPrice,jdbcType=DECIMAL}, CAR_STATUS_STATUS = #{carStatusStatus,jdbcType=INTEGER}, SEQUENCE = #{sequence,jdbcType=BIGINT}, 	  CORP_ID = #{corpId,jdbcType=BIGINT}	where CAR_STATUS_HIS_ID = #{carStatusHisId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	SELECT
+      <include refid="Query_Column_List"/>
+    FROM om_car_status_his carstatushis
+		JOIN bd_car car ON carstatushis.CAR_ID=car.CAR_ID
+		JOIN om_order ord ON carstatushis.ORDER_ID=ord.ORDER_ID
+		JOIN om_order o ON carstatushis.ORIGINAL_ORDER_ID=o.ORDER_ID
+		JOIN om_transport_order torder ON carstatushis.TRANSPORT_ORDER_ID=torder.TRANSPORT_ORDER_ID
+		JOIN sys_corp corp ON carstatushis.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  	
+</mapper>   

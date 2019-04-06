@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CityMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.City" >
+    <id column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+	<result column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+	<result column="CITY_CODE" jdbcType="VARCHAR" property="cityCode" />
+	<result column="CITY_NAME" jdbcType="VARCHAR" property="cityName" />
+	<result column="CITY_TYPE" jdbcType="INTEGER" property="cityType" />
+	<result column="UP_CITY_ID" jdbcType="BIGINT" property="upCityId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="UP_CITY_NAME" jdbcType="VARCHAR" property="refUpCityName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CITY_ID, CITY_CODE, CITY_NAME, CITY_TYPE, UP_CITY_ID, CORP_ID, FLAG
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	city.CITY_ID,city.CITY_CODE,city.CITY_NAME,city.CITY_TYPE,city.UP_CITY_ID,c.CITY_NAME AS UP_CITY_NAME,city.CORP_ID,corp.CORP_NAME,city.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where city.del = 0
+    <trim  suffixOverrides="," >
+      <if test="cityId != null and cityId != ''" >
+        and city.CITY_ID = #{cityId}
+      </if>
+      <if test="cityCode != null and cityCode != ''" >
+        and city.CITY_CODE LIKE CONCAT("%",#{cityCode},"%")
+      </if>
+      <if test="cityName != null and cityName != ''" >
+        and city.CITY_NAME LIKE CONCAT("%",#{cityName},"%")
+      </if>
+      <if test="cityType != null and cityType != ''" >
+        and city.CITY_TYPE = #{cityType}
+      </if>
+      <if test="upCityId != null and upCityId != ''" >
+        and city.UP_CITY_ID = #{upCityId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and city.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and city.FLAG = #{flag}
+      </if>
+      <if test="refUpCityName != null and refUpCityName != ''" >
+        and c.CITY_NAME LIKE CONCAT("%",#{refUpCityName},"%")
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (city.CITY_CODE LIKE  CONCAT('%',#{searchContent},'%')
+        	or city.CITY_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	or c.CITY_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	)
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM bd_city city
+		LEFT JOIN bd_city c ON city.UP_CITY_ID=c.CITY_ID
+		JOIN sys_corp corp ON city.CORP_ID=corp.CORP_ID
+    where city.CITY_ID = #{cityId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update BD_CITY set DEL=1 where CITY_ID = #{cityId}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update BD_CITY	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	CITY_ID in
+  	 		<foreach item="cityId" collection="array" open="(" separator="," close=")">
+  	 			#{cityId}
+  	 		</foreach>
+  		</if>
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.City" keyProperty="cityId" useGeneratedKeys="true">
+    insert into BD_CITY
+	(CITY_CODE, CITY_NAME, CITY_TYPE, UP_CITY_ID, CORP_ID, FLAG)
+	values
+	(#{cityCode,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{cityType,jdbcType=INTEGER}, #{upCityId,jdbcType=BIGINT}, 
+	#{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.City" keyProperty="cityId" useGeneratedKeys="true">
+    insert into BD_CITY
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="cityCode != null">
+	    CITY_CODE, 
+	  </if>
+	  <if test="cityName != null">
+	    CITY_NAME, 
+	  </if>
+	  <if test="cityType != null">
+	    CITY_TYPE, 
+	  </if>
+	  <if test="upCityId != null">
+	    UP_CITY_ID, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="cityCode != null">
+	    #{cityCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="cityName != null">
+	    #{cityName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="cityType != null">
+	    #{cityType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="upCityId != null">
+	    #{upCityId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.City" >
+	update BD_CITY
+	<set>
+	  <if test="cityCode != null">
+	    CITY_CODE = #{cityCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="cityName != null">
+	    CITY_NAME = #{cityName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="cityType != null">
+	    CITY_TYPE = #{cityType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="upCityId != null">
+	    UP_CITY_ID = #{upCityId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where CITY_ID = #{cityId,jdbcType=BIGINT}
+  </update>
+  <update id="updateSelective" parameterType="com.tilchina.timp.model.City" >
+	update BD_CITY
+	<set>
+	  <if test="cityCode != null">
+	    CITY_CODE = #{cityCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="cityName != null">
+	    CITY_NAME = #{cityName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="cityType != null">
+	    CITY_TYPE = #{cityType,jdbcType=INTEGER}, 
+	  </if>
+	  <choose>
+		  <when test="upCityId != null">
+		    UP_CITY_ID = #{upCityId,jdbcType=BIGINT}, 
+		  </when>
+	  	  <otherwise>
+		    UP_CITY_ID =null, 
+		  </otherwise>
+	  </choose>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where CITY_ID = #{cityId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.City" >
+    update BD_CITY set 
+	  CITY_CODE = #{cityCode,jdbcType=VARCHAR}, CITY_NAME = #{cityName,jdbcType=VARCHAR}, CITY_TYPE = #{cityType,jdbcType=INTEGER}, 
+	  UP_CITY_ID = #{upCityId,jdbcType=BIGINT}, CORP_ID = #{corpId,jdbcType=BIGINT}, FLAG = #{flag,jdbcType=INTEGER}
+	where CITY_ID = #{cityId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    FROM bd_city city
+		LEFT JOIN bd_city c ON city.UP_CITY_ID=c.CITY_ID
+		JOIN sys_corp corp ON city.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="getReferenceList"  parameterType="Object" resultMap="BaseResultMap">
+  	SELECT city.CITY_ID,city.CITY_CODE,city.CITY_NAME,c.CITY_NAME AS upCityName
+  	FROM bd_city city
+		LEFT JOIN bd_city c ON city.UP_CITY_ID=c.CITY_ID
+		JOIN sys_corp corp ON city.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="getCityList"  parameterType="Object" resultMap="BaseResultMap">
+  	SELECT city.CITY_ID,city.CITY_CODE,city.CITY_NAME,c.CITY_NAME AS upCityName
+  	FROM bd_city city
+		JOIN bd_city c ON city.UP_CITY_ID=c.CITY_ID
+	WHERE city.DEL=0 AND city.UP_CITY_ID=#{upCityId,jdbcType=BIGINT} ORDER BY city.CITY_CODE
+  </select>
+  <select id="getFirstLevel"   resultMap="BaseResultMap">
+  	SELECT CITY_ID,CITY_CODE,CITY_NAME
+  	FROM bd_city  WHERE DEL=0 AND UP_CITY_ID IS NULL ORDER BY CITY_CODE
+  </select>
+
+	<select id="queryIdByName" parameterType="String" resultType="Long">
+		SELECT CITY_ID
+		FROM bd_city
+		WHERE CITY_NAME = #{cityName}
+		AND FLAG = 0
+		AND DEL = 0
+	</select>
+	
+	<select id="queryByName" parameterType="java.util.Map" resultType="java.lang.Long">
+		select CITY_ID
+		from bd_city
+		where CITY_NAME = #{cityName}
+		and CITY_TYPE = #{cityType}
+		and FLAG = 0
+		and DEL = 0
+	</select>
+
+	<select id="selectByNames" parameterType="java.util.List" resultMap="BaseResultMap">
+		select CITY_NAME,CITY_ID,CITY_TYPE,UP_CITY_ID
+		from bd_city
+		where
+			FLAG = 0
+			and DEL = 0
+			and CITY_NAME in
+			<foreach collection="cityNames" item="cityName" separator="," open="(" close=")">
+				#{cityName}
+			</foreach>
+	</select>
+
+</mapper>   

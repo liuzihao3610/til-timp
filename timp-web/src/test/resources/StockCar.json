@@ -1,0 +1,28 @@
+{
+  "data":{
+    "stockCarId":0,
+    "orderId":0,
+    "orderCode":"Test-orderCode",
+    "orderDetailId":0,
+    "orderType":0,
+    "customerId":0,
+    "carrierId":0,
+    "carVin":"Test-carVin",
+    "carId":0,
+    "carStatus":0,
+    "currentUnitId":0,
+    "receivingDate":"2018-05-07 12:23:44",
+    "transferOrderStatus":0,
+    "shutBillDate":"2018-05-07 12:23:44",
+    "shutBillStatus":0,
+    "shutBillId":0,
+    "rightBillType":"2018-05-07 12:23:44",
+    "rightBillStatus":0,
+    "rightBillId":0,
+    "settleDate":"2018-05-07 12:23:44",
+    "settleStatus":0,
+    "settleId":0,
+    "corpId":0,
+    "flag":0
+  }
+}

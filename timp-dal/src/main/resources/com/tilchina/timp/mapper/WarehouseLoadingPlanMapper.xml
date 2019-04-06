@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.WarehouseLoadingPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.WarehouseLoadingPlan" >
+    <id column="WAREHOUSE_LOADING_PLAN_ID" jdbcType="BIGINT" property="warehouseLoadingPlanId" />
+    <result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="transportOrderCode" />
+	<result column="PLAN_DATE" jdbcType="TIMESTAMP" property="planDate" />
+	<result column="UNIT_ID" jdbcType="BIGINT" property="unitId" />
+	<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="LOADING_DATE" jdbcType="TIMESTAMP" property="loadingDate" />
+	<result column="LOADING_LOCATION" jdbcType="VARCHAR" property="loadingLocation" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="UNIT_NAME" jdbcType="VARCHAR" property="refUnitName" />
+	<result column="CAR_NAME" jdbcType="VARCHAR" property="refCarName" />
+	<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" /> 
+	<result column="ADDRESS" jdbcType="VARCHAR" property="refAddress" /> 
+	
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    WAREHOUSE_LOADING_PLAN_ID,TRANSPORT_ORDER_ID,TRANSPORT_ORDER_CODE, PLAN_DATE, UNIT_ID, CAR_ID, CAR_VIN, BILL_STATUS, DRIVER_ID, TRANSPORTER_ID, LOADING_DATE, 
+	LOADING_LOCATION, REMARK, CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List" >
+    wlp.WAREHOUSE_LOADING_PLAN_ID,  wlp.TRANSPORT_ORDER_ID, wlp.TRANSPORT_ORDER_CODE,wlp.PLAN_DATE, wlp.UNIT_ID, unit.UNIT_NAME,unit.ADDRESS, wlp.CAR_ID,car.CAR_NAME, wlp.CAR_VIN, 
+    wlp.BILL_STATUS, wlp.DRIVER_ID, user.USER_NAME as DRIVER_NAME, wlp.TRANSPORTER_ID,brand.BRAND_NAME,
+       user.USER_CODE as DRIVER_CODE,tr.TRACTIR_PLATE_CODE,tr.TRANSPORTER_CODE , wlp.LOADING_DATE, 
+    wlp.LOADING_LOCATION, wlp.REMARK, wlp.CORP_ID,corp.CORP_NAME
+  </sql>
+  
+  <sql id="Example_Where_Clause">
+    where wlp.del = 0
+    <trim  suffixOverrides="," >
+      <if test="warehouseLoadingPlanId != null and warehouseLoadingPlanId != ''" >
+        and wlp.WAREHOUSE_LOADING_PLAN_ID = #{warehouseLoadingPlanId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and wlp.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="transportOrderCode != null and transportOrderCode != ''" >
+        and (wlp.TRANSPORT_ORDER_CODE = #{transportOrderCode}
+        or wlp.TRANSPORT_ORDER_CODE like concat(concat('%',#{transportOrderCode}),'%'))
+      </if>
+      <if test="planDate != null and planDate != ''" >
+        and wlp.PLAN_DATE = #{planDate}
+      </if>
+      <if test="unitId != null and unitId != ''" >
+        and wlp.UNIT_ID = #{unitId}
+      </if>
+      <if test="carId != null and carId != ''" >
+        and wlp.CAR_ID = #{carId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and (wlp.CAR_VIN = #{carVin}
+        or wlp.CAR_VIN like concat(concat('%',#{carVin}),'%')
+        )
+      </if>
+      <if test="billStatus != null and billStatus != ''" >
+        and wlp.BILL_STATUS = #{billStatus}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and wlp.DRIVER_ID = #{driverId}
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and wlp.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="loadingDate != null and loadingDate != ''" >
+        and wlp.LOADING_DATE = #{loadingDate}
+      </if>
+      <if test="loadingLocation != null and loadingLocation != ''" >
+        and (
+        wlp.LOADING_LOCATION = #{loadingLocation}
+        or wlp.LOADING_LOCATION like concat(concat('%',#{loadingLocation}),'%')
+        )
+      </if>
+      <if test="remark != null and remark != ''" >
+        and wlp.REMARK = #{remark}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and wlp.CORP_ID = #{corpId}
+      </if>
+      
+      <if test="refDriverName != null and refDriverName != ''" >
+        and (
+         user.USER_NAME  = #{refDriverName}
+        or user.USER_NAME like concat(concat('%',#{refDriverName}),'%')
+        )
+      </if>
+      
+      <if test="refCarName != null and refCarName != ''" >
+        and (
+         car.CAR_NAME  = #{refCarName}
+        or car.CAR_NAME like concat(concat('%',#{refCarName}),'%')
+        )
+      </if>
+      
+       <if test="refUnitName != null and refUnitName != ''" >
+        and (
+        unit.UNIT_NAME  = #{refUnitName}
+        or unit.UNIT_NAME like concat(concat('%',#{refUnitName}),'%')
+        )
+      </if>
+      
+      <if test="searchContent != null and searchContent != ''" >
+        and (unit.UNIT_NAME like  concat(concat('%',#{searchContent}),'%')
+        or wlp.TRANSPORT_ORDER_CODE like concat(concat('%',#{searchContent}),'%'))
+      </if>
+      
+ 	  <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and wlp.LOADING_DATE  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and wlp.LOADING_DATE  <=  #{endTime}  ]]>
+	  </if>
+      
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+   	from om_warehouse_loading_plan wlp
+	left join bd_user user ON user.USER_ID =  wlp.DRIVER_ID
+	left join SYS_CORP corp on corp.CORP_ID =  wlp.CORP_ID
+	left join bd_car car on car.CAR_ID =  wlp.CAR_ID
+	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	left join  tc_transporter tr on   tr.TRANSPORTER_ID = wlp.TRANSPORTER_ID
+	left join bd_unit unit on unit.UNIT_ID =  wlp.UNIT_ID
+    where wlp.del = 0
+    and wlp.WAREHOUSE_LOADING_PLAN_ID = #{warehouseLoadingPlanId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from OM_WAREHOUSE_LOADING_PLAN where WAREHOUSE_LOADING_PLAN_ID = #{warehouseLoadingPlanId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.WarehouseLoadingPlan" keyProperty="warehouseLoadingPlanId" useGeneratedKeys="true">
+    insert into OM_WAREHOUSE_LOADING_PLAN
+	(TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE,PLAN_DATE, UNIT_ID, CAR_ID, CAR_VIN, BILL_STATUS, DRIVER_ID, TRANSPORTER_ID, LOADING_DATE, LOADING_LOCATION, REMARK, 
+	CORP_ID)
+	values
+	(#{transportOrderId,jdbcType=BIGINT}, #{transportOrderCode,jdbcType=VARCHAR},#{planDate,jdbcType=TIMESTAMP}, #{unitId,jdbcType=BIGINT}, #{carId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR}, #{billStatus,jdbcType=INTEGER}, 
+	#{driverId,jdbcType=BIGINT}, #{transporterId,jdbcType=BIGINT}, #{loadingDate,jdbcType=TIMESTAMP}, 
+	#{loadingLocation,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.WarehouseLoadingPlan" keyProperty="warehouseLoadingPlanId" useGeneratedKeys="true">
+    insert into OM_WAREHOUSE_LOADING_PLAN
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    TRANSPORT_ORDER_CODE, 
+	  </if>
+	  <if test="planDate != null">
+	    PLAN_DATE, 
+	  </if>
+	  <if test="unitId != null">
+	    UNIT_ID, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID, 
+	  </if>
+	  <if test="loadingDate != null">
+	    LOADING_DATE, 
+	  </if>
+	  <if test="loadingLocation != null">
+	    LOADING_LOCATION, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="transportOrderId != null">
+	    #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    #{transportOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="planDate != null">
+	    #{planDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="unitId != null">
+	    #{unitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carId != null">
+	    #{carId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="billStatus != null">
+	    #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="driverId != null">
+	    #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterId != null">
+	    #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="loadingDate != null">
+	    #{loadingDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="loadingLocation != null">
+	    #{loadingLocation,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.WarehouseLoadingPlan" >
+	update OM_WAREHOUSE_LOADING_PLAN
+	<set>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="planDate != null">
+	    PLAN_DATE = #{planDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="unitId != null">
+	    UNIT_ID = #{unitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID = #{carId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  LOADING_DATE = #{loadingDate,jdbcType=TIMESTAMP}, 
+<!-- 	  <if test="loadingDate != null">
+	    LOADING_DATE = #{loadingDate,jdbcType=TIMESTAMP}, 
+	  </if> -->
+	   <!-- <if test="loadingDate == null">
+	    LOADING_DATE = null,
+	  </if> -->
+	  <if test="loadingLocation != null">
+	    LOADING_LOCATION = #{loadingLocation,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK = #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where WAREHOUSE_LOADING_PLAN_ID = #{warehouseLoadingPlanId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.WarehouseLoadingPlan" >
+    update OM_WAREHOUSE_LOADING_PLAN set 
+	  TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 
+	  PLAN_DATE = #{planDate,jdbcType=TIMESTAMP}, UNIT_ID = #{unitId,jdbcType=BIGINT}, CAR_ID = #{carId,jdbcType=BIGINT}, CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  BILL_STATUS = #{billStatus,jdbcType=INTEGER}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, LOADING_DATE = #{loadingDate,jdbcType=TIMESTAMP}, LOADING_LOCATION = #{loadingLocation,jdbcType=VARCHAR}, 
+	  REMARK = #{remark,jdbcType=VARCHAR}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where WAREHOUSE_LOADING_PLAN_ID = #{warehouseLoadingPlanId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateStatusByTransportOrderId" parameterType="com.tilchina.timp.model.WarehouseLoadingPlan" >
+    update OM_WAREHOUSE_LOADING_PLAN set 
+	  BILL_STATUS = #{billStatus,jdbcType=INTEGER}
+	where  TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long">
+    update OM_WAREHOUSE_LOADING_PLAN set 
+      DEL = 1 
+    WHERE WAREHOUSE_LOADING_PLAN_ID  = #{warehouseLoadingPlanId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+    update OM_WAREHOUSE_LOADING_PLAN set 
+	  DEL = 1
+	WHERE WAREHOUSE_LOADING_PLAN_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+  <update id="logicDeleteByTransportOrderId" parameterType="java.lang.Long">
+    update OM_WAREHOUSE_LOADING_PLAN set 
+      DEL = 1 
+    WHERE TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByTransportOrderIds" parameterType="java.lang.Long">
+    update OM_WAREHOUSE_LOADING_PLAN set 
+	  DEL = 1
+	WHERE TRANSPORT_ORDER_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+  <update id="updateByCarVinSelective" parameterType="com.tilchina.timp.model.WarehouseLoadingPlan" >
+    update OM_WAREHOUSE_LOADING_PLAN set 
+	  BILL_STATUS = #{billStatus,jdbcType=INTEGER}
+	where  CAR_VIN = #{carVin,jdbcType=VARCHAR} and TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from om_warehouse_loading_plan wlp
+	left join bd_user user ON user.USER_ID =  wlp.DRIVER_ID
+	left join SYS_CORP corp on corp.CORP_ID =  wlp.CORP_ID
+	left join bd_car car on car.CAR_ID =  wlp.CAR_ID
+	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	left join  tc_transporter tr on   tr.TRANSPORTER_ID = wlp.TRANSPORTER_ID
+	left join bd_unit unit on unit.UNIT_ID =  wlp.UNIT_ID
+	<include refid="Example_Where_Clause"/>
+	ORDER BY wlp.WAREHOUSE_LOADING_PLAN_ID DESC
+  </select>
+  
+    <select id="selectByCarVin" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from om_warehouse_loading_plan wlp
+	left join bd_user user ON user.USER_ID =  wlp.DRIVER_ID
+	left join SYS_CORP corp on corp.CORP_ID =  wlp.CORP_ID
+	left join bd_car car on car.CAR_ID =  wlp.CAR_ID
+	left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	left join  tc_transporter tr on   tr.TRANSPORTER_ID = wlp.TRANSPORTER_ID
+	left join bd_unit unit on unit.UNIT_ID =  wlp.UNIT_ID
+	where wlp.del = 0 
+	and wlp.CAR_VIN = #{carVin,jdbcType=VARCHAR}
+	and wlp.TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+	ORDER BY wlp.WAREHOUSE_LOADING_PLAN_ID DESC limit 1
+  </select>
+  	
+</mapper>   

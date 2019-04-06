@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.AssemblyResultDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.AssemblyResultDetail" >
+    <id column="ASSEMBLY_RESULT_DETAIL_ID" jdbcType="BIGINT" property="assemblyResultDetailId" />
+	<result column="ASSEMBLY_RESULT_DETAIL_ID" jdbcType="BIGINT" property="assemblyResultDetailId" />
+	<result column="ASSEMBLY_RESULT_ID" jdbcType="BIGINT" property="assemblyResultId" />
+	<result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+
+      <result column="ORDER_CODE" jdbcType="VARCHAR" property="orderCode" />
+      <result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+      <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+      <result column="CAR_TYPE_ID" jdbcType="BIGINT" property="carTypeId" />
+      <result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="carTypeName" />
+      <result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+      <result column="CAR_NAME" jdbcType="VARCHAR" property="carName" />
+
+      <result column="SEND_UNIT_ID" jdbcType="BIGINT" property="sendUnitId" />
+      <result column="SEND_UNIT_CITY_NAME" jdbcType="VARCHAR" property="sendUnitCityName" />
+      <result column="SEND_UNIT_NAME" jdbcType="VARCHAR" property="sendUnitName" />
+      <result column="RECEIVE_UNIT_ID" jdbcType="BIGINT" property="receiveUnitId" />
+      <result column="RECEIVE_UNIT_CITY_NAME" jdbcType="VARCHAR" property="receiveUnitCityName" />
+      <result column="RECEIVE_UNIT_NAME" jdbcType="VARCHAR" property="receiveUnitName" />
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ASSEMBLY_RESULT_DETAIL_ID, ASSEMBLY_RESULT_ID, ORDER_ID, ORDER_DETAIL_ID, CAR_VIN
+  </sql>
+
+	<sql id="Query_Column_List" >
+		a.ASSEMBLY_RESULT_DETAIL_ID,
+		a.ASSEMBLY_RESULT_ID,
+		a.ORDER_ID,
+		a.ORDER_DETAIL_ID,
+		a.CAR_VIN,
+		b.ORDER_CODE,
+		b.BRAND_ID,
+		c.BRAND_NAME,
+		b.CAR_TYPE_ID,
+		d.CAR_TYPE_NAME,
+		e.CAR_ID,
+		e.CAR_NAME,
+		b.SEND_UNIT_ID,
+		f.UNIT_NAME as SEND_UNIT_NAME,
+		ff.CITY_NAME as SEND_UNIT_CITY_NAME,
+		b.RECEIVE_UNIT_ID,
+		g.UNIT_NAME AS RECEIVE_UNIT_NAME,
+		gg.CITY_NAME as RECEIVE_UNIT_CITY_NAME
+	</sql>
+   
+  <sql id="Example_Where_Clause">
+    where del = 0
+    <trim  suffixOverrides="," >
+      <if test="assemblyResultDetailId != null and assemblyResultDetailId != ''" >
+        and ASSEMBLY_RESULT_DETAIL_ID = #{assemblyResultDetailId}
+      </if>
+      <if test="assemblyResultId != null and assemblyResultId != ''" >
+        and ASSEMBLY_RESULT_ID = #{assemblyResultId}
+      </if>
+      <if test="orderId != null and orderId != ''" >
+        and ORDER_ID = #{orderId}
+      </if>
+      <if test="orderDetailId != null and orderDetailId != ''" >
+        and ORDER_DETAIL_ID = #{orderDetailId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and CAR_VIN = #{carVin}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Base_Column_List"/>
+    from ai_assembly_result_detail
+    where ASSEMBLY_RESULT_DETAIL_ID = #{assemblyResultDetailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from ai_assembly_result_detail where ASSEMBLY_RESULT_DETAIL_ID = #{assemblyResultDetailId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.AssemblyResultDetail" keyProperty="assemblyResultDetailId" useGeneratedKeys="true">
+    insert into ai_assembly_result_detail
+	(ASSEMBLY_RESULT_ID, ORDER_ID, ORDER_DETAIL_ID, CAR_VIN)
+	values
+	(#{assemblyResultId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{orderDetailId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.AssemblyResultDetail" keyProperty="assemblyResultDetailId" useGeneratedKeys="true">
+    insert into ai_assembly_result_detail
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="assemblyResultId != null">
+	    ASSEMBLY_RESULT_ID, 
+	  </if>
+	  <if test="orderId != null">
+	    ORDER_ID, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    ORDER_DETAIL_ID, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="assemblyResultId != null">
+	    #{assemblyResultId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderId != null">
+	    #{orderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    #{orderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.AssemblyResultDetail" >
+	update ai_assembly_result_detail
+	<set>
+	  <if test="assemblyResultId != null">
+	    ASSEMBLY_RESULT_ID = #{assemblyResultId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderId != null">
+	    ORDER_ID = #{orderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	</set>
+	where ASSEMBLY_RESULT_DETAIL_ID = #{assemblyResultDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.AssemblyResultDetail" >
+    update ai_assembly_result_detail set 
+	  ASSEMBLY_RESULT_ID = #{assemblyResultId,jdbcType=BIGINT}, ORDER_ID = #{orderId,jdbcType=BIGINT}, ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, 
+	  CAR_VIN = #{carVin,jdbcType=VARCHAR}
+	where ASSEMBLY_RESULT_DETAIL_ID = #{assemblyResultDetailId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Base_Column_List"/>
+	from ai_assembly_result_detail
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+
+	<select id="selectByResultId" resultMap="BaseResultMap"  parameterType="Object">
+		select
+		<include refid="Query_Column_List"/>
+		from ai_assembly_result_detail a
+		join om_order_detail b on a.ORDER_DETAIL_ID = b.ORDER_DETAIL_ID
+		join bd_brand c on b.brand_id = c.brand_id
+		left join bd_car_type d on b.CAR_TYPE_ID = d.CAR_TYPE_ID
+		join bd_car e on b.car_id = e.CAR_ID
+		join bd_unit f on b.SEND_UNIT_ID = f.UNIT_ID
+		join bd_city ff on f.CITY_ID = ff.CITY_ID
+		join bd_unit g on b.RECEIVE_UNIT_ID = g.UNIT_ID
+		join bd_city gg on g.CITY_ID = gg.CITY_ID
+		where a.ASSEMBLY_RESULT_ID = #{assemblyResultId,jdbcType=BIGINT}
+	</select>
+  	
+</mapper>   

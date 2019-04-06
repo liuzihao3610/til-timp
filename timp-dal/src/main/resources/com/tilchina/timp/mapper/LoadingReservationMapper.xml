@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.LoadingReservationMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.LoadingReservation" >
+    <id column="LOADING_RESERVATION_ID" jdbcType="BIGINT" property="loadingReservationId" />
+	<result column="RESERVATION_CODE" jdbcType="VARCHAR" property="reservationCode" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="transportOrderCode" />
+	<result column="UNIT_ID" jdbcType="BIGINT" property="unitId" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="CAR_LOADING_NUMBER" jdbcType="INTEGER" property="carLoadingNumber" />
+	<result column="LOADING_TIME" jdbcType="TIMESTAMP" property="loadingTime" />
+	<result column="LOADING_LOCATION" jdbcType="VARCHAR" property="loadingLocation" />
+	<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CHECKER" jdbcType="BIGINT" property="checker" />
+	<result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<!--<result column="UNIT_NAME" jdbcType="VARCHAR" property="refUnitName" />-->
+	<!-- <result column="CAR_NAME" jdbcType="VARCHAR" property="refCarName" /> -->
+	<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" /> 
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" /> 
+	<result column="CITY_ID" jdbcType="VARCHAR" property="refUnitCity" />
+	<!--<result column="ADDRESS" jdbcType="VARCHAR" property="refUnitAddr" />-->
+	<result column="CHECKER_NAME" jdbcType="VARCHAR" property="refCheckerName" />
+	
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+ 
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    LOADING_RESERVATION_ID, RESERVATION_CODE, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE, UNIT_ID, DRIVER_ID, TRANSPORTER_ID, 
+	CAR_LOADING_NUMBER, LOADING_TIME, LOADING_LOCATION, BILL_STATUS, CREATOR, CREATE_DATE, CHECKER, CHECK_DATE, CORP_ID, 
+	FLAG
+  </sql>
+
+  <sql id="Query_Column_List" >
+    lr.LOADING_RESERVATION_ID,lr.RESERVATION_CODE,lr.TRANSPORT_ORDER_ID,
+    lr.TRANSPORT_ORDER_CODE,lr.UNIT_ID,lr.DRIVER_ID,driver.USER_NAME as DRIVER_NAME,  driver.USER_CODE as DRIVER_CODE, 
+    lr.TRANSPORTER_ID,tr.TRANSPORTER_CODE,tr.TRACTIR_PLATE_CODE,
+    lr.CAR_LOADING_NUMBER,lr.LOADING_TIME,lr.LOADING_LOCATION,lr.BILL_STATUS,lr.CREATOR,creator.USER_NAME as CREATE_NAME,
+	lr.CREATE_DATE,lr.CHECKER,checker.USER_NAME as CHECKER_NAME,lr.CHECK_DATE,lr.CORP_ID,corp.CORP_NAME,lr.FLAG
+  </sql> 
+  
+  <sql id="Example_Where_Clause">
+    where lr.del = 0
+    <trim  suffixOverrides="," >
+      <if test="loadingReservationId != null and loadingReservationId != ''" >
+        and lr.LOADING_RESERVATION_ID = #{loadingReservationId}
+      </if>
+      <if test="reservationCode != null and reservationCode != ''" >
+        and (
+        lr.RESERVATION_CODE = #{reservationCode}
+        or lr.RESERVATION_CODE like concat(concat('%', #{reservationCode} ),'%')
+        )
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and lr.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="transportOrderCode != null and transportOrderCode != ''" >
+        and (
+        lr.TRANSPORT_ORDER_CODE = #{transportOrderCode}
+        or lr.TRANSPORT_ORDER_CODE like concat(concat('%', #{transportOrderCode} ),'%')
+        )
+      </if>
+      <if test="unitId != null and unitId != ''" >
+        and lr.UNIT_ID = #{unitId}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and lr.DRIVER_ID = #{driverId}
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and lr.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="carLoadingNumber != null and carLoadingNumber != ''" >
+        and lr.CAR_LOADING_NUMBER = #{carLoadingNumber}
+      </if>
+      <if test="loadingTime != null and loadingTime != ''" >
+        and (lr.LOADING_TIME = #{loadingTime}
+        or lr.LOADING_TIME like concat(concat('%', #{loadingTime} ),'%'))
+      </if>
+      <if test="loadingLocation != null and loadingLocation != ''" >
+        and 
+        (lr.LOADING_LOCATION = #{loadingLocation}
+        or lr.LOADING_LOCATION like concat(concat('%', #{loadingLocation} ),'%'))
+      </if>
+      <if test="billStatus != null and billStatus != ''" >
+        and lr.BILL_STATUS = #{billStatus}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and lr.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and lr.CREATE_DATE = #{createDate}
+      </if>
+      <if test="checker != null and checker != ''" >
+        and lr.CHECKER = #{checker}
+      </if>
+      <if test="checkDate != null and checkDate != ''" >
+        and lr.CHECK_DATE = #{checkDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and lr.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and lr.FLAG = #{flag}
+      </if>
+	  <if test="refTransporterCode != null and refTransporterCode != ''" >
+		and (
+		tr.TRANSPORTER_CODE like concat(concat('%', #{refTransporterCode} ),'%')
+		)
+	  </if>
+      <if test="refUnitName != null and refUnitName != ''" >
+        and (
+         unit.UNIT_NAME like concat(concat('%', #{refUnitName} ),'%')
+        )
+      </if>
+      <if test="refDriverName != null and refDriverName != ''" >
+        and (
+        driver.USER_NAME like concat(concat('%', #{refDriverName} ),'%')
+        )
+      </if>
+	<if test="refDriverCode != null and refDriverCode != ''" >
+		and (
+		driver.USER_CODE like concat(concat('%', #{refDriverCode} ),'%')
+		)
+	</if>
+	<if test="carVin != null and carVin != ''" >
+		and (
+		detail.CAR_VIN like concat(concat('%', #{carVin} ),'%')
+		)
+	</if>
+		<if test="startTime != null and startTime != ''">
+			<![CDATA[ and lr.CREATE_DATE  >=  #{startTime}  ]]>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			<![CDATA[ and lr.CREATE_DATE  <=  #{endTime}  ]]>
+		</if>
+
+		<if test="startTimeRange != null and startTimeRange != ''">
+			<![CDATA[ and lr.LOADING_TIME  >=  #{startTimeRange} ]]>
+		</if>
+		<if test="endTimeRange != null and endTimeRange != ''">
+			<![CDATA[ and lr.LOADING_TIME  <=  #{endTimeRange}  ]]>
+		</if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (
+        lr.TRANSPORT_ORDER_CODE  like concat(concat('%',#{searchContent}),'%')
+        or detail.CAR_VIN  like concat(concat('%',#{searchContent}),'%')
+		or unit.UNIT_NAME  like concat(concat('%',#{searchContent}),'%')
+		or tr.TRANSPORTER_CODE like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+	from OM_LOADING_RESERVATION lr
+	left join BD_UNIT unit on unit.UNIT_ID = lr.UNIT_ID 
+	left join BD_USER driver ON driver.USER_ID = lr.DRIVER_ID
+	left join  TC_TRANSPORTER tr on   tr.TRANSPORTER_ID = lr.TRANSPORTER_ID
+	left join BD_USER creator ON creator.USER_ID = lr.CREATOR
+	left join SYS_CORP corp on corp.CORP_ID = lr.CORP_ID
+	left join bd_city city  on city.CITY_ID = unit.CITY_ID
+	left join bd_user contac on contac.USER_ID = unit.CREATOR
+	left join BD_USER checker ON checker.USER_ID = lr.CHECKER
+	where lr.LOADING_RESERVATION_ID = #{loadingReservationId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from OM_LOADING_RESERVATION where LOADING_RESERVATION_ID = #{loadingReservationId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.LoadingReservation" keyProperty="loadingReservationId" useGeneratedKeys="true">
+    insert into OM_LOADING_RESERVATION
+	(RESERVATION_CODE, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE, UNIT_ID, DRIVER_ID, TRANSPORTER_ID, CAR_LOADING_NUMBER, 
+	LOADING_TIME, LOADING_LOCATION, BILL_STATUS, CREATOR, CREATE_DATE, CHECKER, CHECK_DATE, CORP_ID, FLAG)
+	values
+	(#{reservationCode,jdbcType=VARCHAR}, #{transportOrderId,jdbcType=BIGINT}, #{transportOrderCode,jdbcType=VARCHAR}, #{unitId,jdbcType=BIGINT}, 
+	#{driverId,jdbcType=BIGINT}, #{transporterId,jdbcType=BIGINT}, #{carLoadingNumber,jdbcType=INTEGER}, 
+	#{loadingTime,jdbcType=TIMESTAMP}, #{loadingLocation,jdbcType=VARCHAR}, #{billStatus,jdbcType=INTEGER}, 
+	#{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{checker,jdbcType=BIGINT}, #{checkDate,jdbcType=TIMESTAMP}, 
+	#{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.LoadingReservation" keyProperty="loadingReservationId" useGeneratedKeys="true">
+    insert into OM_LOADING_RESERVATION
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="reservationCode != null">
+	    RESERVATION_CODE, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    TRANSPORT_ORDER_CODE, 
+	  </if>
+	  <if test="unitId != null">
+	    UNIT_ID, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID, 
+	  </if>
+	  <if test="carLoadingNumber != null">
+	    CAR_LOADING_NUMBER, 
+	  </if>
+	  <if test="loadingTime != null">
+	    LOADING_TIME, 
+	  </if>
+	  <if test="loadingLocation != null">
+	    LOADING_LOCATION, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="reservationCode != null">
+	    #{reservationCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    #{transportOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="unitId != null">
+	    #{unitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterId != null">
+	    #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carLoadingNumber != null">
+	    #{carLoadingNumber,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="loadingTime != null">
+	    #{loadingTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="loadingLocation != null">
+	    #{loadingLocation,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="billStatus != null">
+	    #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checker != null">
+	    #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.LoadingReservation" >
+	update OM_LOADING_RESERVATION
+	<set>
+	  <if test="reservationCode != null">
+	    RESERVATION_CODE = #{reservationCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderCode != null">
+	    TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="unitId != null">
+	    UNIT_ID = #{unitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carLoadingNumber != null">
+	    CAR_LOADING_NUMBER = #{carLoadingNumber,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="loadingTime != null">
+	    LOADING_TIME = #{loadingTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="loadingLocation != null">
+	    LOADING_LOCATION = #{loadingLocation,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER = #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where LOADING_RESERVATION_ID = #{loadingReservationId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.LoadingReservation" >
+    update OM_LOADING_RESERVATION set 
+	  RESERVATION_CODE = #{reservationCode,jdbcType=VARCHAR}, TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, 
+	  UNIT_ID = #{unitId,jdbcType=BIGINT}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, CAR_LOADING_NUMBER = #{carLoadingNumber,jdbcType=INTEGER}, 
+	  LOADING_TIME = #{loadingTime,jdbcType=TIMESTAMP}, LOADING_LOCATION = #{loadingLocation,jdbcType=VARCHAR}, 
+	  BILL_STATUS = #{billStatus,jdbcType=INTEGER}, CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  CHECKER = #{checker,jdbcType=BIGINT}, CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  FLAG = #{flag,jdbcType=INTEGER}
+	where LOADING_RESERVATION_ID = #{loadingReservationId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long">
+    update OM_LOADING_RESERVATION set 
+      DEL = 1 
+    WHERE LOADING_RESERVATION_ID = #{loadingReservationId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+    update OM_LOADING_RESERVATION set 
+	  DEL = 1
+	WHERE LOADING_RESERVATION_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+	
+  </update>
+  
+  <update id="logicDeleteByTransportOrderId" parameterType="java.lang.Long">
+    update OM_LOADING_RESERVATION set 
+      DEL = 1 
+    WHERE TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByTransportOrderIds" parameterType="java.lang.Long">
+    update OM_LOADING_RESERVATION set 
+	  DEL = 1
+	WHERE TRANSPORT_ORDER_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+  
+  <update id="updateCheck" parameterType="com.tilchina.timp.model.LoadingReservation" >
+	update OM_LOADING_RESERVATION 
+	<set>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	    CHECKER = #{checker,jdbcType=BIGINT}, 
+	    CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, 
+	  <if test="loadingTime != null">
+	     LOADING_TIME = #{loadingTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	   <if test="loadingLocation != null">
+	   	 LOADING_LOCATION = #{loadingLocation,jdbcType=VARCHAR}, 
+	  </if>
+	</set>
+	where LOADING_RESERVATION_ID = #{loadingReservationId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	  lr.LOADING_RESERVATION_ID,lr.RESERVATION_CODE,lr.TRANSPORT_ORDER_ID,
+	  lr.TRANSPORT_ORDER_CODE,lr.UNIT_ID,lr.DRIVER_ID,driver.USER_NAME as DRIVER_NAME,  driver.USER_CODE as DRIVER_CODE,
+	  lr.TRANSPORTER_ID,tr.TRANSPORTER_CODE,tr.TRACTIR_PLATE_CODE,
+	  lr.CAR_LOADING_NUMBER,lr.LOADING_TIME,lr.LOADING_LOCATION,lr.BILL_STATUS,lr.CREATOR,creator.USER_NAME as CREATE_NAME,
+	  lr.CREATE_DATE,lr.CHECKER,checker.USER_NAME as CHECKER_NAME,lr.CHECK_DATE,lr.CORP_ID,corp.CORP_NAME,lr.FLAG
+	from OM_LOADING_RESERVATION lr
+	LEFT JOIN OM_LOADING_RESERVATION_DETAIL detail ON detail.LOADING_RESERVATION_ID = lr.LOADING_RESERVATION_ID
+	left join BD_UNIT unit on unit.UNIT_ID = lr.UNIT_ID
+	left join BD_USER driver ON driver.USER_ID = lr.DRIVER_ID
+	left join  TC_TRANSPORTER tr on   tr.TRANSPORTER_ID = lr.TRANSPORTER_ID
+	left join BD_USER creator ON creator.USER_ID = lr.CREATOR
+	left join SYS_CORP corp on corp.CORP_ID = lr.CORP_ID
+	left join bd_city city  on city.CITY_ID = unit.CITY_ID
+	left join bd_user contac on contac.USER_ID = unit.CREATOR
+	left join BD_USER checker ON checker.USER_ID = lr.CHECKER
+	<include refid="Example_Where_Clause"/>
+	  GROUP BY lr.LOADING_RESERVATION_ID
+	order by lr.CREATE_DATE DESC
+  </select>
+  	
+</mapper>   

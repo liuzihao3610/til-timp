@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.BrandMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.Brand" >
+    <id column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+	<result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+	<result column="BRAND_CODE" jdbcType="VARCHAR" property="brandCode" />
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+	<result column="BRAND_EN_NAME" jdbcType="VARCHAR" property="brandEnName" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    BRAND_ID, BRAND_CODE, BRAND_NAME, BRAND_EN_NAME, CREATOR, CREATE_DATE, CORP_ID, FLAG
+  </sql>
+  <sql id="Query_Column_List">
+  	brand.BRAND_ID,brand.BRAND_CODE,brand.BRAND_NAME,brand.BRAND_EN_NAME,brand.CREATOR,us.USER_NAME AS CREATE_NAME,
+  	brand.CREATE_DATE,brand.CORP_ID,corp.CORP_NAME,brand.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where brand.del = 0
+    <trim  suffixOverrides="," >
+      <if test="brandId != null and brandId != ''" >
+        and brand.BRAND_ID = #{brandId} 
+      </if>
+      <if test="brandCode != null and brandCode != ''" >
+        and brand.BRAND_CODE LIKE CONCAT('%',#{brandCode},'%') 
+      </if>
+      <if test="brandName != null and brandName != ''" >
+        and brand.BRAND_NAME LIKE CONCAT('%',#{brandName},'%') 
+      </if>
+      <if test="brandEnName != null and brandEnName != ''" >
+        and brand.BRAND_EN_NAME LIKE CONCAT('%',#{brandEnName},'%') 
+      </if>
+      <if test="creator != null and creator != ''" >
+        and brand.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and brand.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and brand.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and brand.FLAG = #{flag}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (brand.BRAND_CODE LIKE  CONCAT('%',#{searchContent},'%')
+        	or brand.BRAND_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	or brand.BRAND_EN_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	) 
+      </if>
+      <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and brand.CREATE_DATE  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and brand.CREATE_DATE  <=  #{endTime}  ]]>
+	  </if>
+      <if test="corpName != null and corpName != ''" >
+        and corp.CORP_NAME= #{corpName,jdbcType=VARCHAR} 
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM bd_brand brand
+		JOIN bd_user us ON brand.CREATOR=us.USER_ID
+		JOIN sys_corp corp ON brand.CORP_ID=corp.CORP_ID
+    where brand.BRAND_ID = #{brandId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update BD_BRAND set DEL=1 where BRAND_ID = #{brandId}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update BD_BRAND	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	BRAND_ID in
+  	 		<foreach item="brandId" collection="array" open="(" separator="," close=")">
+  	 			#{brandId}
+  	 		</foreach>
+  		</if>
+  		
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.Brand" keyProperty="brandId" useGeneratedKeys="true">
+    insert into BD_BRAND
+	(BRAND_CODE, BRAND_NAME, BRAND_EN_NAME, CREATOR, CREATE_DATE, CORP_ID, FLAG)
+	values
+	(#{brandCode,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{brandEnName,jdbcType=VARCHAR}, #{creator,jdbcType=BIGINT}, 
+	#{createDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.Brand" keyProperty="brandId" useGeneratedKeys="true">
+    insert into BD_BRAND
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="brandCode != null">
+	    BRAND_CODE, 
+	  </if>
+	  <if test="brandName != null">
+	    BRAND_NAME, 
+	  </if>
+	  <if test="brandEnName != null">
+	    BRAND_EN_NAME, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="brandCode != null">
+	    #{brandCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="brandName != null">
+	    #{brandName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="brandEnName != null">
+	    #{brandEnName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.Brand" >
+	update BD_BRAND
+	<set>
+		<!-- 
+	  <if test="brandCode != null">
+	    BRAND_CODE = #{brandCode,jdbcType=VARCHAR}, 
+	  	</if>
+	   -->
+	  <if test="brandName != null">
+	    BRAND_NAME = #{brandName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="brandEnName != null">
+	    BRAND_EN_NAME = #{brandEnName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where BRAND_ID = #{brandId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.Brand" >
+    update BD_BRAND set 
+	  BRAND_CODE = #{brandCode,jdbcType=VARCHAR}, BRAND_NAME = #{brandName,jdbcType=VARCHAR}, BRAND_EN_NAME = #{brandEnName,jdbcType=VARCHAR}, 
+	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  FLAG = #{flag,jdbcType=INTEGER}
+	where BRAND_ID = #{brandId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_brand brand
+		JOIN bd_user us ON brand.CREATOR=us.USER_ID
+		JOIN sys_corp corp ON brand.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	ORDER BY brand.CREATE_DATE DESC
+  </select>
+  
+  <select id="getList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_brand brand
+		JOIN bd_user us ON brand.CREATOR=us.USER_ID
+		JOIN sys_corp corp ON brand.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       ORDER BY brand.CREATE_DATE DESC
+  </select>
+  
+  <select id="getReferenceList" resultType="java.util.Map" parameterType="java.util.Map">
+ 	SELECT brand.BRAND_ID AS brandId,brand.BRAND_NAME AS brandName,brand.BRAND_CODE AS brandCode,brand.BRAND_EN_NAME AS brandEnName  
+ 	FROM bd_brand brand
+		JOIN bd_user us ON brand.CREATOR=us.USER_ID
+		JOIN sys_corp corp ON brand.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="getByName" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_brand brand
+		JOIN bd_user us ON brand.CREATOR=us.USER_ID
+		JOIN sys_corp corp ON brand.CORP_ID=corp.CORP_ID
+	WHERE brand.BRAND_NAME = #{brandName,jdbcType=VARCHAR}
+  </select>
+
+	<select id="selectByNames" resultMap="BaseResultMap" parameterType="List">
+		select
+		<include refid="Base_Column_List"/>
+		FROM bd_brand
+		WHERE del = 0 and flag = 0
+		and BRAND_NAME in
+		<foreach collection="names" item="name" separator="," open="(" close=")">
+			#{name}
+		</foreach>
+	</select>
+
+	<select id="queryIdByName" parameterType="String" resultType="Long">
+		SELECT BRAND_ID
+		FROM bd_brand
+		WHERE BRAND_NAME = #{brandName}
+		AND FLAG = 0
+		AND DEL = 0
+	</select>
+
+	<select id="selectByBrandName" resultMap="BaseResultMap" parameterType="List">
+		select
+		<include refid="Base_Column_List"/>
+		from bd_brand
+		where del = 0 and brand_name in
+		<foreach collection="brandNames" item="brandName" separator="," open="(" close=")">
+			#{brandName}
+		</foreach>
+	</select>
+
+	<select id="queryByName" parameterType="java.lang.String" resultType="java.lang.Long">
+		select BRAND_ID
+		from bd_brand
+		where BRAND_NAME = #{carBrandName}
+		and FLAG = 0
+		and DEL = 0
+	</select>
+
+</mapper>   

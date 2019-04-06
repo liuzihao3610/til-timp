@@ -1,0 +1,19 @@
+{
+  "data":{
+    "stockCarTransId":0,
+    "stockCarId":0,
+    "transportOrderDetailId":0,
+    "transportOrderId":0,
+    "transportOrderCode":"Test-transportOrderCode",
+    "jobType":0,
+    "carVin":"Test-carVin",
+    "shutBillDate":"2018-05-07 12:23:44",
+    "shutBillStatus":0,
+    "shutBillId":0,
+    "settleDate":"2018-05-07 12:23:44",
+    "settleStatus":0,
+    "settleId":0,
+    "corpId":0,
+    "flag":0
+  }
+}

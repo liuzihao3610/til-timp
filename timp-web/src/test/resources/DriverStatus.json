@@ -1,0 +1,18 @@
+{
+  "data":{
+    "dirverStatusId":0,
+    "driverId":0,
+    "transporterTransporterId":0,
+    "driverStatus":0,
+    "location":"Test-location",
+    "lng":0,
+    "lat":0,
+    "startTime":"2018-04-01 03:56:01",
+    "endTime":"2018-04-01 03:56:01",
+    "remark":"Test-remark",
+    "creator":0,
+    "createDate":"2018-04-01 03:56:01",
+    "corpId":0,
+    "flag":0
+  }
+}

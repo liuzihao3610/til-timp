@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.StockCarMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.StockCar" >
+    <id column="STOCK_CAR_ID" jdbcType="BIGINT" property="stockCarId" />
+	<result column="STOCK_CAR_CODE" jdbcType="VARCHAR" property="stockCarCode" />
+	<result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="ORDER_CODE" jdbcType="VARCHAR" property="orderCode" />
+	<result column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
+	<result column="ORDER_TYPE" jdbcType="INTEGER" property="orderType" />
+	<result column="CUSTOMER_ID" jdbcType="BIGINT" property="customerId" />
+	<result column="CARRIER_ID" jdbcType="BIGINT" property="carrierId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+	<result column="CAR_STATUS" jdbcType="INTEGER" property="carStatus" />
+	<result column="CURRENT_UNIT_ID" jdbcType="BIGINT" property="currentUnitId" />
+	<result column="RECEIVING_DATE" jdbcType="TIMESTAMP" property="receivingDate" />
+	<result column="TRANSFER_ORDER_ID" jdbcType="BIGINT" property="transferOrderId" />
+	<result column="TRANSFER_ORDER_STATUS" jdbcType="INTEGER" property="transferOrderStatus" />
+	<result column="SHUT_BILL_DATE" jdbcType="TIMESTAMP" property="shutBillDate" />
+	<result column="SHUT_BILL_STATUS" jdbcType="INTEGER" property="shutBillStatus" />
+	<result column="SHUT_BILL_ID" jdbcType="BIGINT" property="shutBillId" />
+	<result column="RIGHT_BILL_TYPE" jdbcType="TIMESTAMP" property="rightBillType" />
+	<result column="RIGHT_BILL_STATUS" jdbcType="INTEGER" property="rightBillStatus" />
+	<result column="RIGHT_BILL_ID" jdbcType="BIGINT" property="rightBillId" />
+	<result column="SETTLE_DATE" jdbcType="TIMESTAMP" property="settleDate" />
+	<result column="SETTLE_STATUS" jdbcType="INTEGER" property="settleStatus" />
+	<result column="SETTLE_ID" jdbcType="BIGINT" property="settleId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+
+	<result column="CUSTOMER_NAME" jdbcType="VARCHAR" property="refCustomerName" />
+	<result column="CARRIER_NAME" jdbcType="VARCHAR" property="refCarrierName" />
+	<result column="CAR_NAME" jdbcType="VARCHAR" property="refCarName" />
+	<result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="refCategoryName" />
+	<result column="CAR_CODE" jdbcType="VARCHAR" property="refCarCode" />
+	<result column="CURRENT_UNIT_NAME" jdbcType="VARCHAR" property="refCurrentUnitName" />
+	<result column="CLOSURE_NUMBER" jdbcType="VARCHAR" property="refShutBillCode" />
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="TRANSFER_ORDER_CODE" jdbcType="VARCHAR" property="refTransferOrderCode" />
+	<!-- <result column="SETTLE_CODE" jdbcType="VARCHAR" property="refSettleCode" /> -->
+	<!-- <result column="RIGHT_BILL_CODE" jdbcType="VARCHAR" property="refRightBillCode" /> -->
+	
+	<result column="SEND_UNIT_NAME" jdbcType="VARCHAR" property="refSendUnitName" />
+	<result column="SEND_CITY_NAME" jdbcType="VARCHAR" property="refSendUnitCity" />
+	
+	<result column="SEND_UNIT_ID" jdbcType="VARCHAR" property="sendUnitId" />
+	<result column="RECEIVE_UNIT_ID" jdbcType="VARCHAR" property="receiveUnitId" />
+	<result column="SEND_ADDRESS" jdbcType="VARCHAR" property="refSendUnitAddr" />
+	<result column="RECEIVE_UNIT_NAME" jdbcType="VARCHAR" property="refReceiveUnitName" />
+	<result column="RECEIVE_CITY_NAME" jdbcType="VARCHAR" property="refReceiveUnitCity" />
+	<result column="RECEIVE_ADDRESS" jdbcType="VARCHAR" property="refReceiveUnitAddr" />
+	<result column="RECEIVE_SPECIAL" jdbcType="INTEGER" property="refReceiveUnitSpecial" />
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName" />
+	<result column="BRAND_ID" jdbcType="VARCHAR" property="brandId" />
+	
+	<result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="refCategoryName" />
+	<result column="CLAIM_LOAD_DATE" jdbcType="DATE" property="refClaimLoadingDate" />
+	<result column="CLAIM_DELIVERY_DATE" jdbcType="DATE" property="refClaimDeliveryDate" />
+  </resultMap>
+
+  <sql id="Acc_Column_List" >
+    sc.STOCK_CAR_ID,sc.CAR_VIN,sc.ORDER_ID,sc.CAR_STATUS,sc.TRANSFER_ORDER_STATUS
+  </sql>
+     
+  <sql id="Refer_Column_List" >
+    brand.BRAND_NAME,sc.STOCK_CAR_ID,sc.CAR_VIN,sc.ORDER_CODE,sc.ORDER_TYPE,customer.CORP_NAME AS CUSTOMER_NAME,brand.BRAND_ID,
+    carrier.CORP_NAME AS CARRIER_NAME,car.CAR_NAME,car.CAR_CODE
+  </sql>
+  
+  <sql id="transportOrderRefer_Column_List" >
+    sc.CAR_ID,sc.STOCK_CAR_ID,sc.CAR_VIN,sc.CAR_STATUS,sc.TRANSFER_ORDER_STATUS,sc.ORDER_CODE,sc.ORDER_TYPE,customer.CORP_NAME AS CUSTOMER_NAME,brand.BRAND_NAME,brand.BRAND_ID,
+     sunit.UNIT_ID as SEND_UNIT_ID,runit.UNIT_ID as RECEIVE_UNIT_ID,sunit.ADDRESS as SEND_ADDRESS,sunit.UNIT_NAME AS SEND_UNIT_NAME,scity.CITY_NAME AS SEND_CITY_NAME,ctype.CAR_TYPE_NAME,
+    runit.SPECIAL as RECEIVE_SPECIAL,runit.ADDRESS AS RECEIVE_ADDRESS,runit.UNIT_NAME AS RECEIVE_UNIT_NAME,rcity.CITY_NAME AS RECEIVE_CITY_NAME,
+    carrier.CORP_NAME AS CARRIER_NAME,car.CAR_NAME,car.CAR_CODE,detail.CLAIM_LOAD_DATE,detail.CLAIM_DELIVERY_DATE
+  </sql>
+   
+  <sql id="Base_Column_List" >
+    STOCK_CAR_ID,STOCK_CAR_CODE, ORDER_ID, ORDER_CODE, ORDER_DETAIL_ID, ORDER_TYPE, CUSTOMER_ID, CARRIER_ID, CAR_VIN, CAR_ID, CAR_STATUS, 
+	brand.BRAND_NAME,ctype.CAR_TYPE_NAME,
+	TRANSFER_ORDER_ID,CURRENT_UNIT_ID, RECEIVING_DATE, TRANSFER_ORDER_STATUS, SHUT_BILL_DATE, SHUT_BILL_STATUS, SHUT_BILL_ID, RIGHT_BILL_TYPE, 
+	RIGHT_BILL_STATUS, RIGHT_BILL_ID, SETTLE_DATE, SETTLE_STATUS, SETTLE_ID, CORP_ID, FLAG
+  </sql>
+
+	<sql id="Column_List" >
+		STOCK_CAR_ID,STOCK_CAR_CODE, ORDER_ID, ORDER_CODE, ORDER_DETAIL_ID, ORDER_TYPE, CUSTOMER_ID, CARRIER_ID, CAR_VIN, CAR_ID, CAR_STATUS,
+		TRANSFER_ORDER_ID,CURRENT_UNIT_ID, RECEIVING_DATE, TRANSFER_ORDER_STATUS, SHUT_BILL_DATE, SHUT_BILL_STATUS, SHUT_BILL_ID, RIGHT_BILL_TYPE,
+		RIGHT_BILL_STATUS, RIGHT_BILL_ID, SETTLE_DATE, SETTLE_STATUS, SETTLE_ID, CORP_ID, FLAG
+	</sql>
+   
+  <sql id="Query_Column_List" >
+    sc.STOCK_CAR_ID, sc.STOCK_CAR_CODE, sc.ORDER_ID, sc.ORDER_CODE, sc.ORDER_DETAIL_ID, sc.ORDER_TYPE, sc.CUSTOMER_ID, sc.CARRIER_ID, sc.CAR_VIN, sc.CAR_ID, sc.CAR_STATUS, sc.TRANSFER_ORDER_STATUS,
+    customer.CORP_NAME AS CUSTOMER_NAME,
+    carrier.CORP_NAME AS CARRIER_NAME,
+    car.CAR_NAME,car.CAR_CODE,
+    brand.BRAND_NAME,
+    ctype.CAR_TYPE_NAME,
+<!--     sto.TRANSFER_ORDER_CODE, -->
+    current.UNIT_NAME AS CURRENT_UNIT_NAME,
+    fac.CLOSURE_NUMBER,
+    corp.CORP_NAME,
+    sc.TRANSFER_ORDER_ID,sc.CURRENT_UNIT_ID, sc.RECEIVING_DATE,sc.SHUT_BILL_DATE, sc.SHUT_BILL_STATUS, sc.SHUT_BILL_ID, sc.RIGHT_BILL_TYPE, 
+    sc.RIGHT_BILL_STATUS, sc.RIGHT_BILL_ID, sc.SETTLE_DATE, sc.SETTLE_STATUS, sc.SETTLE_ID, sc.CORP_ID, sc.FLAG
+  </sql>
+  
+  <sql id="Refer_Where_List">
+    where sc.del = 0
+    <trim  suffixOverrides="," >
+      <if test="brandId != null and brandId != ''" >
+        and brand.BRAND_ID = #{brandId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and sc.CAR_VIN = #{carVin}
+      </if>
+      <if test="unitId != null and unitId != ''" >
+        and runit.UNIT_ID = #{unitId}
+      </if>
+      <if test="cityId != null and cityId != ''" >
+        and rcity.CITY_ID = #{cityId}
+      </if>
+      <if test="carrierId != null and carrierId != ''" >
+        and sc.CARRIER_ID = #{carrierId}
+      </if>
+      <if test="customerId != null and customerId != ''" >
+        and sc.CUSTOMER_ID = #{customerId}
+      </if>
+      <if test="carStatus != null and carStatus != ''" >
+        and sc.CAR_STATUS = #{carStatus}
+      </if>
+	    <if test="corpId != null and corpId != ''" >
+		    and sc.CORP_ID = #{corpId}
+	    </if>
+	    <if test="searchContent != null and searchContent != ''" >
+        and (
+        sc.ORDER_CODE  like concat(concat('%',#{searchContent}),'%')
+        or sc.CAR_VIN  like concat(concat('%',#{searchContent}),'%')
+        )
+      </if> 
+    </trim>
+  </sql>
+  
+  <sql id="Example_Where_Clause">
+    where sc.del = 0
+    <trim  suffixOverrides="," >
+      <if test="stockCarId != null and stockCarId != ''" >
+        and sc.STOCK_CAR_ID = #{stockCarId}
+      </if>
+       <if test="stockCarCode != null and stockCarCode != ''" >
+        and sc.STOCK_CAR_CODE = #{stockCarCode}
+      </if>
+      <if test="orderId != null and orderId != ''" >
+        and sc.ORDER_ID = #{orderId}
+      </if>
+      <if test="orderCode != null and orderCode != ''" >
+        and sc.ORDER_CODE = #{orderCode}
+      </if>
+      <if test="orderDetailId != null and orderDetailId != ''" >
+        and sc.ORDER_DETAIL_ID = #{orderDetailId}
+      </if>
+      <if test="orderType != null and orderType != ''" >
+        and sc.ORDER_TYPE = #{orderType}
+      </if>
+      <if test="customerId != null and customerId != ''" >
+        and sc.CUSTOMER_ID = #{customerId}
+      </if>
+      <if test="carrierId != null and carrierId != ''" >
+        and sc.CARRIER_ID = #{carrierId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and sc.CAR_VIN = #{carVin}
+      </if>
+      <if test="carId != null and carId != ''" >
+        and sc.CAR_ID = #{carId}
+      </if>
+      <if test="carStatus != null and carStatus != ''" >
+        and sc.CAR_STATUS = #{carStatus}
+      </if>
+      <if test="currentUnitId != null and currentUnitId != ''" >
+        and sc.CURRENT_UNIT_ID = #{currentUnitId}
+      </if>
+      <if test="receivingDate != null and receivingDate != ''" >
+        and sc.RECEIVING_DATE = #{receivingDate}
+      </if>
+      <if test="transferOrderId != null and transferOrderId != ''" >
+        and sc.TRANSFER_ORDER_ID = #{transferOrderId}
+      </if>
+      <if test="transferOrderId != null and transferOrderId != ''" >
+        and sc.TRANSFER_ORDER_STATUS = #{transferOrderStatus}
+      </if>
+      <if test="shutBillDate != null and shutBillDate != ''" >
+        and sc.SHUT_BILL_DATE = #{shutBillDate}
+      </if>
+      <if test="shutBillStatus != null and shutBillStatus != ''" >
+        and sc.SHUT_BILL_STATUS = #{shutBillStatus}
+      </if>
+      <if test="shutBillId != null and shutBillId != ''" >
+        and sc.SHUT_BILL_ID = #{shutBillId}
+      </if>
+      <if test="rightBillType != null and rightBillType != ''" >
+        and sc.RIGHT_BILL_TYPE = #{rightBillType}
+      </if>
+      <if test="rightBillStatus != null and rightBillStatus != ''" >
+        and sc.RIGHT_BILL_STATUS = #{rightBillStatus}
+      </if>
+      <if test="rightBillId != null and rightBillId != ''" >
+        and sc.RIGHT_BILL_ID = #{rightBillId}
+      </if>
+      <if test="settleDate != null and settleDate != ''" >
+        and sc.SETTLE_DATE = #{settleDate}
+      </if>
+      <if test="settleStatus != null and settleStatus != ''" >
+        and sc.SETTLE_STATUS = #{settleStatus}
+      </if>
+      <if test="settleId != null and settleId != ''" >
+        and sc.SETTLE_ID = #{settleId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and sc.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and sc.FLAG = #{flag}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+        from st_stock_car	sc
+    	left join om_order_detail odetail ON  odetail.ORDER_DETAIL_ID = sc.ORDER_DETAIL_ID
+		join sys_corp customer ON customer.CORP_ID = sc.CUSTOMER_ID     
+		join sys_corp carrier ON carrier.CORP_ID = sc.CARRIER_ID
+		join bd_car car on car.CAR_ID =  sc.CAR_ID
+		join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		join  bd_unit current on current.UNIT_ID = sc.CURRENT_UNIT_ID
+		join sys_corp corp ON corp.CORP_ID = sc.CORP_ID
+		left join sr_transfer_order sto ON sto.TRANSFER_ORDER_ID = sc.TRANSFER_ORDER_ID
+		left join fs_accounting_closure fac on fac.CLOSURE_ID = sc.SHUT_BILL_ID
+    where sc.del = 0 and sc.STOCK_CAR_ID = #{stockCarId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from st_stock_car where STOCK_CAR_ID = #{stockCarId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.StockCar" keyProperty="stockCarId" useGeneratedKeys="true">
+    insert into st_stock_car
+	(ORDER_ID, STOCK_CAR_CODE,ORDER_CODE, ORDER_DETAIL_ID, ORDER_TYPE,
+	
+	CUSTOMER_ID, CARRIER_ID, CAR_VIN, CAR_ID, CAR_STATUS, CURRENT_UNIT_ID, 
+	RECEIVING_DATE, TRANSFER_ORDER_ID,TRANSFER_ORDER_STATUS, SHUT_BILL_DATE, SHUT_BILL_STATUS, SHUT_BILL_ID, RIGHT_BILL_TYPE, 
+	RIGHT_BILL_STATUS, 
+	RIGHT_BILL_ID, SETTLE_DATE, SETTLE_STATUS, SETTLE_ID, CORP_ID, FLAG)
+	values
+	(#{orderId,jdbcType=BIGINT}, #{stockCarCode,jdbcType=VARCHAR}, #{orderCode,jdbcType=VARCHAR}, #{orderDetailId,jdbcType=BIGINT}, #{orderType,jdbcType=INTEGER}, 
+	#{customerId,jdbcType=BIGINT}, #{carrierId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR}, #{carId,jdbcType=BIGINT}, 
+	#{carStatus,jdbcType=INTEGER}, #{currentUnitId,jdbcType=BIGINT}, #{receivingDate,jdbcType=TIMESTAMP}, 
+	 #{transferOrderId,jdbcType=BIGINT}, #{transferOrderStatus,jdbcType=INTEGER}, 
+	#{shutBillDate,jdbcType=TIMESTAMP}, #{shutBillStatus,jdbcType=INTEGER}, #{shutBillId,jdbcType=BIGINT}, 
+	#{rightBillType,jdbcType=TIMESTAMP}, #{rightBillStatus,jdbcType=INTEGER}, #{rightBillId,jdbcType=BIGINT}, 
+	#{settleDate,jdbcType=TIMESTAMP}, #{settleStatus,jdbcType=INTEGER}, #{settleId,jdbcType=BIGINT}, 
+	#{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.StockCar" keyProperty="stockCarId" useGeneratedKeys="true">
+    insert into st_stock_car
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="orderId != null">
+	    ORDER_ID, 
+	  </if>
+	  <if test="stockCarCode != null" >
+    	 STOCK_CAR_CODE,
+      </if>
+	  <if test="orderCode != null">
+	    ORDER_CODE, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    ORDER_DETAIL_ID, 
+	  </if>
+	  <if test="orderType != null">
+	    ORDER_TYPE, 
+	  </if>
+	  <if test="customerId != null">
+	    CUSTOMER_ID, 
+	  </if>
+	  <if test="carrierId != null">
+	    CARRIER_ID, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID, 
+	  </if>
+	  <if test="carStatus != null">
+	    CAR_STATUS, 
+	  </if>
+	  <if test="currentUnitId != null">
+	    CURRENT_UNIT_ID, 
+	  </if>
+	  <if test="receivingDate != null">
+	    RECEIVING_DATE, 
+	  </if>
+	  <if test="transferOrderId != null">
+	    TRANSFER_ORDER_ID, 
+	  </if>
+	  <if test="transferOrderStatus != null">
+	    TRANSFER_ORDER_STATUS, 
+	  </if>
+	  <if test="shutBillDate != null">
+	    SHUT_BILL_DATE, 
+	  </if>
+	  <if test="shutBillStatus != null">
+	    SHUT_BILL_STATUS, 
+	  </if>
+	  <if test="shutBillId != null">
+	    SHUT_BILL_ID, 
+	  </if>
+	  <if test="rightBillType != null">
+	    RIGHT_BILL_TYPE, 
+	  </if>
+	  <if test="rightBillStatus != null">
+	    RIGHT_BILL_STATUS, 
+	  </if>
+	  <if test="rightBillId != null">
+	    RIGHT_BILL_ID, 
+	  </if>
+	  <if test="settleDate != null">
+	    SETTLE_DATE, 
+	  </if>
+	  <if test="settleStatus != null">
+	    SETTLE_STATUS, 
+	  </if>
+	  <if test="settleId != null">
+	    SETTLE_ID, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="orderId != null">
+	    #{orderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="stockCarCode != null">
+	    #{stockCarCode,jdbcType=VARCHAR} ,
+	  </if>
+	  <if test="orderCode != null">
+	    #{orderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    #{orderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderType != null">
+	    #{orderType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="customerId != null">
+	    #{customerId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carrierId != null">
+	    #{carrierId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="carId != null">
+	    #{carId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carStatus != null">
+	    #{carStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="currentUnitId != null">
+	    #{currentUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="receivingDate != null">
+	    #{receivingDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="transferOrderId != null">
+	    #{transferOrderId,jdbcType=BIGINT},
+	  </if>
+	  <if test="transferOrderStatus != null">
+	    #{transferOrderStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="shutBillDate != null">
+	    #{shutBillDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="shutBillStatus != null">
+	    #{shutBillStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="shutBillId != null">
+	    #{shutBillId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="rightBillType != null">
+	    #{rightBillType,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="rightBillStatus != null">
+	    #{rightBillStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="rightBillId != null">
+	    #{rightBillId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="settleDate != null">
+	    #{settleDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="settleStatus != null">
+	    #{settleStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="settleId != null">
+	    #{settleId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.StockCar" >
+	update st_stock_car
+	<set>
+	  <if test="stockCarCode != null" >
+	 	STOCK_CAR_CODE = #{stockCarCode,jdbcType=VARCHAR},
+ 	 </if>
+	  <if test="orderId != null">
+	    ORDER_ID = #{orderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderCode != null">
+	    ORDER_CODE = #{orderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderType != null">
+	    ORDER_TYPE = #{orderType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="customerId != null">
+	    CUSTOMER_ID = #{customerId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carrierId != null">
+	    CARRIER_ID = #{carrierId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID = #{carId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carStatus != null">
+	    CAR_STATUS = #{carStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="currentUnitId != null">
+	    CURRENT_UNIT_ID = #{currentUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="receivingDate != null">
+	    RECEIVING_DATE = #{receivingDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="transferOrderId != null">
+	    TRANSFER_ORDER_ID = #{transferOrderId,jdbcType=BIGINT},
+	  </if>
+	  <if test="transferOrderStatus != null">
+	    TRANSFER_ORDER_STATUS = #{transferOrderStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="shutBillDate != null">
+	    SHUT_BILL_DATE = #{shutBillDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="shutBillStatus != null">
+	    SHUT_BILL_STATUS = #{shutBillStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="shutBillId != null">
+	    SHUT_BILL_ID = #{shutBillId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="rightBillType != null">
+	    RIGHT_BILL_TYPE = #{rightBillType,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="rightBillStatus != null">
+	    RIGHT_BILL_STATUS = #{rightBillStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="rightBillId != null">
+	    RIGHT_BILL_ID = #{rightBillId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="settleDate != null">
+	    SETTLE_DATE = #{settleDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="settleStatus != null">
+	    SETTLE_STATUS = #{settleStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="settleId != null">
+	    SETTLE_ID = #{settleId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER} 
+	  </if>
+	</set>
+	where STOCK_CAR_ID = #{stockCarId,jdbcType=BIGINT}
+  </update>
+
+	
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.StockCar" >
+    update st_stock_car set 
+	  STOCK_CAR_CODE = #{stockCarCode,jdbcType=VARCHAR},ORDER_ID = #{orderId,jdbcType=BIGINT}, ORDER_CODE = #{orderCode,jdbcType=VARCHAR}, ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, 
+	  ORDER_TYPE = #{orderType,jdbcType=INTEGER}, CUSTOMER_ID = #{customerId,jdbcType=BIGINT}, CARRIER_ID = #{carrierId,jdbcType=BIGINT}, 
+	  CAR_VIN = #{carVin,jdbcType=VARCHAR}, CAR_ID = #{carId,jdbcType=BIGINT}, CAR_STATUS = #{carStatus,jdbcType=INTEGER}, 
+	  CURRENT_UNIT_ID = #{currentUnitId,jdbcType=BIGINT}, RECEIVING_DATE = #{receivingDate,jdbcType=TIMESTAMP}, 
+	  TRANSFER_ORDER_ID = #{transferOrderId},TRANSFER_ORDER_STATUS = #{transferOrderStatus,jdbcType=INTEGER}, SHUT_BILL_DATE = #{shutBillDate,jdbcType=TIMESTAMP}, 
+	  SHUT_BILL_STATUS = #{shutBillStatus,jdbcType=INTEGER}, SHUT_BILL_ID = #{shutBillId,jdbcType=BIGINT}, 
+	  RIGHT_BILL_TYPE = #{rightBillType,jdbcType=TIMESTAMP}, RIGHT_BILL_STATUS = #{rightBillStatus,jdbcType=INTEGER}, 
+	  RIGHT_BILL_ID = #{rightBillId,jdbcType=BIGINT}, SETTLE_DATE = #{settleDate,jdbcType=TIMESTAMP}, SETTLE_STATUS = #{settleStatus,jdbcType=INTEGER}, 
+	  SETTLE_ID = #{settleId,jdbcType=BIGINT}, CORP_ID = #{corpId,jdbcType=BIGINT}, FLAG = #{flag,jdbcType=INTEGER}
+	where STOCK_CAR_ID = #{stockCarId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	    from st_stock_car	sc
+    	left join om_order_detail odetail ON  odetail.ORDER_DETAIL_ID = sc.ORDER_DETAIL_ID
+		join sys_corp customer ON customer.CORP_ID = sc.CUSTOMER_ID     
+		join sys_corp carrier ON carrier.CORP_ID = sc.CARRIER_ID
+		join bd_car car on car.CAR_ID =  sc.CAR_ID
+		join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		join  bd_unit current on current.UNIT_ID = sc.CURRENT_UNIT_ID
+		join sys_corp corp ON corp.CORP_ID = sc.CORP_ID
+		left join fs_accounting_closure fac on fac.CLOSURE_ID = sc.SHUT_BILL_ID
+	<include refid="Example_Where_Clause"/>
+	order by sc.STOCK_CAR_ID DESC
+  </select>
+  
+  <select id="selectByCarVin" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Acc_Column_List"/>
+	    from st_stock_car	sc
+    	left join om_order_detail odetail ON  odetail.ORDER_DETAIL_ID = sc.ORDER_DETAIL_ID
+		join sys_corp customer ON customer.CORP_ID = sc.CUSTOMER_ID     
+		join sys_corp carrier ON carrier.CORP_ID = sc.CARRIER_ID
+		join bd_car car on car.CAR_ID =  sc.CAR_ID
+		join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		join  bd_unit current on current.UNIT_ID = sc.CURRENT_UNIT_ID
+		join sys_corp corp ON corp.CORP_ID = sc.CORP_ID			
+		left join fs_accounting_closure fac on fac.CLOSURE_ID = sc.SHUT_BILL_ID
+	where sc.del = 0 and sc.CAR_VIN = #{carVin,jdbcType=VARCHAR}
+  </select>
+  
+    <select id="selectstockCarRefer" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Refer_Column_List"/>
+	    from st_stock_car	sc
+    	left join om_order_detail odetail ON  odetail.ORDER_DETAIL_ID = sc.ORDER_DETAIL_ID
+		join sys_corp customer ON customer.CORP_ID = sc.CUSTOMER_ID     
+		join sys_corp carrier ON carrier.CORP_ID = sc.CARRIER_ID
+		join bd_car car on car.CAR_ID =  sc.CAR_ID
+		join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		join bd_unit current on current.UNIT_ID = sc.CURRENT_UNIT_ID
+		join sys_corp corp ON corp.CORP_ID = sc.CORP_ID
+		left join fs_accounting_closure fac on fac.CLOSURE_ID = sc.SHUT_BILL_ID
+		<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+    <select id="selectByStockCar" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	    from st_stock_car	sc
+    	left join om_order_detail odetail ON  odetail.ORDER_DETAIL_ID = sc.ORDER_DETAIL_ID
+		join sys_corp customer ON customer.CORP_ID = sc.CUSTOMER_ID     
+		join sys_corp carrier ON carrier.CORP_ID = sc.CARRIER_ID
+		join bd_car car on car.CAR_ID =  sc.CAR_ID
+		join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		join bd_unit current on current.UNIT_ID = sc.CURRENT_UNIT_ID
+		join sys_corp corp ON corp.CORP_ID = sc.CORP_ID
+		left join fs_accounting_closure fac on fac.CLOSURE_ID = sc.SHUT_BILL_ID
+		<include refid="Example_Where_Clause"/>
+  </select>
+  
+  <select id="selectListByStockCar" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	    from st_stock_car	sc
+    	left join om_order_detail odetail ON  odetail.ORDER_DETAIL_ID = sc.ORDER_DETAIL_ID
+		join sys_corp customer ON customer.CORP_ID = sc.CUSTOMER_ID     
+		join sys_corp carrier ON carrier.CORP_ID = sc.CARRIER_ID
+		join bd_car car on car.CAR_ID =  sc.CAR_ID
+		join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		join bd_unit current on current.UNIT_ID = sc.CURRENT_UNIT_ID
+		join sys_corp corp ON corp.CORP_ID = sc.CORP_ID
+		left join fs_accounting_closure fac on fac.CLOSURE_ID = sc.SHUT_BILL_ID
+		<include refid="Example_Where_Clause"/>
+			ORDER BY sc.STOCK_CAR_ID DESC limit 1
+  </select>
+  
+   <select id="transportOrderRefer" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="transportOrderRefer_Column_List"/>
+	 from st_stock_car	sc
+   	 left  join om_order_detail detail ON  detail.ORDER_DETAIL_ID = sc.ORDER_DETAIL_ID
+	 left join sys_corp customer ON customer.CORP_ID = sc.CUSTOMER_ID     
+	 left join sys_corp carrier ON carrier.CORP_ID = sc.CARRIER_ID
+	 left join bd_car car on car.CAR_ID =  sc.CAR_ID
+	 left join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+   	 left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+	 left join bd_unit current on current.UNIT_ID = sc.CURRENT_UNIT_ID
+	 left join sys_corp corp ON corp.CORP_ID = sc.CORP_ID
+     left join fs_accounting_closure fac on fac.CLOSURE_ID = sc.SHUT_BILL_ID
+	 left join bd_unit sunit on  sunit.UNIT_ID = detail.SEND_UNIT_ID
+	 left join bd_unit runit on  runit.UNIT_ID = detail.RECEIVE_UNIT_ID
+     left join bd_city scity on scity.CITY_ID = sunit.CITY_ID
+	 left join bd_city rcity on rcity.CITY_ID = runit.CITY_ID
+	<include refid="Refer_Where_List"/>
+		<if test="orderByClause != null and orderByClause != ''" >
+		      order by ${orderByClause}
+		   </if>
+  </select>
+  
+   <update id="logicDeleteByOrderId" parameterType="java.lang.Long">
+    update st_stock_car set 
+      DEL = 1 
+    WHERE ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </update>
+
+	<select id="selectByVins" resultMap="BaseResultMap"  parameterType="Map">
+		select
+		<include refid="Column_List"/>
+		from st_stock_car
+		where corp_id = #{corpId}
+		<if test="orderId != null">
+			and ORDER_ID = #{orderId,jdbcType=BIGINT}
+		</if>
+		and CAR_VIN IN
+		<foreach collection="vins" separator="," open="(" close=")" item="vin">
+			#{vin}
+		</foreach>
+
+
+
+	</select>
+	
+	<update id="updateTransStatus" parameterType="com.tilchina.timp.model.StockCar">
+    update st_stock_car set 
+      TRANSFER_ORDER_STATUS = #{transferOrderStatus,jdbcType=INTEGER}
+    WHERE STOCK_CAR_ID = #{stockCarId,jdbcType=BIGINT}
+  </update>
+
+	<select id="selectByOrderDetailId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Column_List"/>
+		from st_stock_car
+		where del = 0 and ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectByTransOrderDetailId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+          a.STOCK_CAR_ID, a.STOCK_CAR_CODE, a. ORDER_ID, a. ORDER_CODE, a. ORDER_DETAIL_ID, a. ORDER_TYPE,
+          a.CUSTOMER_ID, customer.CORP_NAME AS CUSTOMER_NAME,a.CARRIER_ID, a.CAR_VIN, a.CAR_ID, a.CAR_STATUS, a.TRANSFER_ORDER_ID,
+          a.CURRENT_UNIT_ID, a. RECEIVING_DATE, a. TRANSFER_ORDER_STATUS, a. SHUT_BILL_DATE,
+          a. SHUT_BILL_STATUS, a.SHUT_BILL_ID, a. RIGHT_BILL_TYPE, a.RIGHT_BILL_STATUS, a. RIGHT_BILL_ID,
+          a. SETTLE_DATE, a. SETTLE_STATUS, a. SETTLE_ID, a. CORP_ID, a. FLAG
+        from st_stock_car a
+        join st_stock_car_trans b on a.STOCK_CAR_ID = b.STOCK_CAR_ID
+        left join sys_corp customer ON customer.CORP_ID = a.CUSTOMER_ID 
+        where a.del = 0 and b.del=0 and b.TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}
+	</select>
+
+	<sql id="Vin_Column_List" >
+		sc.STOCK_CAR_ID, sc.STOCK_CAR_CODE, sc.ORDER_ID, sc.ORDER_CODE, sc.ORDER_DETAIL_ID, sc.ORDER_TYPE, sc.CUSTOMER_ID, sc.CARRIER_ID, sc.CAR_VIN, sc.CAR_ID, sc.CAR_STATUS, sc.TRANSFER_ORDER_STATUS,
+		customer.CORP_NAME AS CUSTOMER_NAME,
+		carrier.CORP_NAME AS CARRIER_NAME,
+		car.CAR_NAME,car.CAR_CODE,
+		brand.BRAND_NAME,
+		ctype.CAR_TYPE_NAME,
+		current.UNIT_NAME AS CURRENT_UNIT_NAME,
+		fac.CLOSURE_NUMBER,
+		corp.CORP_NAME,
+		odetail.CLAIM_LOAD_DATE,
+		unit.UNIT_NAME AS SEND_UNIT_NAME,
+		un.UNIT_NAME AS RECEIVE_UNIT_NAME,
+		sc.TRANSFER_ORDER_ID,sc.CURRENT_UNIT_ID, sc.RECEIVING_DATE,sc.SHUT_BILL_DATE, sc.SHUT_BILL_STATUS, sc.SHUT_BILL_ID, sc.RIGHT_BILL_TYPE,
+		sc.RIGHT_BILL_STATUS, sc.RIGHT_BILL_ID, sc.SETTLE_DATE, sc.SETTLE_STATUS, sc.SETTLE_ID, sc.CORP_ID, sc.FLAG
+	</sql>
+	
+	<select id="getVinList"  resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+      <include refid="Vin_Column_List"/>
+        from st_stock_car	sc
+    	left join om_order_detail odetail ON  odetail.ORDER_DETAIL_ID = sc.ORDER_DETAIL_ID
+		left join  bd_unit unit ON odetail.SEND_UNIT_ID=unit.UNIT_ID
+		left join bd_unit un ON odetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		join sys_corp customer ON customer.CORP_ID = sc.CUSTOMER_ID     
+		join sys_corp carrier ON carrier.CORP_ID = sc.CARRIER_ID
+		join bd_car car on car.CAR_ID =  sc.CAR_ID
+		join bd_brand brand on brand.BRAND_ID = car.BRAND_ID
+	  	left join bd_car_type ctype on ctype.CAR_TYPE_ID = car.CAR_TYPE_ID
+		join  bd_unit current on current.UNIT_ID = sc.CURRENT_UNIT_ID
+		join sys_corp corp ON corp.CORP_ID = sc.CORP_ID
+		left join sr_transfer_order sto ON sto.TRANSFER_ORDER_ID = sc.TRANSFER_ORDER_ID
+		left join fs_accounting_closure fac on fac.CLOSURE_ID = sc.SHUT_BILL_ID
+		LEFT JOIN sr_transfer_order tor ON tor.CAR_VIN=sc.CAR_VIN
+    where sc.del = 0
+		and tor.CAR_VIN IS NULL
+    	and sc.CORP_ID=#{corpId,jdbcType=BIGINT}
+		<if test="searchContent !=null and searchContent != ''">
+			and sc.CAR_VIN  LIKE CONCAT('%',#{searchContent},'%')
+		</if>
+    	
+  </select>
+</mapper>   
+

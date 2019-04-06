@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransporterReportMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransporterReport" >
+    <id column="TRANSPORTER_REPORT_ID" jdbcType="BIGINT" property="transporterReportId" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="TRANSPORTER_STATUS" jdbcType="INTEGER" property="transporterStatus" />
+	<result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+	<result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="LOCATION" jdbcType="VARCHAR" property="location" />
+	<result column="LNG" jdbcType="DOUBLE" property="lng" />
+	<result column="LAT" jdbcType="DOUBLE" property="lat" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />   
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+    <result column="TRAILER_PLATE_CODE" jdbcType="VARCHAR" property="refTrailerPlateCode" />
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+ 
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANSPORTER_REPORT_ID, TRANSPORTER_ID, DRIVER_ID, TRANSPORTER_STATUS, START_DATE, END_DATE, REMARK, LOCATION, LNG, LAT, 
+	CREATOR, CREATE_DATE, CORP_ID, FLAG
+  </sql>
+   
+  <sql id="Query_Column_List" >
+    tr.TRANSPORTER_REPORT_ID, tr.TRANSPORTER_ID, transporter.TRANSPORTER_CODE ,transporter.TRACTIR_PLATE_CODE, transporter.TRAILER_PLATE_CODE, tr.DRIVER_ID, 
+    user.USER_NAME as DRIVER_NAME, user.USER_CODE as DRIVER_CODE, transporter.TRACTIR_PLATE_CODE, tr.TRANSPORTER_STATUS, tr.START_DATE, tr.END_DATE, 
+    tr.REMARK, tr.LOCATION, tr.LNG, tr.LAT, tr.CREATOR, creator.USER_NAME as CREATE_NAME, tr.CREATE_DATE, tr.CORP_ID, corp.CORP_NAME, tr.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where tr.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transporterReportId != null and transporterReportId != ''" >
+        and tr.TRANSPORTER_REPORT_ID = #{transporterReportId}
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and tr.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and tr.DRIVER_ID = #{driverId}
+      </if>
+      <if test="transporterStatus != null and transporterStatus != ''" >
+        and tr.TRANSPORTER_STATUS = #{transporterStatus}
+      </if>
+      <if test="startDate != null and startDate != ''" >
+        and tr.START_DATE = #{startDate}
+      </if>
+      <if test="endDate != null and endDate != ''" >
+        and tr.END_DATE = #{endDate}
+      </if>
+      <if test="remark != null and remark != ''" >
+        and tr.REMARK = #{remark}
+      </if>
+      <if test="location != null and location != ''" >
+        and tr.LOCATION = #{location}
+      </if>
+      <if test="lng != null and lng != ''" >
+        and tr.LNG = #{lng}
+      </if>
+      <if test="lat != null and lat != ''" >
+        and tr.LAT = #{lat}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and tr.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+         and (
+        tr.CREATE_DATE = #{createDate}
+        or tr.CREATE_DATE like concat(concat('%', #{createDate} ),'%')
+        )
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and tr.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and tr.FLAG = #{flag}
+      </if>
+		<if test="refDriverName != null and refDriverName != ''" >
+			and (user.USER_NAME like concat(concat('%',#{refDriverName}),'%') )
+		</if>
+		<if test="refDriverCode != null and refDriverCode != ''" >
+			and (user.USER_CODE like concat(concat('%',#{refDriverCode}),'%') )
+		</if>
+		<if test="refStartDate != null and refStartDate != ''">
+			<![CDATA[ and tr.END_DATE  >=  #{refStartDate}  ]]>
+		</if>
+		<if test="refEndDate != null and refEndDate != ''">
+			<![CDATA[ and tr.START_DATE  <=  #{refEndDate}  ]]>
+		</if>
+		<if test="startTime != null and startTime != ''">
+			<![CDATA[ and tr.CREATE_DATE  >=  #{startTime}  ]]>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			<![CDATA[ and tr.CREATE_DATE  <=  #{endTime}  ]]>
+		</if>
+		<if test="refStartTime != null and refStartTime != ''" >
+			<![CDATA[  and ( tr.START_DATE  >=  #{refStartTime} ) ]]>
+		</if>
+		<if test="refEndTime != null and refEndTime != ''" >
+			<![CDATA[ and ( tr.END_DATE  <=  #{refEndTime} ) ]]>
+		</if>
+		<if test="refTractirPlateCode != null and refTractirPlateCode != ''" >
+			and (transporter.TRACTIR_PLATE_CODE like concat(concat('%',#{refTractirPlateCode}),'%') )
+		</if>
+		<if test="refTrailerPlateCode != null and refTrailerPlateCode != ''" >
+			and (transporter.TRAILER_PLATE_CODE like concat(concat('%',#{refTrailerPlateCode}),'%') )
+		</if>
+		<if test="searchContent != null and searchContent != ''" >
+        and(
+		 user.USER_NAME like concat(concat('%',#{searchContent}),'%')
+        or user.USER_CODE like concat(concat('%',#{searchContent}),'%')
+		or  transporter.TRACTIR_PLATE_CODE like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+	  
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from tc_transporter_report tr
+    left join bd_user user ON user.USER_ID =  tr.DRIVER_ID
+	join  tc_transporter transporter on   transporter.TRANSPORTER_ID = tr.TRANSPORTER_ID
+	join bd_user creator ON creator.USER_ID = tr.CREATOR
+	join SYS_CORP corp on corp.CORP_ID =  tr.CORP_ID
+    where tr.del = 0
+    and tr.TRANSPORTER_REPORT_ID = #{transporterReportId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from tc_transporter_report where TRANSPORTER_REPORT_ID = #{transporterReportId}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.TransporterReport" keyProperty="transporterReportId" useGeneratedKeys="true">
+    insert into tc_transporter_report
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID, 
+	  </if>
+	  <if test="transporterStatus != null">
+	    TRANSPORTER_STATUS, 
+	  </if>
+	  <if test="startDate != null">
+	    START_DATE, 
+	  </if>
+	  <if test="endDate != null">
+	    END_DATE, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="location != null">
+	    LOCATION, 
+	  </if>
+	  <if test="lng != null">
+	    LNG, 
+	  </if>
+	  <if test="lat != null">
+	    LAT, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="transporterId != null">
+	    #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterStatus != null">
+	    #{transporterStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="startDate != null">
+	    #{startDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="endDate != null">
+	    #{endDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="location != null">
+	    #{location,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="lng != null">
+	    #{lng,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="lat != null">
+	    #{lat,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from tc_transporter_report tr
+	left join bd_user user ON user.USER_ID =  tr.DRIVER_ID
+	join  tc_transporter transporter on   transporter.TRANSPORTER_ID = tr.TRANSPORTER_ID
+	join bd_user creator ON creator.USER_ID = tr.CREATOR
+	join SYS_CORP corp on corp.CORP_ID =  tr.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by tr.CREATE_DATE DESC
+  </select>
+  	
+</mapper>   

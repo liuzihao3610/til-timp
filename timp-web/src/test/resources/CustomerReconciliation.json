@@ -1,0 +1,26 @@
+{
+  "data":{
+    "reconciliationId":0,
+    "reconciliationNumber":"Test-reconciliationNumber",
+    "customerId":0,
+    "reconciliationStartDate":"2018-05-17 03:21:36",
+    "reconciliationEndDate":"2018-05-17 03:21:36",
+    "carVinCount":0,
+    "totalAmount":0,
+    "redAmount":0,
+    "blueAmount":0,
+    "deductionTotalAmount":0,
+    "deductionReason":"Test-deductionReason",
+    "customerFeedbackDate":"2018-05-17 03:21:36",
+    "settlementDate":"2018-05-17 03:21:36",
+    "confirmor":0,
+    "confirmDate":"2018-05-17 03:21:36",
+    "creator":0,
+    "createDate":"2018-05-17 03:21:36",
+    "checker":0,
+    "checkDate":"2018-05-17 03:21:36",
+    "billStatus":0,
+    "corpId":0,
+    "flag":0
+  }
+}

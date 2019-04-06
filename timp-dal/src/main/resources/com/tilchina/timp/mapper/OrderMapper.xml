@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.Order" >
+    <id column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="ORDER_CODE" jdbcType="VARCHAR" property="orderCode" />
+	<result column="ORDER_DATE" jdbcType="TIMESTAMP" property="orderDate" />
+	<result column="CORP_CUSTOMER_ID" jdbcType="BIGINT" property="corpCustomerId" />
+	<result column="CORP_CARRIER_ID" jdbcType="BIGINT" property="corpCarrierId" />
+	<result column="ORDER_TYPE" jdbcType="INTEGER" property="orderType" />
+	<result column="WORK_TYPE" jdbcType="INTEGER" property="workType" />
+	<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus" />
+	<result column="BATCH_NUMBER" jdbcType="VARCHAR" property="batchNumber" />
+	<result column="SALES_MAN_ID" jdbcType="BIGINT" property="salesManId" />
+	<result column="TRANSMIT_DATE" jdbcType="TIMESTAMP" property="transmitDate" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+	<result column="CHECKER" jdbcType="BIGINT" property="checker" />
+	<result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="CORP_CUSTOMER_NAME" jdbcType="VARCHAR" property="refCorpCustomerName" />
+	<result column="CORP_CARRIER_NAME" jdbcType="VARCHAR" property="refCorpCarrierName" />
+	<result column="SALES_MAN_NAME" jdbcType="VARCHAR" property="refSalesManName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CHECKER_NAME" jdbcType="VARCHAR" property="refCheckerName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ORDER_ID, ORDER_CODE, ORDER_DATE, CORP_CUSTOMER_ID, CORP_CARRIER_ID, ORDER_TYPE, WORK_TYPE, BILL_STATUS,BATCH_NUMBER,SALES_MAN_ID,TRANSMIT_DATE,
+    REMARK,CREATOR, CREATE_TIME, CHECKER,CHECK_DATE, CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	ord.ORDER_ID,ord.ORDER_CODE,ord.ORDER_DATE,ord.CORP_CUSTOMER_ID,corp.CORP_NAME AS CORP_CUSTOMER_NAME,ord.CORP_CARRIER_ID,co.CORP_NAME AS CORP_CARRIER_NAME,
+  	ord.ORDER_TYPE,ord.WORK_TYPE,ord.BILL_STATUS,ord.BATCH_NUMBER,ord.SALES_MAN_ID,sale.USER_NAME AS SALES_MAN_NAME,ord.TRANSMIT_DATE,ord.REMARK,
+  	ord.CREATOR,us.USER_NAME AS CREATE_NAME,ord.CREATE_TIME,ord.CHECKER,u.USER_NAME AS CHECKER_NAME,ord.CHECK_DATE,ord.CORP_ID,c.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where ord.del = 0
+    <trim  suffixOverrides="," >
+      <if test="orderId != null and orderId != ''" >
+        and ord.ORDER_ID = #{orderId}
+      </if>
+      <if test="orderCode != null and orderCode != ''" >
+        and ord.ORDER_CODE = #{orderCode}
+      </if>
+      <if test="orderDate != null and orderDate != ''" >
+        and ord.ORDER_DATE = #{orderDate}
+      </if>
+      <if test="corpCustomerId != null and corpCustomerId != ''" >
+        and ord.CORP_CUSTOMER_ID = #{corpCustomerId}
+      </if>
+      <if test="corpCarrierId != null and corpCarrierId != ''" >
+        and ord.CORP_CARRIER_ID = #{corpCarrierId}
+      </if>
+		
+      <if test="orderType != null and orderType != ''" >
+        and ord.ORDER_TYPE = #{orderType}
+      </if>
+      <if test="workType != null and workType != ''" >
+        and ord.WORK_TYPE = #{workType}
+      </if>
+      <if test="billStatus != null and billStatus != ''" >
+        and ord.BILL_STATUS = #{billStatus}
+      </if>
+      <if test="batchNumber != null and batchNumber != ''" >
+        and ord.BATCH_NUMBER = #{batchNumber}
+      </if>
+      <if test="salesManId != null and salesManId != ''" >
+        and ord.SALES_MAN_ID = #{salesManId}
+      </if>
+      <if test="transmitDate != null and transmitDate != ''" >
+        and ord.TRANSMIT_DATE = #{transmitDate}
+      </if>
+      <if test="remark != null and remark != ''" >
+        and ord.REMARK = #{remark}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and ord.CREATOR = #{creator}
+      </if>
+
+      <if test="checker != null and checker != ''" >
+        and ord.CHECKER = #{checker}
+      </if>
+
+	  <if test="corpId != null and corpId != ''" >
+			and (ord.CORP_CUSTOMER_ID = #{corpId}
+			or (ord.CORP_CARRIER_ID = #{corpId} and ord.bill_status = 2)
+            or (ord.CORP_CARRIER_ID = #{corpId} and ord.order_type = 0)
+            )
+	  </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and ord.ORDER_CODE  LIKE  CONCAT('%',#{searchContent},'%')
+      </if>
+      <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and ord.CREATE_TIME  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and ord.CREATE_TIME  <=  #{endTime}  ]]>
+	  </if>
+	  <if test="startCheckDate != null and startCheckDate != ''">
+      	<![CDATA[ and ord.CHECK_DATE  >=  #{startCheckDate}  ]]>
+	  </if>
+	  <if test="endCheckDate != null and endCheckDate != ''">
+		<![CDATA[ and ord.CHECK_DATE  <=  #{endCheckDate}  ]]>
+	  </if>
+	    <if test="startDate != null and startDate != ''">
+		    <![CDATA[ and ord.ORDER_DATE  >=  #{startDate}  ]]>
+	    </if>
+	    <if test="endDate != null and endDate != ''">
+		    <![CDATA[ and ord.ORDER_DATE  <=  #{endDate}  ]]>
+	    </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order ord
+		LEFT JOIN sys_corp corp ON ord.CORP_CUSTOMER_ID=corp.CORP_ID
+		LEFT JOIN sys_corp co ON ord.CORP_CARRIER_ID=co.CORP_ID
+		LEFT JOIN bd_user us ON ord.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u ON ord.CHECKER=u.USER_ID
+		LEFT JOIN bd_user sale ON ord.SALES_MAN_ID=sale.USER_ID 
+		LEFT JOIN sys_corp c ON ord.CORP_ID=c.CORP_ID
+    where ord.DEL=0 AND ord.ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByCarrierId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order ord
+		JOIN sys_corp corp ON ord.CORP_CUSTOMER_ID=corp.CORP_ID
+		JOIN sys_corp co ON ord.CORP_CARRIER_ID=co.CORP_ID
+		JOIN bd_user us ON ord.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u ON ord.CHECKER=u.USER_ID
+		LEFT JOIN bd_user sale ON ord.SALES_MAN_ID=sale.USER_ID 
+		JOIN sys_corp c ON ord.CORP_ID=c.CORP_ID
+    where ord.DEL=0 AND ord.CORP_CUSTOMER_ID = #{corpCarrierId}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update OM_ORDER set DEL=1 where ORDER_ID = #{orderId}
+  </update>
+  <update id="untransmit" parameterType="java.lang.Long">
+    update OM_ORDER set BILL_STATUS=1,TRANSMIT_DATE=NULL where ORDER_ID = #{orderId}
+  </update>
+  <update id="unaudit" parameterType="java.lang.Long">
+    update OM_ORDER set BILL_STATUS=0,CHECKER=NULL,CHECK_DATE=NULL where ORDER_ID = #{orderId}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update OM_ORDER	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	ORDER_ID in
+  	 		<foreach item="orderId" collection="array" open="(" separator="," close=")">
+  	 			#{orderId}
+  	 		</foreach>
+  		</if>
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.Order" keyProperty="orderId" useGeneratedKeys="true">
+    insert into OM_ORDER
+	(ORDER_CODE,ORDER_DATE, CORP_CUSTOMER_ID, CORP_CARRIER_ID, ORDER_TYPE, WORK_TYPE, BILL_STATUS,BATCH_NUMBER,SALES_MAN_ID,TRANSMIT_DATE,
+	REMARK,CREATOR, CREATE_TIME, CHECKER, CHECK_DATE,CORP_ID)
+	values
+	(#{orderCode,jdbcType=VARCHAR},#{orderDate,jdbcType=TIMESTAMP},  #{corpCustomerId,jdbcType=BIGINT}, #{corpCarrierId,jdbcType=BIGINT}, 
+	#{orderType,jdbcType=INTEGER},  #{workType,jdbcType=INTEGER}, #{billStatus,jdbcType=INTEGER},#{batchNumber,jdbcType=VARCHAR},#{salesManId,jdbcType=BIGINT},
+	 #{transmitDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR},
+	 #{creator,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+	#{checker,jdbcType=BIGINT}, #{checkDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.Order" keyProperty="orderId" useGeneratedKeys="true">
+    insert into OM_ORDER
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="orderCode != null">
+	    ORDER_CODE, 
+	  </if>
+	  <if test="orderDate != null">
+	    ORDER_DATE, 
+	  </if>
+	  <if test="corpCustomerId != null">
+	    CORP_CUSTOMER_ID, 
+	  </if>
+	  <if test="corpCarrierId != null">
+	    CORP_CARRIER_ID, 
+	  </if>
+	  <if test="orderType != null">
+	    ORDER_TYPE, 
+	  </if>
+	  <if test="workType != null">
+	    WORK_TYPE, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS, 
+	  </if>
+	  <if test="batchNumber != null ">
+        BATCH_NUMBER,
+      </if>
+      <if test="salesManId != null" >
+        SALES_MAN_ID,
+      </if>
+      <if test="transmitDate != null" >
+        TRANSMIT_DATE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createTime != null">
+	    CREATE_TIME, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="orderCode != null">
+	    #{orderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="orderDate != null">
+	    #{orderDate,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="corpCustomerId != null">
+	    #{corpCustomerId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpCarrierId != null">
+	    #{corpCarrierId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderType != null">
+	    #{orderType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="workType != null">
+	    #{workType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="billStatus != null">
+	    #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="batchNumber != null ">
+        #{batchNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="salesManId != null" >
+        #{salesManId,jdbcType=BIGINT},
+      </if>
+      <if test="transmitDate != null" >
+        #{transmitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null ">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createTime != null">
+	    #{createTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checker != null">
+	    #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.Order" >
+	update OM_ORDER
+	<set>
+		<!--
+	  <if test="orderCode != null">
+	    ORDER_CODE = #{orderCode,jdbcType=VARCHAR},
+	  </if>
+	    -->
+	  <if test="orderDate != null">
+	    ORDER_DATE= #{orderDate,jdbcType=VARCHAR},
+	  </if>
+	  <if test="corpCustomerId != null">
+	    CORP_CUSTOMER_ID = #{corpCustomerId,jdbcType=BIGINT},
+	  </if>
+	  <if test="corpCarrierId != null">
+	    CORP_CARRIER_ID = #{corpCarrierId,jdbcType=BIGINT},
+	  </if>
+	  <if test="orderType != null">
+	    ORDER_TYPE = #{orderType,jdbcType=INTEGER},
+	  </if>
+	  <if test="workType != null">
+	    WORK_TYPE = #{workType,jdbcType=INTEGER},
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER},
+	  </if>
+	  <if test="batchNumber != null ">
+        BATCH_NUMBER=#{batchNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="salesManId != null" >
+        SALES_MAN_ID=#{salesManId,jdbcType=BIGINT},
+      </if>
+      <if test="transmitDate != null" >
+        TRANSMIT_DATE=#{transmitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+	    REMARK = #{remark,jdbcType=BIGINT},
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT},
+	  </if>
+	  <if test="createTime != null">
+	    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+	  </if>
+	  <if test="checker != null">
+	    CHECKER = #{checker,jdbcType=BIGINT},
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP},
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT},
+	  </if>
+
+	</set>
+	where ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </update>
+
+	<update id="check" parameterType="com.tilchina.timp.model.Order" >
+		update OM_ORDER
+		<set>
+			BILL_STATUS = 1,
+			<if test="checker != null">
+				CHECKER = #{checker,jdbcType=BIGINT},
+			</if>
+			<if test="checkDate != null">
+				CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where del = 0 and ORDER_ID = #{orderId,jdbcType=BIGINT} and BILL_STATUS = 0
+	</update>
+
+	<update id="unCheck" parameterType="com.tilchina.timp.model.Order" >
+		update OM_ORDER
+		set
+			BILL_STATUS = 0,
+			CHECKER = null,
+			CHECK_DATE = null
+		where del = 0 and ORDER_ID = #{orderId,jdbcType=BIGINT} and BILL_STATUS = 1
+	</update>
+
+	<update id="release" parameterType="com.tilchina.timp.model.Order" >
+		update OM_ORDER
+		<set>
+			BILL_STATUS = 2,
+			<if test="salesManId != null">
+				SALES_MAN_ID = #{salesManId,jdbcType=BIGINT},
+			</if>
+			<if test="transmitDate != null">
+				TRANSMIT_DATE = #{transmitDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where del = 0 and ORDER_ID = #{orderId,jdbcType=BIGINT} and BILL_STATUS = 1
+	</update>
+
+	<update id="unRelease" parameterType="com.tilchina.timp.model.Order" >
+		update OM_ORDER
+		set
+		BILL_STATUS = 1,
+		SALES_MAN_ID = null,
+		TRANSMIT_DATE = null
+		where del = 0 and ORDER_ID = #{orderId,jdbcType=BIGINT} and BILL_STATUS = 2
+	</update>
+
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.Order" >
+    update OM_ORDER set 
+	  ORDER_CODE = #{orderCode,jdbcType=VARCHAR},ORDER_DATE=#{orderDate,jdbcType=TIMESTAMP}, CORP_CUSTOMER_ID = #{corpCustomerId,jdbcType=BIGINT},
+	  CORP_CARRIER_ID = #{corpCarrierId,jdbcType=BIGINT}, 
+	  ORDER_TYPE = #{orderType,jdbcType=INTEGER}, WORK_TYPE = #{workType,jdbcType=INTEGER}, 
+	  BILL_STATUS = #{billStatus,jdbcType=INTEGER}, BATCH_NUMBER=#{batchNumber,jdbcType=VARCHAR},SALES_MAN_ID=#{salesManId,jdbcType=BIGINT},
+	  TRANSMIT_DATE=#{transmitDate,jdbcType=TIMESTAMP},REMARK = #{remark,jdbcType=VARCHAR},
+	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, 
+	  CHECKER = #{checker,jdbcType=BIGINT}, CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="java.util.Map">
+	select
+      <include refid="Query_Column_List"/>
+    FROM om_order ord
+		LEFT JOIN sys_corp corp ON ord.CORP_CUSTOMER_ID=corp.CORP_ID
+		LEFT JOIN sys_corp co ON ord.CORP_CARRIER_ID=co.CORP_ID
+		LEFT JOIN bd_user us ON ord.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u ON ord.CHECKER=u.USER_ID
+		LEFT JOIN bd_user sale ON ord.SALES_MAN_ID=sale.USER_ID 
+		LEFT JOIN sys_corp c ON ord.CORP_ID=c.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by ord.ORDER_DATE desc
+  </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap"  parameterType="List">
+        select
+        <include refid="Base_Column_List"/>
+        FROM om_order
+        where del = 0
+	    <if test="orderIds != null and orderIds.size > 0">
+		    and order_id in
+		    <foreach collection="orderIds" item="orderId" open="(" close=")" separator=",">
+			    #{orderId}
+		    </foreach>
+	    </if>
+    </select>
+    
+    <select id="getOriginOrder"  resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order ord
+		LEFT JOIN sys_corp corp ON ord.CORP_CUSTOMER_ID=corp.CORP_ID
+		LEFT JOIN sys_corp co ON ord.CORP_CARRIER_ID=co.CORP_ID
+		LEFT JOIN bd_user us ON ord.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u ON ord.CHECKER=u.USER_ID
+		LEFT JOIN bd_user sale ON ord.SALES_MAN_ID=sale.USER_ID 
+		LEFT JOIN sys_corp c ON ord.CORP_ID=c.CORP_ID
+		LEFT JOIN om_order_detail ood  ON ord.ORDER_ID=ood.ORDER_ID
+    where ord.DEL=0 AND ord.ORDER_TYPE =0  AND ood.CAR_VIN =#{carVin,jdbcType=VARCHAR} ORDER BY ord.CREATE_TIME DESC limit 1
+  </select>
+
+  	<select id="queryByOrderNumber" parameterType="String" resultMap="BaseResultMap">
+	    SELECT
+	    <include refid="Base_Column_List"/>
+	    FROM om_order
+	    WHERE ORDER_CODE = #{orderNumber}
+	    AND DEL = 0
+    </select>
+</mapper>   

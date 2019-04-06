@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.JobNoticeBMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.JobNoticeB" >
+    <id column="JOB_NOTICE_B_ID" jdbcType="BIGINT" property="jobNoticeBId" />
+	<result column="JOB_NOTICE_B_ID" jdbcType="BIGINT" property="jobNoticeBId" />
+	<result column="JOB_NOTICE_ID" jdbcType="BIGINT" property="jobNoticeId" />
+	<result column="USER_ID" jdbcType="BIGINT" property="userId" />
+	<result column="USER_TYPE" jdbcType="INTEGER" property="userType" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+
+	  <result column="JOB_NOTICE_NAME" jdbcType="VARCHAR" property="refJobNoticeName" />
+	  <result column="JOB_NOTICE_CODE" jdbcType="VARCHAR" property="refJobNoticeCode" />
+	  <result column="USER_NAME" jdbcType="VARCHAR" property="refUserName" />
+	  <result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    JOB_NOTICE_B_ID, JOB_NOTICE_ID, USER_ID, USER_TYPE, CORP_ID
+  </sql>
+
+	<sql id="Query_Column_List" >
+    jobnoticeb.JOB_NOTICE_B_ID, jobnoticeb.JOB_NOTICE_ID, jobnoticeb.USER_ID, jobnoticeb.USER_TYPE, jobnoticeb.CORP_ID,
+    jobnotice.JOB_NOTICE_CODE,jobnotice.JOB_NOTICE_NAME,user.USER_NAME,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where jobnoticeb.del=0
+    <trim  suffixOverrides="," >
+      <if test="jobNoticeBId != null and jobNoticeBId != ''" >
+        and jobnoticeb.JOB_NOTICE_B_ID = #{jobNoticeBId}
+      </if>
+      <if test="jobNoticeId != null and jobNoticeId != ''" >
+        and jobnoticeb.JOB_NOTICE_ID = #{jobNoticeId}
+      </if>
+		<if test="refJobNoticeCode != null and refJobNoticeCode != ''" >
+			and jobnotice.JOB_NOTICE_CODE LIKE CONCAT('%',#{refJobNoticeCode},'%')
+		</if>
+		<if test="refJobNoticeName != null and refJobNoticeName != ''" >
+			and jobnotice.JOB_NOTICE_NAME refUserName
+		</if>
+      <if test="userId != null and userId != ''" >
+        and jobnoticeb.USER_ID = #{userId}
+      </if>
+		<if test="refUserName != null and refUserName != ''" >
+			and user.USER_NAME LIKE CONCAT('%',#{refUserName},'%')
+		</if>
+      <if test="userType != null and userType != ''" >
+        and jobnoticeb.USER_TYPE = #{userType}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and jobnoticeb.CORP_ID = #{corpId}
+      </if>
+		<if test="searchContent != null and searchContent != ''" >
+			and (jobnotice.JOB_NOTICE_CODE LIKE  CONCAT('%',#{searchContent},'%')
+			or jobnotice.JOB_NOTICE_NAME LIKE  CONCAT('%',#{searchContent},'%')
+			or user.USER_NAME LIKE CONCAT('%',#{searchContent},'%')
+			)
+		</if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from sys_job_notice_b jobnoticeb
+	  left join sys_job_notice jobnotice on jobnoticeb.JOB_NOTICE_ID=jobnotice.JOB_NOTICE_ID
+	  left join bd_user user on jobnoticeb.USER_ID=user.USER_ID
+	  left join sys_corp corp on jobnoticeb.CORP_ID=corp.CORP_ID
+    where jobnoticeb.del=0 and jobnoticeb.JOB_NOTICE_B_ID = #{jobNoticeBId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update  sys_job_notice_b set del=1 where JOB_NOTICE_B_ID = #{jobNoticeBId}
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.JobNoticeB" keyProperty="jobNoticeBId" useGeneratedKeys="true">
+    insert into sys_job_notice_b
+	(JOB_NOTICE_ID, USER_ID, USER_TYPE, CORP_ID)
+	values
+	(#{jobNoticeId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{userType,jdbcType=INTEGER}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.JobNoticeB" keyProperty="jobNoticeBId" useGeneratedKeys="true">
+    insert into sys_job_notice_b
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="jobNoticeId != null">
+	    JOB_NOTICE_ID, 
+	  </if>
+	  <if test="userId != null">
+	    USER_ID, 
+	  </if>
+	  <if test="userType != null">
+	    USER_TYPE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="jobNoticeId != null">
+	    #{jobNoticeId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="userId != null">
+	    #{userId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="userType != null">
+	    #{userType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.JobNoticeB" >
+	update sys_job_notice_b
+	<set>
+	  <if test="jobNoticeId != null">
+	    JOB_NOTICE_ID = #{jobNoticeId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="userId != null">
+	    USER_ID = #{userId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="userType != null">
+	    USER_TYPE = #{userType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where JOB_NOTICE_B_ID = #{jobNoticeBId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.JobNoticeB" >
+    update sys_job_notice_b set 
+	  JOB_NOTICE_ID = #{jobNoticeId,jdbcType=BIGINT}, USER_ID = #{userId,jdbcType=BIGINT}, USER_TYPE = #{userType,jdbcType=INTEGER}, 
+	  CORP_ID = #{corpId,jdbcType=BIGINT}
+	where JOB_NOTICE_B_ID = #{jobNoticeBId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	  select
+	  <include refid="Query_Column_List"/>
+	  from sys_job_notice_b jobnoticeb
+	  left join sys_job_notice jobnotice on jobnoticeb.JOB_NOTICE_ID=jobnotice.JOB_NOTICE_ID
+	  left join bd_user user on jobnoticeb.USER_ID=user.USER_ID
+	  left join sys_corp corp on jobnoticeb.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by jobnoticeb.JOB_NOTICE_B_ID desc
+  </select>
+
+	<select id="queryByJobNoticeId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Query_Column_List"/>
+		from sys_job_notice_b jobnoticeb
+		left join sys_job_notice jobnotice on jobnoticeb.JOB_NOTICE_ID=jobnotice.JOB_NOTICE_ID
+		left join bd_user user on jobnoticeb.USER_ID=user.USER_ID
+		left join sys_corp corp on jobnoticeb.CORP_ID=corp.CORP_ID
+		where jobnoticeb.del=0 and jobnoticeb.JOB_NOTICE_ID = #{jobNoticeBId,jdbcType=BIGINT}
+		order by jobnoticeb.JOB_NOTICE_B_ID
+	</select>
+
+	<resultMap id="BaseUserMap" type="com.tilchina.timp.model.User" >
+		<id column="USER_ID" jdbcType="BIGINT" property="userId" />
+		<result column="USER_CODE" jdbcType="VARCHAR" property="userCode" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+		<result column="USER_EN_NAME" jdbcType="VARCHAR" property="userEnName" />
+		<result column="IDENTITY_CARD_NUMBER" jdbcType="VARCHAR" property="identityCardNumber" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="EMAIL" jdbcType="VARCHAR" property="email" />
+		<result column="USER_TYPE" jdbcType="INTEGER" property="userType" />
+		<result column="DRIVER_TYPE" jdbcType="INTEGER" property="driverType" />
+		<result column="ADMIN" jdbcType="INTEGER" property="admin" />
+		<result column="SUPER_MANAGER" jdbcType="INTEGER" property="superManager" />
+		<result column="QQ" jdbcType="VARCHAR" property="qq" />
+		<result column="WECHAT" jdbcType="VARCHAR" property="wechat" />
+		<result column="SEX" jdbcType="INTEGER" property="sex" />
+		<result column="BIRTHDAY" jdbcType="DATE" property="birthday" />
+		<result column="NATION" jdbcType="VARCHAR" property="nation" />
+		<result column="EDUCATION" jdbcType="VARCHAR" property="education" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="AVATRAR" jdbcType="VARCHAR" property="avatrar" />
+		<result column="PHOTO_PATH" jdbcType="VARCHAR" property="photoPath" />
+		<result column="BINDING_PHONE" jdbcType="INTEGER" property="bindingPhone" />
+		<result column="DEPT_ID" jdbcType="BIGINT" property="deptId" />
+		<result column="POSITION_ID" jdbcType="BIGINT" property="positionId" />
+		<result column="JOIN_DATE" jdbcType="DATE" property="joinDate" />
+		<result column="RESIGNATION_DATE" jdbcType="DATE" property="resignationDate" />
+		<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus" />
+		<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+		<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="CHECKER" jdbcType="BIGINT" property="checker" />
+		<result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate" />
+		<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+		<result column="FLAG" jdbcType="INTEGER" property="flag" />
+
+		<result column="IP" jdbcType="VARCHAR" property="refIp" />
+		<result column="BLOCK" jdbcType="BIGINT" property="refBlock" />
+		<result column="ERROR_TIMES" jdbcType="BIGINT" property="refErrorTimes" />
+		<result column="RECENTLY_LOGINTIME" jdbcType="DATE" property="refRecentlyLogintime" />
+		<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+		<result column="DEPT_NAME" jdbcType="VARCHAR" property="refDeptName" />
+		<result column="POSITION_NAME" jdbcType="VARCHAR" property="refPositionName" />
+		<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+		<result column="CHECKER_NAME" jdbcType="VARCHAR" property="refCheckerName" />
+
+	</resultMap>
+
+	<sql id="User_Column_List" >
+	user.USER_ID, user.USER_CODE, user.USER_NAME, user.USER_EN_NAME, user.IDENTITY_CARD_NUMBER,user.PHONE, user.EMAIL, user.USER_TYPE, user.DRIVER_TYPE,
+	login.IP,login.BLOCK,login.ERROR_TIMES,login.RECENTLY_LOGINTIME,
+	user.QQ, user.WECHAT, user.SEX, user.BIRTHDAY, user.NATION, user.EDUCATION, user.REMARK, user.AVATRAR, user.PHOTO_PATH,
+	user.BINDING_PHONE, user.DEPT_ID, user.POSITION_ID, user.JOIN_DATE, user.RESIGNATION_DATE, user.BILL_STATUS, user.CREATOR,
+	creator.USER_NAME as CREATE_NAME,user.CREATE_DATE, user.CHECKER,checker.USER_NAME as CHECKER_NAME,user.CHECK_DATE, user.CORP_ID,
+	position.POSITION_NAME,dept.DEPT_NAME,corp.CORP_NAME,user.FLAG, user.ADMIN, user.SUPER_MANAGER
+  </sql>
+
+	<select id="queryByJobNoticeCode"  resultMap="BaseUserMap" parameterType="java.lang.String">
+		select
+			<include refid="User_Column_List"/>
+		from bd_user user
+		left JOIN sys_corp corp ON corp.CORP_ID = user.CORP_ID
+		left JOIN bd_user creator ON creator.USER_ID = user.creator
+		left JOIN bd_user checker ON checker.USER_ID = user.checker
+		left join BD_DEPT  dept ON	dept.DEPT_ID = user.DEPT_ID
+		left join bd_position position  ON	position.position_id = user.position_id
+		left join bd_login login ON login.USER_ID = user.USER_ID
+		where user.USER_ID in
+			(select
+				jobnoticeb.USER_ID
+			from sys_job_notice_b jobnoticeb
+			left join sys_job_notice jobnotice on jobnoticeb.JOB_NOTICE_ID=jobnotice.JOB_NOTICE_ID
+			where jobnoticeb.del=0 and jobnotice.del=0 and jobnotice.JOB_NOTICE_CODE = #{jobNoticeCode,jdbcType=VARCHAR})
+	</select>
+  	
+</mapper>   

@@ -1,0 +1,21 @@
+{
+  "data":{
+    "transportRecordId":0,
+    "transportOrderId":0,
+    "transportOrderCode":"Test-transportOrderCode",
+    "transporterId":0,
+    "driverId":0,
+    "reportDate":"2018-03-22 08:13:40",
+    "carNumber":0,
+    "currentLoadWeight":0,
+    "lng":0,
+    "lat":0,
+    "transportStatus":0,
+    "cumulativeKm":0,
+    "speed":0,
+    "temperature":0,
+    "humidity":0,
+    "stress":0,
+    "corpId":0
+  }
+}

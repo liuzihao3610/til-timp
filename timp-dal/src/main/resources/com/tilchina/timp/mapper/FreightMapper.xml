@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.FreightMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.Freight" >
+    <id column="FREIGHT_ID" jdbcType="BIGINT" property="freightId" />
+	<result column="FREIGHT_ID" jdbcType="BIGINT" property="freightId" />
+	<result column="FREIGHT_CODE" jdbcType="VARCHAR" property="freightCode" />
+	<result column="FREIGHT_TYPE" jdbcType="INTEGER" property="freightType" />
+	<result column="EFFECTIVE_DATE" jdbcType="TIMESTAMP" property="effectiveDate" />
+	<result column="FAILURE_DATE" jdbcType="TIMESTAMP" property="failureDate" />
+	<result column="START_PLACE_ID" jdbcType="BIGINT" property="startPlaceId" />
+	<result column="ARRIVAL_PLACE_ID" jdbcType="BIGINT" property="arrivalPlaceId" />
+	<result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+	<result column="CAR_TYPE_ID" jdbcType="BIGINT" property="carTypeId" />
+	<result column="DENOMINATED_MODE" jdbcType="INTEGER" property="denominatedMode" />
+	<result column="UNIT_PRICE" jdbcType="DECIMAL" property="unitPrice" />
+	<result column="FREIGHT_RATE" jdbcType="DECIMAL" property="freightRate" />
+	<result column="PER_KILOMETER_PRICE" jdbcType="DECIMAL" property="perKilometerPrice" />
+	<result column="KILOMETER" jdbcType="DOUBLE" property="kilometer" />
+	<result column="HANDLE_CHARGE" jdbcType="DECIMAL" property="handleCharge" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus" />
+	  <result column="SEND_UNIT_ID" jdbcType="BIGINT" property="sendUnitId" />
+	  <result column="RECEIVE_UNIT_ID" jdbcType="BIGINT" property="receiveUnitId" />
+	  <result column="SETTLEMENT_CORP_ID" jdbcType="BIGINT" property="settlementCorpId" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CHECKER" jdbcType="BIGINT" property="checker" />
+	<result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="START_PLACE_NAME" jdbcType="VARCHAR" property="refStartPlaceName" />
+	<result column="ARRIVAL_PLACE_NAME" jdbcType="VARCHAR" property="refArrivalPlaceName" />
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName" />
+	<result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="refCarTypeName" />
+	  <result column="SEND_UNIT_NAME" jdbcType="VARCHAR" property="refSendUnitName" />
+	  <result column="RECEIVE_UNIT_NAME" jdbcType="VARCHAR" property="refReceiveUnitName" />
+	  <result column="SETTLEMENT_CORP_NAME" jdbcType="VARCHAR" property="refSettlementCorpName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CHECK_NAME" jdbcType="VARCHAR" property="refCheckName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    FREIGHT_ID, FREIGHT_CODE, FREIGHT_TYPE, EFFECTIVE_DATE,FAILURE_DATE, START_PLACE_ID, ARRIVAL_PLACE_ID, BRAND_ID, CAR_TYPE_ID, DENOMINATED_MODE, 
+	UNIT_PRICE, FREIGHT_RATE, PER_KILOMETER_PRICE,KILOMETER, HANDLE_CHARGE, REMARK, BILL_STATUS,SEND_UNIT_ID,RECEIVE_UNIT_ID,SETTLEMENT_CORP_ID, CREATOR, CREATE_DATE,
+	CHECKER, CHECK_DATE, CORP_ID,FLAG
+  </sql>
+  
+  <sql id="Query_Column_List" >
+    freight.FREIGHT_ID,freight.FREIGHT_CODE,freight.FREIGHT_TYPE,freight.EFFECTIVE_DATE,freight.FAILURE_DATE,freight.START_PLACE_ID,city.CITY_NAME AS START_PLACE_NAME,
+    freight.ARRIVAL_PLACE_ID,ci.CITY_NAME AS ARRIVAL_PLACE_NAME,freight.BRAND_ID,brand.BRAND_NAME,freight.CAR_TYPE_ID,cartype.CAR_TYPE_NAME,
+    freight.DENOMINATED_MODE,freight.UNIT_PRICE,freight.FREIGHT_RATE,freight.PER_KILOMETER_PRICE,freight.KILOMETER,freight.HANDLE_CHARGE,freight.REMARK,
+    freight.BILL_STATUS,freight.SEND_UNIT_ID,send.UNIT_NAME AS SEND_UNIT_NAME,freight.RECEIVE_UNIT_ID,recv.UNIT_NAME AS RECEIVE_UNIT_NAME,freight.SETTLEMENT_CORP_ID,
+    settlement.CORP_NAME AS SETTLEMENT_CORP_NAME,
+    freight.CREATOR,us.USER_NAME AS CREATE_NAME,freight.CREATE_DATE,freight.CHECKER,u.USER_NAME AS CHECK_NAME,freight.CHECK_DATE,
+    freight.CORP_ID,corp.CORP_NAME,freight.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where freight.del = 0
+    <trim  suffixOverrides="," >
+      <if test="freightId != null and freightId != ''" >
+        and freight.FREIGHT_ID = #{freightId}
+      </if>
+      <if test="freightCode != null and freightCode != ''" >
+        and freight.FREIGHT_CODE LIKE CONCAT('%',#{freightCode},'%') 
+      </if>
+      <if test="freightType != null and freightType != ''" >
+        and freight.FREIGHT_TYPE = #{freightType}
+      </if>
+      <if test="effectiveDate != null and effectiveDate != ''" >
+        and freight.EFFECTIVE_DATE = #{effectiveDate}
+      </if>
+      <if test="failureDate != null and failureDate != ''" >
+        and freight.FAILURE_DATE = #{failureDate}
+      </if>
+      <if test="startPlaceId != null and startPlaceId != ''" >
+        and freight.START_PLACE_ID = #{startPlaceId}
+      </if>
+		<if test="refStartPlaceName != null and refStartPlaceName != ''" >
+			and city.CITY_NAME LIKE CONCAT('%',#{refStartPlaceName},'%')
+		</if>
+      <if test="arrivalPlaceId != null and arrivalPlaceId != ''" >
+        and freight.ARRIVAL_PLACE_ID = #{arrivalPlaceId}
+      </if>
+		<if test="refArrivalPlaceName != null and refArrivalPlaceName != ''" >
+			and ci.CITY_NAME LIKE CONCAT('%',#{refArrivalPlaceName},'%')
+		</if>
+      <if test="brandId != null and brandId != ''" >
+        and freight.BRAND_ID = #{brandId}
+      </if>
+		<if test="refBrandName != null and refBrandName != ''" >
+			and brand.BRAND_NAME LIKE CONCAT('%',#{refBrandName},'%')
+		</if>
+      <if test="carTypeId != null and carTypeId != ''" >
+        and freight.CAR_TYPE_ID = #{carTypeId}
+      </if>
+		<if test="refCarTypeName != null and refCarTypeName != ''" >
+			and cartype.CAR_TYPE_NAME LIKE CONCAT('%',#{refCarTypeName},'%')
+		</if>
+      <if test="denominatedMode != null and denominatedMode != ''" >
+        and freight.DENOMINATED_MODE = #{denominatedMode}
+      </if>
+      <if test="unitPrice != null and unitPrice != ''" >
+        and freight.UNIT_PRICE = #{unitPrice}
+      </if>
+      <if test="freightRate != null and freightRate != ''" >
+        and freight.FREIGHT_RATE = #{freightRate}
+      </if>
+      <if test="perKilometerPrice != null and perKilometerPrice != ''" >
+        and freight.PER_KILOMETER_PRICE = #{perKilometerPrice}
+      </if>
+      <if test="kilometer != null and kilometer != ''" >
+        and freight.KILOMETER = #{kilometer}
+      </if>
+      <if test="handleCharge != null and handleCharge != ''" >
+        and freight.HANDLE_CHARGE = #{handleCharge}
+      </if>
+      <if test="remark != null and remark != ''" >
+        and freight.REMARK = #{remark}
+      </if>
+      <if test="billStatus != null and billStatus != ''" >
+        and freight.BILL_STATUS = #{billStatus}
+      </if>
+		<if test="sendUnitId != null and sendUnitId != ''" >
+			and freight.sendUnitId = #{sendUnitId}
+		</if>
+		<if test="refSendUnitName != null and refSendUnitName != ''" >
+			and send.UNIT_NAME LIKE CONCAT('%',#{refSendUnitName},'%')
+		</if>
+		<if test="receiveUnitId != null and receiveUnitId != ''" >
+			and freight.receiveUnitId = #{receiveUnitId}
+		</if>
+		<if test="refReceiveUnitName != null and refReceiveUnitName != ''" >
+			and recv.UNIT_NAME LIKE CONCAT('%',#{refReceiveUnitName},'%')
+		</if>
+		<if test="settlementCorpId != null and settlementCorpId != ''" >
+			and freight.settlementCorpId = #{settlementCorpId}
+		</if>
+		<if test="refSettlementCorpName != null and refSettlementCorpName != ''" >
+			and settlement.CORP_NAME LIKE CONCAT('%',#{refSettlementCorpName},'%')
+		</if>
+      <if test="creator != null and creator != ''" >
+        and freight.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and freight.CREATE_DATE = #{createDate}
+      </if>
+      <if test="checker != null and checker != ''" >
+        and freight.CHECKER = #{checker}
+      </if>
+      <if test="checkDate != null and checkDate != ''" >
+        and freight.CHECK_DATE = #{checkDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and freight.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and freight.FLAG = #{flag}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (freight.FREIGHT_CODE LIKE  CONCAT('%',#{searchContent},'%')
+        	or brand.BRAND_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	or cartype.CAR_TYPE_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	or us.USER_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	or u.USER_NAME LIKE  CONCAT('%',#{searchContent},'%')
+		  	or send.UNIT_NAME LIKE  CONCAT('%',#{searchContent},'%')
+		  	or recv.UNIT_NAME LIKE  CONCAT('%',#{searchContent},'%')
+		  	or settlement.CORP_NAME LIKE  CONCAT('%',#{searchContent},'%')
+        	)
+      </if>
+      <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and freight.CREATE_DATE  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and freight.CREATE_DATE  <=  #{endTime}  ]]>
+	  </if>
+	  <if test="startCheckDate != null and startCheckDate != ''">
+      	<![CDATA[ and freight.CHECK_DATE  >=  #{startCheckDate}  ]]>
+	  </if>
+	  <if test="endCheckDate != null and endCheckDate != ''">
+		<![CDATA[ and freight.CHECK_DATE  <=  #{endCheckDate}  ]]>
+	  </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM fs_freight freight
+		JOIN bd_city city ON freight.START_PLACE_ID=city.CITY_ID
+		JOIN bd_city ci ON freight.ARRIVAL_PLACE_ID=ci.CITY_ID
+		JOIN bd_brand brand ON freight.BRAND_ID=brand.BRAND_ID
+		LEFT JOIN bd_car_type cartype ON freight.CAR_TYPE_ID=cartype.CAR_TYPE_ID
+	  	LEFT JOIN  bd_unit send ON freight.SEND_UNIT_ID=send.UNIT_ID
+	  	LEFT JOIN  bd_unit recv ON freight.RECEIVE_UNIT_ID=recv.UNIT_ID
+	  	LEFT JOIN  sys_corp settlement ON freight.SETTLEMENT_CORP_ID=settlement.CORP_ID
+		JOIN bd_user us ON freight.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u ON freight.CHECKER=u.USER_ID
+		JOIN sys_corp corp ON freight.CORP_ID=corp.CORP_ID
+    where freight.DEL=0 AND freight.FREIGHT_ID = #{freightId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update fs_freight set DEL=1 where FREIGHT_ID = #{freightId}
+  </update>
+  <update id="updateCheckDate" parameterType="java.lang.Long">
+    update fs_freight set CHECKER=NULL,CHECK_DATE=NULL,BILL_STATUS=0 where FREIGHT_ID = #{freightId}
+  </update>
+  
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update fs_freight	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	FREIGHT_ID in
+  	 		<foreach item="freightId" collection="array" open="(" separator="," close=")">
+  	 			#{freightId}
+  	 		</foreach>
+  		</if>
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.Freight" keyProperty="freightId" useGeneratedKeys="true">
+    insert into fs_freight
+	(FREIGHT_CODE, FREIGHT_TYPE, EFFECTIVE_DATE,FAILURE_DATE, START_PLACE_ID, ARRIVAL_PLACE_ID, BRAND_ID, CAR_TYPE_ID, DENOMINATED_MODE, 
+	UNIT_PRICE, FREIGHT_RATE, PER_KILOMETER_PRICE,KILOMETER, HANDLE_CHARGE, REMARK, BILL_STATUS,
+	SEND_UNIT_ID,RECEIVE_UNIT_ID,SETTLEMENT_CORP_ID,
+	CREATOR, CREATE_DATE, CHECKER,
+	CHECK_DATE, CORP_ID,FLAG)
+	values
+	(#{freightCode,jdbcType=VARCHAR}, #{freightType,jdbcType=INTEGER}, #{effectiveDate,jdbcType=TIMESTAMP},#{failureDate,jdbcType=TIMESTAMP},
+	 #{startPlaceId,jdbcType=BIGINT}, #{arrivalPlaceId,jdbcType=BIGINT}, #{brandId,jdbcType=BIGINT}, #{carTypeId,jdbcType=BIGINT}, 
+	#{denominatedMode,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, #{freightRate,jdbcType=DECIMAL}, #{perKilometerPrice,jdbcType=DECIMAL}, 
+	#{kilometer,jdbcType=DOUBLE},#{handleCharge,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{billStatus,jdbcType=INTEGER},
+	#{sendUnitId,jdbcType=BIGINT},#{receiveUnitId,jdbcType=BIGINT},#{settlementCorpId,jdbcType=BIGINT},
+	#{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{checker,jdbcType=BIGINT}, #{checkDate,jdbcType=TIMESTAMP}, 
+	#{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.Freight" keyProperty="freightId" useGeneratedKeys="true">
+    insert into fs_freight
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="freightCode != null">
+	    FREIGHT_CODE, 
+	  </if>
+	  <if test="freightType != null">
+	    FREIGHT_TYPE, 
+	  </if>
+	  <if test="effectiveDate != null">
+	    EFFECTIVE_DATE, 
+	  </if>
+	  <if test="failureDate != null">
+	    FAILURE_DATE, 
+	  </if>
+	  <if test="startPlaceId != null">
+	    START_PLACE_ID, 
+	  </if>
+	  <if test="arrivalPlaceId != null">
+	    ARRIVAL_PLACE_ID, 
+	  </if>
+	  <if test="brandId != null">
+	    BRAND_ID, 
+	  </if>
+	  <if test="carTypeId != null">
+	    CAR_TYPE_ID, 
+	  </if>
+	  <if test="denominatedMode != null">
+	    DENOMINATED_MODE, 
+	  </if>
+	  <if test="unitPrice != null">
+	    UNIT_PRICE, 
+	  </if>
+	  <if test="freightRate != null">
+	    FREIGHT_RATE, 
+	  </if>
+	  <if test="perKilometerPrice != null">
+	    PER_KILOMETER_PRICE, 
+	  </if>
+	  <if test="kilometer != null">
+	    KILOMETER, 
+	  </if>
+	  <if test="handleCharge != null">
+	    HANDLE_CHARGE, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS, 
+	  </if>
+		<if test="sendUnitId != null and sendUnitId != ''" >
+			SEND_UNIT_ID,
+		</if>
+		<if test="receiveUnitId != null and receiveUnitId != ''" >
+			RECEIVE_UNIT_ID,
+		</if>
+		<if test="settlementCorpId != null and settlementCorpId != ''" >
+			SETTLEMENT_CORP_ID,
+		</if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="freightCode != null">
+	    #{freightCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="freightType != null">
+	    #{freightType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="effectiveDate != null">
+	    #{effectiveDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="failureDate != null">
+	    #{failureDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="startPlaceId != null">
+	    #{startPlaceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="arrivalPlaceId != null">
+	    #{arrivalPlaceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="brandId != null">
+	    #{brandId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carTypeId != null">
+	    #{carTypeId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="denominatedMode != null">
+	    #{denominatedMode,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="unitPrice != null">
+	    #{unitPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="freightRate != null">
+	    #{freightRate,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="perKilometerPrice != null">
+	    #{perKilometerPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="kilometer != null">
+	    #{kilometer,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="handleCharge != null">
+	    #{handleCharge,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="billStatus != null">
+	    #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+		<if test="sendUnitId != null and sendUnitId != ''" >
+			#{sendUnitId,jdbcType=BIGINT},
+		</if>
+		<if test="receiveUnitId != null and receiveUnitId != ''" >
+			#{receiveUnitId,jdbcType=BIGINT},
+		</if>
+		<if test="settlementCorpId != null and settlementCorpId != ''" >
+			#{settlementCorpId,jdbcType=BIGINT},
+		</if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checker != null">
+	    #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.Freight" >
+	update fs_freight
+	<set>
+	  <if test="freightCode != null">
+	    FREIGHT_CODE = #{freightCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="freightType != null">
+	    FREIGHT_TYPE = #{freightType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="effectiveDate != null">
+	    EFFECTIVE_DATE = #{effectiveDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="failureDate != null">
+	    FAILURE_DATE = #{failureDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="startPlaceId != null">
+	    START_PLACE_ID = #{startPlaceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="arrivalPlaceId != null">
+	    ARRIVAL_PLACE_ID = #{arrivalPlaceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="brandId != null">
+	    BRAND_ID = #{brandId,jdbcType=BIGINT}, 
+	  </if>
+	  <choose>
+	  	<when test="carTypeId != null">
+	  		CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT},
+	  	</when>
+	  	<otherwise>
+	  		CAR_TYPE_ID = NULL,
+	  	</otherwise>
+	  </choose>
+	  <if test="denominatedMode != null">
+	    DENOMINATED_MODE = #{denominatedMode,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="unitPrice != null">
+	    UNIT_PRICE = #{unitPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="freightRate != null">
+	    FREIGHT_RATE = #{freightRate,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="perKilometerPrice != null">
+	    PER_KILOMETER_PRICE = #{perKilometerPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="kilometer != null">
+	    KILOMETER = #{kilometer,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="handleCharge != null">
+	    HANDLE_CHARGE = #{handleCharge,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK = #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+		<if test="sendUnitId != null and sendUnitId != ''" >
+			SEND_UNIT_ID=#{sendUnitId,jdbcType=BIGINT},
+		</if>
+		<if test="receiveUnitId != null and receiveUnitId != ''" >
+			RECEIVE_UNIT_ID=#{receiveUnitId,jdbcType=BIGINT},
+		</if>
+		<if test="settlementCorpId != null and settlementCorpId != ''" >
+			SETTLEMENT_CORP_ID=#{settlementCorpId,jdbcType=BIGINT},
+		</if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER = #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checkDate != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT},  
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where FREIGHT_ID = #{freightId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.Freight" >
+    update fs_freight set 
+	  FREIGHT_CODE = #{freightCode,jdbcType=VARCHAR}, FREIGHT_TYPE = #{freightType,jdbcType=INTEGER}, EFFECTIVE_DATE = #{effectiveDate,jdbcType=TIMESTAMP}, 
+	  FAILURE_DATE= #{failureDate,jdbcType=TIMESTAMP},START_PLACE_ID = #{startPlaceId,jdbcType=BIGINT}, ARRIVAL_PLACE_ID = #{arrivalPlaceId,jdbcType=BIGINT}, 
+	  BRAND_ID = #{brandId,jdbcType=BIGINT}, CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT}, DENOMINATED_MODE = #{denominatedMode,jdbcType=INTEGER}, 
+	  UNIT_PRICE = #{unitPrice,jdbcType=DECIMAL}, FREIGHT_RATE = #{freightRate,jdbcType=DECIMAL}, 
+	  PER_KILOMETER_PRICE = #{perKilometerPrice,jdbcType=DECIMAL},KILOMETER = #{kilometer,jdbcType=DOUBLE}, HANDLE_CHARGE = #{handleCharge,jdbcType=DECIMAL}, 
+	  REMARK = #{remark,jdbcType=VARCHAR}, BILL_STATUS = #{billStatus,jdbcType=INTEGER},
+	  SEND_UNIT_ID=#{sendUnitId,jdbcType=BIGINT},RECEIVE_UNIT_ID=#{receiveUnitId,jdbcType=BIGINT},SETTLEMENT_CORP_ID=#{settlementCorpId,jdbcType=BIGINT},
+	  CREATOR = #{creator,jdbcType=BIGINT},
+	  CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, CHECKER = #{checker,jdbcType=BIGINT}, CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, 
+	  CORP_ID = #{corpId,jdbcType=BIGINT},FLAG = #{flag,jdbcType=INTEGER}
+	where FREIGHT_ID = #{freightId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    FROM fs_freight freight
+		JOIN bd_city city ON freight.START_PLACE_ID=city.CITY_ID
+		JOIN bd_city ci ON freight.ARRIVAL_PLACE_ID=ci.CITY_ID
+		JOIN bd_brand brand ON freight.BRAND_ID=brand.BRAND_ID
+		LEFT JOIN bd_car_type cartype ON freight.CAR_TYPE_ID=cartype.CAR_TYPE_ID
+	  	LEFT JOIN  bd_unit send ON freight.SEND_UNIT_ID=send.UNIT_ID
+	  	LEFT JOIN  bd_unit recv ON freight.RECEIVE_UNIT_ID=recv.UNIT_ID
+	  	LEFT JOIN  sys_corp settlement ON freight.SETTLEMENT_CORP_ID=settlement.CORP_ID
+		JOIN bd_user us ON freight.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u ON freight.CHECKER=u.USER_ID
+		JOIN sys_corp corp ON freight.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+		order by freight.CREATE_DATE DESC
+  </select>
+  
+  <select id="getReferenceList" resultType="java.util.Map"  parameterType="Object">
+	select
+      	freight.FREIGHT_ID AS freightId,freight.FREIGHT_CODE AS freightCode,freight.FREIGHT_TYPE AS freightType,freight.EFFECTIVE_DATE AS effectiveDate,freight.FAILURE_DATE AS failureDate,freight.START_PLACE_ID AS startPlaceId,city.CITY_NAME  AS startPlaceName,
+    	freight.ARRIVAL_PLACE_ID AS arrivalPlaceId,ci.CITY_NAME AS arrivalPlaceName,freight.BRAND_ID AS brandId,brand.BRAND_NAME AS brandName,freight.CAR_TYPE_ID AS carTypeId,cartype.CAR_TYPE_NAME AS carTypeName,
+    	freight.DENOMINATED_MODE AS denominatedMode,freight.UNIT_PRICE AS unitPrice,freight.FREIGHT_RATE AS freightRate,freight.PER_KILOMETER_PRICE AS perKilometerPrice,freight.KILOMETER AS kilometer,
+    	freight.HANDLE_CHARGE AS handleCharge,freight.SEND_UNIT_ID,send.UNIT_NAME AS SEND_UNIT_NAME,freight.RECEIVE_UNIT_ID,recv.UNIT_NAME AS RECEIVE_UNIT_NAME,freight.SETTLEMENT_CORP_ID,
+	  	settlement.CORP_NAME AS SETTLEMENT_CORP_NAME
+    	
+    FROM fs_freight freight
+		JOIN bd_city city ON freight.START_PLACE_ID=city.CITY_ID
+		JOIN bd_city ci ON freight.ARRIVAL_PLACE_ID=ci.CITY_ID
+		JOIN bd_brand brand ON freight.BRAND_ID=brand.BRAND_ID
+		LEFT JOIN bd_car_type cartype ON freight.CAR_TYPE_ID=cartype.CAR_TYPE_ID
+	  	LEFT JOIN  bd_unit send ON freight.SEND_UNIT_ID=send.UNIT_ID
+	  	LEFT JOIN  bd_unit recv ON freight.RECEIVE_UNIT_ID=recv.UNIT_ID
+	  	LEFT JOIN  sys_corp settlement ON freight.SETTLEMENT_CORP_ID=settlement.CORP_ID
+		JOIN bd_user us ON freight.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u ON freight.CHECKER=u.USER_ID
+		JOIN sys_corp corp ON freight.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by freight.CREATE_DATE DESC
+  </select>
+  
+    <select id="getFreight" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    FROM fs_freight freight
+		JOIN bd_city city ON freight.START_PLACE_ID=city.CITY_ID
+		JOIN bd_city ci ON freight.ARRIVAL_PLACE_ID=ci.CITY_ID
+		JOIN bd_brand brand ON freight.BRAND_ID=brand.BRAND_ID
+		LEFT JOIN bd_car_type cartype ON freight.CAR_TYPE_ID=cartype.CAR_TYPE_ID
+		LEFT JOIN  bd_unit send ON freight.SEND_UNIT_ID=send.UNIT_ID
+		LEFT JOIN  bd_unit recv ON freight.RECEIVE_UNIT_ID=recv.UNIT_ID
+		LEFT JOIN  sys_corp settlement ON freight.SETTLEMENT_CORP_ID=settlement.CORP_ID
+		JOIN bd_user us ON freight.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u ON freight.CHECKER=u.USER_ID
+		JOIN sys_corp corp ON freight.CORP_ID=corp.CORP_ID
+	WHERE freight.DEL=0 
+		AND <![CDATA[freight.EFFECTIVE_DATE  <=  #{0}]]> 
+		AND <![CDATA[#{0}< freight.FAILURE_DATE]]>
+		AND freight.START_PLACE_ID=#{1} 
+		AND freight.ARRIVAL_PLACE_ID=#{2} 
+		AND freight.BRAND_ID=#{3} 
+		AND freight.CAR_TYPE_ID=#{4}
+		AND BILL_STATUS=1
+	
+  </select>
+
+	<select id="getOneFreight" resultMap="BaseResultMap"  parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		FROM fs_freight
+		where del = 0
+		<![CDATA[ and EFFECTIVE_DATE <= #{effectiveDate,jdbcType=TIMESTAMP} ]]>
+		<![CDATA[ and FAILURE_DATE >= #{effectiveDate,jdbcType=TIMESTAMP} ]]>
+		and START_PLACE_ID = #{startPlaceId,jdbcType=BIGINT}
+		and ARRIVAL_PLACE_ID = #{arrivalPlaceId,jdbcType=BIGINT}
+		and (
+		BRAND_ID = #{brandId,jdbcType=BIGINT}
+		or CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT}
+		)
+		and BILL_STATUS=1
+		order by EFFECTIVE_DATE desc limit 1
+	</select>
+  	
+</mapper>   

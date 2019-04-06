@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CardReceiveRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.CardReceiveRecord" >
+    <id column="CARD_RECEIVE_RECORD_ID" jdbcType="BIGINT" property="cardReceiveRecordId" />
+	<result column="CARD_RECEIVE_RECORD_ID" jdbcType="BIGINT" property="cardReceiveRecordId" />
+	<result column="CARD_RESOURCE_ID" jdbcType="BIGINT" property="cardResourceId" />
+	<result column="RECEIVE_BALANCE" jdbcType="DECIMAL" property="receiveBalance" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="RECEIVE_DATE" jdbcType="TIMESTAMP" property="receiveDate" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="CARD_RESOURCE_CODE" jdbcType="VARCHAR" property="refCardResourceCode" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CARD_RECEIVE_RECORD_ID, CARD_RESOURCE_ID, RECEIVE_BALANCE, DRIVER_ID, TRANSPORTER_ID, RECEIVE_DATE, CREATOR, CREATE_DATE,CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List" >
+    crr.CARD_RECEIVE_RECORD_ID,crr.CARD_RESOURCE_ID,cr.CARD_RESOURCE_CODE,crr.RECEIVE_BALANCE,
+    crr.DRIVER_ID,us.USER_NAME AS DRIVER_NAME,crr.TRANSPORTER_ID,t.TRACTIR_PLATE_CODE,crr.RECEIVE_DATE,crr.CREATOR,
+    u.USER_NAME AS CREATE_NAME,crr.CREATE_DATE,crr.CORP_ID,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where crr.del = 0
+    <trim  suffixOverrides="," >
+      <if test="cardReceiveRecordId != null and cardReceiveRecordId != ''" >
+        and crr.CARD_RECEIVE_RECORD_ID = #{cardReceiveRecordId}
+      </if>
+      <if test="cardResourceId != null and cardResourceId != ''" >
+        and crr.CARD_RESOURCE_ID = #{cardResourceId}
+      </if>
+      <if test="receiveBalance != null and receiveBalance != ''" >
+        and crr.RECEIVE_BALANCE = #{receiveBalance}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and crr.DRIVER_ID = #{driverId}
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and crr.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="receiveDate != null and receiveDate != ''" >
+        and crr.RECEIVE_DATE = #{receiveDate}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and crr.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and crr.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and crr.CORP_ID = #{corpId}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from am_card_receive_record crr
+		JOIN am_card_resource cr ON crr.CARD_RESOURCE_ID=cr.CARD_RESOURCE_ID
+		JOIN  bd_user us ON crr.DRIVER_ID=us.USER_ID
+		LEFT JOIN tc_transporter t ON crr.TRANSPORTER_ID=t.TRANSPORTER_ID
+		JOIN bd_user u ON crr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON crr.CORP_ID=corp.CORP_ID
+    where crr.DEL=0 AND crr.CARD_RECEIVE_RECORD_ID = #{cardReceiveRecordId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update am_card_receive_record set DEL=1 where CARD_RECEIVE_RECORD_ID = #{cardReceiveRecordId}
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.CardReceiveRecord" keyProperty="cardReceiveRecordId" useGeneratedKeys="true">
+    insert into am_card_receive_record	(CARD_RESOURCE_ID, RECEIVE_BALANCE, DRIVER_ID, TRANSPORTER_ID, RECEIVE_DATE, CREATOR, CREATE_DATE,CORP_ID)	values	(#{cardResourceId,jdbcType=BIGINT}, #{receiveBalance,jdbcType=DECIMAL}, #{driverId,jdbcType=BIGINT}, #{transporterId,jdbcType=BIGINT}, 	#{receiveDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP},#{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.CardReceiveRecord" keyProperty="cardReceiveRecordId" useGeneratedKeys="true">
+    insert into am_card_receive_record	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="cardResourceId != null">	    CARD_RESOURCE_ID, 	  </if>	  <if test="receiveBalance != null">	    RECEIVE_BALANCE, 	  </if>	  <if test="driverId != null">	    DRIVER_ID, 	  </if>	  <if test="transporterId != null">	    TRANSPORTER_ID, 	  </if>	  <if test="receiveDate != null">	    RECEIVE_DATE, 	  </if>	  <if test="creator != null">	    CREATOR, 	  </if>	  <if test="createDate != null">	    CREATE_DATE, 	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="cardResourceId != null">	    #{cardResourceId,jdbcType=BIGINT}, 	  </if>	  <if test="receiveBalance != null">	    #{receiveBalance,jdbcType=DECIMAL}, 	  </if>	  <if test="driverId != null">	    #{driverId,jdbcType=BIGINT}, 	  </if>	  <if test="transporterId != null">	    #{transporterId,jdbcType=BIGINT}, 	  </if>	  <if test="receiveDate != null">	    #{receiveDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="creator != null">	    #{creator,jdbcType=BIGINT}, 	  </if>	  <if test="createDate != null">	    #{createDate,jdbcType=TIMESTAMP}, 	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.CardReceiveRecord" >
+	update am_card_receive_record	<set>	  <if test="cardResourceId != null">	    CARD_RESOURCE_ID = #{cardResourceId,jdbcType=BIGINT}, 	  </if>	  <if test="receiveBalance != null">	    RECEIVE_BALANCE = #{receiveBalance,jdbcType=DECIMAL}, 	  </if>	  <if test="driverId != null">	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 	  </if>	  <if test="transporterId != null">	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 	  </if>	  <if test="receiveDate != null">	    RECEIVE_DATE = #{receiveDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="creator != null">	    CREATOR = #{creator,jdbcType=BIGINT}, 	  </if>	  <if test="createDate != null">	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>	</set>	where CARD_RECEIVE_RECORD_ID = #{cardReceiveRecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.CardReceiveRecord" >
+    update am_card_receive_record set 	  CARD_RESOURCE_ID = #{cardResourceId,jdbcType=BIGINT}, RECEIVE_BALANCE = #{receiveBalance,jdbcType=DECIMAL}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, 	  TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, RECEIVE_DATE = #{receiveDate,jdbcType=TIMESTAMP}, 	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},CORP_ID = #{corpId,jdbcType=BIGINT}	where CARD_RECEIVE_RECORD_ID = #{cardReceiveRecordId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from am_card_receive_record crr
+		JOIN am_card_resource cr ON crr.CARD_RESOURCE_ID=cr.CARD_RESOURCE_ID
+		JOIN  bd_user us ON crr.DRIVER_ID=us.USER_ID
+		LEFT JOIN tc_transporter t ON crr.TRANSPORTER_ID=t.TRANSPORTER_ID
+		JOIN bd_user u ON crr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON crr.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by crr.CREATE_DATE DESC
+  </select>
+  
+  <select id="queryByCardId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from am_card_receive_record crr
+		JOIN am_card_resource cr ON crr.CARD_RESOURCE_ID=cr.CARD_RESOURCE_ID
+		JOIN  bd_user us ON crr.DRIVER_ID=us.USER_ID
+		LEFT JOIN tc_transporter t ON crr.TRANSPORTER_ID=t.TRANSPORTER_ID
+		JOIN bd_user u ON crr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON crr.CORP_ID=corp.CORP_ID
+    where crr.DEL=0 AND crr.CARD_RESOURCE_ID = #{cardResourceId,jdbcType=BIGINT}
+  </select>
+  	
+</mapper>   

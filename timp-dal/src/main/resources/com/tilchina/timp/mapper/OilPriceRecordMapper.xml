@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.OilPriceRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.OilPriceRecord" >
+    <id column="OIL_PRICE_RECORD_ID" jdbcType="BIGINT" property="oilPriceRecordId" />
+	<result column="OIL_PRICE_RECORD_ID" jdbcType="BIGINT" property="oilPriceRecordId" />
+	<result column="OIL_PRICE_ID" jdbcType="BIGINT" property="oilPriceId" />
+	<result column="PRICE" jdbcType="DECIMAL" property="price" />
+	<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+	<result column="CHECKER" jdbcType="BIGINT" property="checker" />
+	<result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="OIL_NAME" jdbcType="VARCHAR" property="refOilName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CHECKER_NAME" jdbcType="VARCHAR" property="refCheckerName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    OIL_PRICE_RECORD_ID, OIL_PRICE_ID, PRICE, BILL_STATUS, CREATOR, CREATE_TIME, CHECKER, CHECK_DATE, CORP_ID, FLAG
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	record.OIL_PRICE_RECORD_ID, record.OIL_PRICE_ID,oilprice.OIL_NAME, record.PRICE, record.BILL_STATUS, record.CREATOR,us.USER_NAME AS CREATE_NAME, 
+  	record.CREATE_TIME, record.CHECKER,u.USER_NAME AS CHECKER_NAME, record.CHECK_DATE, record.CORP_ID,corp.CORP_NAME, record.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where record.del = 0
+    <trim  suffixOverrides="," >
+      <if test="oilPriceRecordId != null and oilPriceRecordId != ''" >
+        and record.OIL_PRICE_RECORD_ID = #{oilPriceRecordId}
+      </if>
+      <if test="oilPriceId != null and oilPriceId != ''" >
+        and record.OIL_PRICE_ID = #{oilPriceId}
+      </if>
+	  <if test="refOilName != null and refOilName != ''" >
+		and oilprice.OIL_NAME LIKE CONCAT("%",#{refOilName},"%")
+	  </if>
+      <if test="price != null and price != ''" >
+        and record.PRICE = #{price}
+      </if>
+      <if test="billStatus != null and billStatus != ''" >
+        and record.BILL_STATUS = #{billStatus}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and record.CREATOR = #{creator}
+      </if>
+      <if test="createTime != null and createTime != ''" >
+        and record.CREATE_TIME = #{createTime}
+      </if>
+      <if test="checker != null and checker != ''" >
+        and record.CHECKER = #{checker}
+      </if>
+      <if test="checkDate != null and checkDate != ''" >
+        and record.CHECK_DATE = #{checkDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and record.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and record.FLAG = #{flag}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and oilprice.OIL_NAME LIKE CONCAT("%",#{searchContent},"%")
+      </if>
+      <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and record.CREATE_TIME  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and record.CREATE_TIME  <=  #{endTime}  ]]>
+	  </if>
+	  <if test="startCheckDate != null and startCheckDate != ''">
+      	<![CDATA[ and record.CHECK_DATE  >=  #{startCheckDate}  ]]>
+	  </if>
+	  <if test="endCheckDate != null and endCheckDate != ''">
+		<![CDATA[ and record.CHECK_DATE  <=  #{endCheckDate}  ]]>
+	  </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM bd_oil_price_record  record
+		JOIN bd_oil_price oilprice ON record.OIL_PRICE_ID=oilprice.OIL_PRICE_ID
+		JOIN bd_user us ON record.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u  ON record.CHECKER=u.USER_ID
+		JOIN sys_corp corp ON record.CORP_ID=corp.CORP_ID
+    where record.OIL_PRICE_RECORD_ID = #{oilPriceRecordId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update BD_OIL_PRICE_RECORD set DEL=1 where OIL_PRICE_RECORD_ID = #{oilPriceRecordId}
+  </update>
+  <update id="removeDate" parameterType="java.lang.Long">
+    update BD_OIL_PRICE_RECORD set BILL_STATUS=0,CHECKER=NULL,CHECK_DATE=NULL  where OIL_PRICE_RECORD_ID = #{oilPriceRecordId}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update BD_OIL_PRICE_RECORD	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	OIL_PRICE_RECORD_ID in
+  	 		<foreach item="oilPriceRecordId" collection="array" open="(" separator="," close=")">
+  	 			#{oilPriceRecordId}
+  	 		</foreach>
+  		</if>
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.OilPriceRecord" keyProperty="oilPriceRecordId" useGeneratedKeys="true">
+    insert into BD_OIL_PRICE_RECORD
+	(OIL_PRICE_ID, PRICE, BILL_STATUS, CREATOR, CREATE_TIME, CHECKER, CHECK_DATE, CORP_ID, FLAG)
+	values
+	(#{oilPriceId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{billStatus,jdbcType=INTEGER}, #{creator,jdbcType=BIGINT}, 
+	#{createTime,jdbcType=TIMESTAMP}, #{checker,jdbcType=BIGINT}, #{checkDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT}, 
+	#{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.OilPriceRecord" keyProperty="oilPriceRecordId" useGeneratedKeys="true">
+    insert into BD_OIL_PRICE_RECORD
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="oilPriceId != null">
+	    OIL_PRICE_ID, 
+	  </if>
+	  <if test="price != null">
+	    PRICE, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createTime != null">
+	    CREATE_TIME, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="oilPriceId != null">
+	    #{oilPriceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="price != null">
+	    #{price,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="billStatus != null">
+	    #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createTime != null">
+	    #{createTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checker != null">
+	    #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.OilPriceRecord" >
+	update BD_OIL_PRICE_RECORD
+	<set>
+	  <if test="oilPriceId != null">
+	    OIL_PRICE_ID = #{oilPriceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="price != null">
+	    PRICE = #{price,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createTime != null">
+	    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER = #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where OIL_PRICE_RECORD_ID = #{oilPriceRecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.OilPriceRecord" >
+    update BD_OIL_PRICE_RECORD set 
+	  OIL_PRICE_ID = #{oilPriceId,jdbcType=BIGINT}, PRICE = #{price,jdbcType=DECIMAL}, BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, CHECKER = #{checker,jdbcType=BIGINT}, 
+	  CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}, FLAG = #{flag,jdbcType=INTEGER}
+	where OIL_PRICE_RECORD_ID = #{oilPriceRecordId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_oil_price_record  record
+		JOIN bd_oil_price oilprice ON record.OIL_PRICE_ID=oilprice.OIL_PRICE_ID
+		JOIN bd_user us ON record.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u  ON record.CHECKER=u.USER_ID
+		JOIN sys_corp corp ON record.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by record.CREATE_TIME DESC
+  </select>
+  
+    <select id="getList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_oil_price_record  record
+		JOIN bd_oil_price oilprice ON record.OIL_PRICE_ID=oilprice.OIL_PRICE_ID
+		JOIN bd_user us ON record.CREATOR=us.USER_ID
+		LEFT JOIN bd_user u  ON record.CHECKER=u.USER_ID
+		JOIN sys_corp corp ON record.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by record.CREATE_TIME DESC
+  </select>
+  	
+</mapper>   

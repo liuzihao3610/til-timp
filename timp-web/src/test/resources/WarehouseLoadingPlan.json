@@ -1,0 +1,16 @@
+{
+  "data":{
+    "warehouseLoadingPlanId":0,
+    "planDate":"2018-03-22 08:13:16",
+    "unitId":0,
+    "carId":0,
+    "carVin":"Test-carVin",
+    "billStatus":0,
+    "driverId":0,
+    "transporterId":0,
+    "loadingTime":"2018-03-22 08:13:16",
+    "loadingLocation":"Test-loadingLocation",
+    "remark":"Test-remark",
+    "corpId":0
+  }
+}

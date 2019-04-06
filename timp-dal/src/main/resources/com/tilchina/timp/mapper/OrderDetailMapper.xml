@@ -1,0 +1,892 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.OrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.OrderDetail" >
+    <id column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
+	<result column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
+	<result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="ORDER_CODE" jdbcType="VARCHAR" property="orderCode" />
+	<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+	<result column="CAR_TYPE_ID" jdbcType="BIGINT" property="carTypeId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+	<result column="SEND_UNIT_ID" jdbcType="BIGINT" property="sendUnitId" />
+	<result column="RECEIVE_UNIT_ID" jdbcType="BIGINT" property="receiveUnitId" />
+	<result column="INSTRUCTION_NUMBER" jdbcType="VARCHAR" property="instructionNumber" />
+	<result column="CLAIM_LOAD_DATE" jdbcType="DATE" property="claimLoadDate" />
+	<result column="CLAIM_DELIVERY_DATE" jdbcType="DATE" property="claimDeliveryDate" />
+	<result column="ETA" jdbcType="TIMESTAMP" property="eta" />
+	<result column="CANCEL_REASON" jdbcType="VARCHAR" property="cancelReason" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="PRODUCT_NUMBER" jdbcType="VARCHAR" property="productNumber" />
+	<result column="CAR_STATUS" jdbcType="INTEGER" property="carStatus" />
+	<result column="TRANSFER_ORDER_STATUS" jdbcType="INTEGER" property="transferOrderStatus" />
+	<result column="QUOTED_PRICE_ID" jdbcType="BIGINT" property="quotedPriceId" />
+	<result column="FREIGHT_PRICE_ID" jdbcType="BIGINT" property="freightPriceId" />
+	<result column="CLOSED" jdbcType="INTEGER" property="closed" />
+	<result column="RECONCILIATION" jdbcType="INTEGER" property="reconciliation" />
+	<result column="SETTLEMENT" jdbcType="INTEGER" property="settlement" />
+	<result column="URGENT" jdbcType="INTEGER" property="urgent" />
+	<result column="SCHEDULE_TYPE" jdbcType="INTEGER" property="scheduleType" />
+	<result column="CONFIRMATION_DATE" jdbcType="TIMESTAMP" property="confirmationDate" />
+	<result column="CUSTOMER_QUOTED_PRICE" jdbcType="DECIMAL" property="customerQuotedPrice" />
+	  <result column="ORIGINAL_ORDER_ID" jdbcType="BIGINT" property="originalOrderId" />
+	  <result column="ORIGINAL_ORDER_DETAIL_ID" jdbcType="BIGINT" property="originalOrderDetailId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="SEND_UNIT_NAME" jdbcType="VARCHAR" property="refSendUnitName" />
+	  <result column="SEND_CITY_NAME" jdbcType="VARCHAR" property="refSendCityName" />
+	<result column="RECEIVE_UNIT_NAME" jdbcType="VARCHAR" property="refReceiveUnitName" />
+	  <result column="RECEIVE_CITY_NAME" jdbcType="VARCHAR" property="refReceiveCityName" />
+	<result column="QUOTATION_NUMBER" jdbcType="VARCHAR" property="refQuotedPriceCode" />
+	<result column="FREIGHT_PRICE_CODE" jdbcType="VARCHAR" property="refFreightPriceCode" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="CAR_NAME" jdbcType="VARCHAR" property="refCarName" />
+	<result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="refCarTypeName" />
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ORDER_DETAIL_ID, ORDER_ID, ORDER_CODE, CAR_ID,CAR_TYPE_ID,CAR_VIN, BRAND_ID,SEND_UNIT_ID, RECEIVE_UNIT_ID, INSTRUCTION_NUMBER, CLAIM_LOAD_DATE,
+	CLAIM_DELIVERY_DATE,ETA,CANCEL_REASON,REMARK,PRODUCT_NUMBER,
+	CAR_STATUS,TRANSFER_ORDER_STATUS,QUOTED_PRICE_ID,FREIGHT_PRICE_ID,CLOSED,RECONCILIATION,SETTLEMENT,URGENT, SCHEDULE_TYPE, CONFIRMATION_DATE,
+	CUSTOMER_QUOTED_PRICE, CORP_ID, ORIGINAL_ORDER_ID, ORIGINAL_ORDER_DETAIL_ID
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	orderdetail.ORDER_DETAIL_ID,orderdetail.ORDER_ID,orderdetail.ORDER_CODE,orderdetail.CAR_ID,car.CAR_NAME,orderdetail.CAR_TYPE_ID,type.CAR_TYPE_NAME,
+  	orderdetail.CAR_VIN,orderdetail.BRAND_ID,brand.BRAND_NAME,orderdetail.SEND_UNIT_ID,unit.UNIT_NAME AS SEND_UNIT_NAME,
+  	orderdetail.RECEIVE_UNIT_ID,un.UNIT_NAME AS RECEIVE_UNIT_NAME,orderdetail.INSTRUCTION_NUMBER,orderdetail.CLAIM_LOAD_DATE,orderdetail.CLAIM_DELIVERY_DATE,
+  	orderdetail.ETA,orderdetail.CANCEL_REASON,orderdetail.REMARK,orderdetail.PRODUCT_NUMBER,
+  	orderdetail.CAR_STATUS,orderdetail.TRANSFER_ORDER_STATUS, orderdetail.QUOTED_PRICE_ID, orderdetail.FREIGHT_PRICE_ID, orderdetail.CLOSED,
+  	orderdetail.RECONCILIATION,orderdetail.SETTLEMENT,quo.QUOTATION_NUMBER,
+  	orderdetail.URGENT,orderdetail.SCHEDULE_TYPE,orderdetail.CONFIRMATION_DATE,orderdetail.CUSTOMER_QUOTED_PRICE,orderdetail.CORP_ID,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where orderdetail.del = 0
+    <trim  suffixOverrides="," >
+      <if test="orderDetailId != null and orderDetailId != ''" >
+        and orderdetail.ORDER_DETAIL_ID = #{orderDetailId}
+      </if>
+      <if test="orderId != null and orderId != ''" >
+        and orderdetail.ORDER_ID = #{orderId}
+      </if>
+      <if test="orderCode != null and orderCode != ''" >
+        and orderdetail.ORDER_CODE = #{orderCode}
+      </if>
+      <if test="carId != null and carId != ''" >
+        and orderdetail.CAR_ID = #{carId}
+      </if>
+      <if test="carTypeId != null and carTypeId != ''" >
+        and orderdetail.CAR_TYPE_ID = #{carTypeId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and orderdetail.CAR_VIN = #{carVin}
+      </if>
+      <if test="brandId != null and brandId != ''" >
+        and orderdetail.BRAND_ID = #{brandId}
+      </if>
+      <if test="sendUnitId != null and sendUnitId != ''" >
+        and orderdetail.SEND_UNIT_ID = #{sendUnitId}
+      </if>
+      <if test="receiveUnitId != null and receiveUnitId != ''" >
+        and orderdetail.RECEIVE_UNIT_ID = #{receiveUnitId}
+      </if>
+      <if test="instructionNumber != null and instructionNumber != ''" >
+        and orderdetail.INSTRUCTION_NUMBER = #{instructionNumber}
+      </if>
+      <if test="claimLoadDate != null and claimLoadDate != ''" >
+        and orderdetail.CLAIM_LOAD_DATE = #{claimLoadDate}
+      </if>
+      <if test="claimDeliveryDate != null and claimDeliveryDate != ''" >
+        and orderdetail.CLAIM_DELIVERY_DATE = #{claimDeliveryDate}
+      </if>
+      <if test="eta != null and eta != ''" >
+        and orderdetail.ETA = #{eta}
+      </if>
+      <if test="cancelReason != null and cancelReason != ''" >
+        and orderdetail.CANCEL_REASON = #{cancelReason}
+      </if>
+      <if test="remark != null and remark != ''" >
+        and orderdetail.REMARK = #{remark}
+      </if>
+      <if test="productNumber != null and productNumber != ''" >
+        and orderdetail.PRODUCT_NUMBER = #{productNumber}
+      </if>
+      
+      <if test="carStatus != null and carStatus != ''" >
+        and orderdetail.CAR_STATUS = #{carStatus}
+      </if>
+      <if test="transferOrderStatus != null and transferOrderStatus != ''" >
+        and orderdetail.TRANSFER_ORDER_STATUS = #{transferOrderStatus}
+      </if>
+      <if test="quotedPriceId != null and quotedPriceId != ''" >
+        and orderdetail.QUOTED_PRICE_ID = #{quotedPriceId}
+      </if>
+      <if test="freightPriceId != null and freightPriceId != ''" >
+        and orderdetail.FREIGHT_PRICE_ID = #{freightPriceId}
+      </if>
+      <if test="closed != null and closed != ''" >
+        and orderdetail.CLOSED = #{closed}
+      </if>
+      <if test="reconciliation != null and reconciliation != ''" >
+        and orderdetail.RECONCILIATION = #{reconciliation}
+      </if>
+      <if test="settlement != null and settlement != ''" >
+        and orderdetail.SETTLEMENT = #{settlement}
+      </if>
+      <if test="urgent != null and urgent != ''" >
+        and orderdetail.URGENT = #{urgent}
+      </if>
+      <if test="scheduleType != null and scheduleType != ''" >
+        and orderdetail.SCHEDULE_TYPE = #{scheduleType}
+      </if>
+      <if test="confirmationDate != null and confirmationDate != ''" >
+        and orderdetail.CONFIRMATION_DATE = #{confirmationDate}
+      </if>
+      <if test="customerQuotedPrice != null and customerQuotedPrice != ''" >
+        and orderdetail.CUSTOMER_QUOTED_PRICE = #{customerQuotedPrice}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and orderdetail.CORP_ID = #{corpId}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (orderdetail.ORDER_CODE  LIKE  CONCAT('%',#{searchContent},'%')
+        	or  orderdetail.CAR_VIN LIKE  CONCAT('%',#{searchContent},'%'))
+      </if>
+      <if test="cityId != null  and cityId != ''">
+    	AND un.CITY_ID = #{cityId,jdbcType=BIGINT}
+	  </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+	    left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+		left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+    where orderdetail.DEL=0 AND orderdetail.ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update OM_ORDER_DETAIL set DEL=1 where ORDER_DETAIL_ID = #{orderDetailId}
+  </update>
+  <update id="deleteByOrderId" parameterType="java.lang.Long">
+    update OM_ORDER_DETAIL set DEL=1 where ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </update>
+  <!-- 已对账 -->
+  <update id="reconciliation" parameterType="java.lang.Long">
+    update OM_ORDER_DETAIL
+    set RECONCILIATION=1
+    where ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </update>
+
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update OM_ORDER_DETAIL	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	ORDER_ID in
+  	 		<foreach item="orderId" collection="array" open="(" separator="," close=")">
+  	 			#{orderId}
+  	 		</foreach>
+  		</if>
+  </update>
+
+  <insert id="insert" parameterType="com.tilchina.timp.model.OrderDetail" keyProperty="orderDetailId" useGeneratedKeys="true">
+    insert into OM_ORDER_DETAIL
+	(ORDER_ID, ORDER_CODE, CAR_ID,CAR_TYPE_ID,CAR_VIN, BRAND_ID,SEND_UNIT_ID, RECEIVE_UNIT_ID, INSTRUCTION_NUMBER, CLAIM_LOAD_DATE, CLAIM_DELIVERY_DATE,
+	ETA,CANCEL_REASON,REMARK,PRODUCT_NUMBER,CAR_STATUS,TRANSFER_ORDER_STATUS,QUOTED_PRICE_ID,FREIGHT_PRICE_ID,CLOSED,RECONCILIATION,SETTLEMENT,
+	URGENT, SCHEDULE_TYPE, CONFIRMATION_DATE, CUSTOMER_QUOTED_PRICE, CORP_ID, ORIGINAL_ORDER_ID, ORIGINAL_ORDER_DETAIL_ID)
+	values
+	(#{orderId,jdbcType=BIGINT}, #{orderCode,jdbcType=VARCHAR},#{carId,jdbcType=BIGINT},#{carTypeId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR},#{brandId,jdbcType=BIGINT},
+	#{sendUnitId,jdbcType=BIGINT},#{receiveUnitId,jdbcType=BIGINT}, #{instructionNumber,jdbcType=VARCHAR}, #{claimLoadDate,jdbcType=DATE}, #{claimDeliveryDate,jdbcType=DATE}, 
+	#{eta,jdbcType=TIMESTAMP},#{cancelReason,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{productNumber,jdbcType=VARCHAR},
+	#{carStatus,jdbcType=INTEGER},#{transferOrderStatus,jdbcType=INTEGER},#{quotedPriceId,jdbcType=BIGINT},#{freightPriceId,jdbcType=BIGINT},
+	#{closed,jdbcType=INTEGER},#{reconciliation,jdbcType=INTEGER},#{settlement,jdbcType=INTEGER},
+	#{urgent,jdbcType=INTEGER}, #{scheduleType,jdbcType=INTEGER}, #{confirmationDate,jdbcType=TIMESTAMP}, 
+	#{customerQuotedPrice,jdbcType=DECIMAL}, #{corpId,jdbcType=BIGINT}, #{originalOrderId,jdbcType=BIGINT}, #{originalOrderDetailId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.OrderDetail" keyProperty="orderDetailId" useGeneratedKeys="true">
+    insert into OM_ORDER_DETAIL
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="orderId != null">
+	    ORDER_ID, 
+	  </if>
+	  <if test="orderCode != null">
+	    ORDER_CODE, 
+	  </if>
+	  <if test="carId != null">
+	    CAR_ID, 
+	  </if>
+	  <if test="carTypeId != null">
+	    CAR_TYPE_ID, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN, 
+	  </if>
+	  <if test="brandId != null">
+	   	BRAND_ID, 
+	  </if>
+	  <if test="sendUnitId != null">
+	    SEND_UNIT_ID, 
+	  </if>
+	  <if test="receiveUnitId != null">
+	    RECEIVE_UNIT_ID, 
+	  </if>
+	  <if test="instructionNumber != null">
+	    INSTRUCTION_NUMBER, 
+	  </if>
+	  <if test="claimLoadDate != null">
+	    CLAIM_LOAD_DATE, 
+	  </if>
+	  <if test="claimDeliveryDate != null">
+	    CLAIM_DELIVERY_DATE, 
+	  </if>
+	  <if test="eta != null">
+	    ETA, 
+	  </if>
+	  <if test="cancelReason != null">
+	    CANCEL_REASON, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="productNumber != null">
+	    PRODUCT_NUMBER, 
+	  </if>
+	  
+	  <if test="carStatus != null" >
+       CAR_STATUS,
+      </if>
+      <if test="transferOrderStatus != null" >
+       TRANSFER_ORDER_STATUS,
+      </if>
+      <if test="quotedPriceId != null" >
+       QUOTED_PRICE_ID,
+      </if>
+      <if test="freightPriceId != null" >
+       FREIGHT_PRICE_ID,
+      </if>
+      <if test="closed != null" >
+        CLOSED,
+      </if>
+      <if test="reconciliation != null" >
+        RECONCILIATION,
+      </if>
+      <if test="settlement != null" >
+       SETTLEMENT,
+      </if>
+	  <if test="urgent != null">
+	    URGENT, 
+	  </if>
+	  <if test="scheduleType != null">
+	    SCHEDULE_TYPE, 
+	  </if>
+	  <if test="confirmationDate != null">
+	    CONFIRMATION_DATE, 
+	  </if>
+	  <if test="customerQuotedPrice != null">
+	    CUSTOMER_QUOTED_PRICE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+        <if test="originalOrderId != null">
+            ORIGINAL_ORDER_ID,
+        </if>
+        <if test="originalOrderDetailId != null">
+            ORIGINAL_ORDER_DETAIL_ID,
+        </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="orderId != null">
+	    #{orderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderCode != null">
+	    #{orderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="carId != null">
+	    #{carId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carTypeId != null">
+	    #{carTypeId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="brandId != null">
+	    #{brandId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="sendUnitId != null">
+	    #{sendUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="receiveUnitId != null">
+	    #{receiveUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="instructionNumber != null">
+	    #{instructionNumber,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="claimLoadDate != null">
+	    #{claimLoadDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="claimDeliveryDate != null">
+	    #{claimDeliveryDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="eta != null">
+	    #{eta,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="cancelReason != null">
+	    #{cancelReason,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="productNumber != null">
+	    #{productNumber,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="carStatus != null">
+	    #{carStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="transferOrderStatus != null">
+	    #{transferOrderStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="quotedPriceId != null">
+	    #{quotedPriceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="freightPriceId != null">
+	    #{freightPriceId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="closed != null">
+	    #{closed,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="reconciliation != null">
+	    #{reconciliation,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="settlement != null">
+	    #{settlement,jdbcType=INTEGER}, 
+	  </if>
+	  
+	  <if test="urgent != null">
+	    #{urgent,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="scheduleType != null">
+	    #{scheduleType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="confirmationDate != null">
+	    #{confirmationDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="customerQuotedPrice != null">
+	    #{customerQuotedPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+        <if test="originalOrderId != null">
+            #{originalOrderId,jdbcType=BIGINT},
+        </if>
+        <if test="originalOrderDetailId != null">
+            #{originalOrderDetailId,jdbcType=BIGINT},
+        </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.OrderDetail" >
+	update OM_ORDER_DETAIL
+	<set>
+		<!--
+	  <if test="orderId != null">
+	    ORDER_ID = #{orderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderCode != null">
+	    ORDER_CODE = #{orderCode,jdbcType=VARCHAR}, 
+	  </if>
+	    -->
+	  <if test="carId != null">
+	    CAR_ID = #{carId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="brandId != null">
+	    BRAND_ID = #{brandId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="sendUnitId != null">
+	    SEND_UNIT_ID = #{sendUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="receiveUnitId != null">
+	    RECEIVE_UNIT_ID = #{receiveUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="instructionNumber != null">
+	    INSTRUCTION_NUMBER = #{instructionNumber,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="claimLoadDate != null">
+	    CLAIM_LOAD_DATE = #{claimLoadDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="claimDeliveryDate != null">
+	    CLAIM_DELIVERY_DATE = #{claimDeliveryDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="eta != null">
+	    ETA = #{eta,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="cancelReason != null">
+	    CANCEL_REASON = #{cancelReason,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK = #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="productNumber != null">
+	    PRODUCT_NUMBER = #{productNumber,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="carStatus != null" >
+        CAR_STATUS = #{carStatus},
+      </if>
+      <if test="transferOrderStatus != null" >
+        TRANSFER_ORDER_STATUS = #{transferOrderStatus},
+      </if>
+      <if test="quotedPriceId != null" >
+        QUOTED_PRICE_ID = #{quotedPriceId},
+      </if>
+      <if test="freightPriceId != null" >
+        FREIGHT_PRICE_ID = #{freightPriceId},
+      </if>
+      <if test="closed != null" >
+        CLOSED = #{closed},
+      </if>
+      <if test="reconciliation != null" >
+        RECONCILIATION = #{reconciliation},
+      </if>
+      <if test="settlement != null" >
+        SETTLEMENT = #{settlement},
+      </if>
+	  <if test="urgent != null">
+	    URGENT = #{urgent,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="scheduleType != null">
+	    SCHEDULE_TYPE = #{scheduleType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="confirmationDate != null">
+	    CONFIRMATION_DATE = #{confirmationDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="customerQuotedPrice != null">
+	    CUSTOMER_QUOTED_PRICE = #{customerQuotedPrice,jdbcType=DECIMAL}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT},
+	  </if>
+        <if test="originalOrderId != null">
+            ORIGINAL_ORDER_ID = #{originalOrderId,jdbcType=BIGINT},
+        </if>
+        <if test="originalOrderDetailId != null">
+            ORIGINAL_ORDER_DETAIL_ID = #{originalOrderDetailId,jdbcType=BIGINT}
+        </if>
+	</set>
+	where ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.OrderDetail" >
+    update OM_ORDER_DETAIL set 
+	  ORDER_ID = #{orderId,jdbcType=BIGINT}, ORDER_CODE = #{orderCode,jdbcType=VARCHAR},CAR_ID = #{carId,jdbcType=BIGINT},CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT},
+	  CAR_VIN = #{carVin,jdbcType=VARCHAR}, BRAND_ID = #{brandId,jdbcType=BIGINT},
+	  SEND_UNIT_ID = #{sendUnitId,jdbcType=BIGINT}, RECEIVE_UNIT_ID = #{receiveUnitId,jdbcType=BIGINT}, INSTRUCTION_NUMBER = #{instructionNumber,jdbcType=VARCHAR}, 
+	  CLAIM_LOAD_DATE = #{claimLoadDate,jdbcType=DATE}, CLAIM_DELIVERY_DATE = #{claimDeliveryDate,jdbcType=DATE},
+      ETA = #{eta,jdbcType=TIMESTAMP},CANCEL_REASON = #{cancelReason,jdbcType=VARCHAR},REMARK = #{remark,jdbcType=VARCHAR},PRODUCT_NUMBER = #{productNumber,jdbcType=VARCHAR},  
+      CAR_STATUS = #{carStatus},TRANSFER_ORDER_STATUS = #{transferOrderStatus},QUOTED_PRICE_ID = #{quotedPriceId},FREIGHT_PRICE_ID = #{freightPriceId},
+      CLOSED = #{closed},RECONCILIATION=#{reconciliation},SETTLEMENT = #{settlement},
+	  URGENT = #{urgent,jdbcType=INTEGER}, SCHEDULE_TYPE = #{scheduleType,jdbcType=INTEGER}, 
+	  CONFIRMATION_DATE = #{confirmationDate,jdbcType=TIMESTAMP}, CUSTOMER_QUOTED_PRICE = #{customerQuotedPrice,jdbcType=DECIMAL}, 
+	  CORP_ID = #{corpId,jdbcType=BIGINT}, ORIGINAL_ORDER_ID = #{originalOrderId,jdbcType=BIGINT}, ORIGINAL_ORDER_DETAIL_ID = #{originalOrderDetailId,jdbcType=BIGINT}
+	where ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+	    left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+		left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  <select id="queryByVin"  resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+	    left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+		left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+    where orderdetail.DEL=0 AND orderdetail.CAR_VIN = #{carVin,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryByOrderId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+	    left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+	    left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+    where orderdetail.DEL=0 AND orderdetail.ORDER_ID = #{orderId,jdbcType=BIGINT}
+	  order by orderdetail.urgent,orderdetail.SEND_UNIT_ID,orderdetail.RECEIVE_UNIT_ID,orderdetail.BRAND_ID
+  </select>
+  
+  <select id="queryOrderDetail"  resultMap="BaseResultMap" parameterType="object">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+	    left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+		left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+    <include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+    
+  </select>
+  <select id="getByVin" resultMap="BaseResultMap"  parameterType="java.util.Map">
+	select
+      <include refid="Query_Column_List"/>
+  	  
+    FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+	    left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+		JOIN om_order ord ON orderdetail.ORDER_ID=ord.ORDER_ID
+		left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+	where orderdetail.DEL=0
+	  <if test="orderId != null and orderId != ''">
+		  AND orderdetail.ORDER_ID=#{orderId,jdbcType=BIGINT}
+	  </if>
+	  <if test="carVin != null and carVin != ''">
+		  AND orderdetail.CAR_VIN=#{carVin,jdbcType=VARCHAR}
+	  </if>
+  </select>
+
+	<select id="queryByCarVin" resultMap="BaseResultMap"  parameterType="String">
+		select
+		<include refid="Query_Column_List"/>
+		FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+		left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+		JOIN om_order ord ON orderdetail.ORDER_ID=ord.ORDER_ID
+		left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+		where orderdetail.CAR_VIN = #{carVin}
+		and orderdetail.DEL=0
+	</select>
+
+	<resultMap id="AssemblyResultMap" type="com.tilchina.timp.vo.PendingOrderVO" >
+        <result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+        <result column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
+        <result column="ORDER_DATE" jdbcType="DATE" property="orderDate" />
+
+		<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+		<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+		<result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+        <result column="CAR_TYPE_ID" jdbcType="BIGINT" property="carTypeId" />
+		<result column="SEND_UNIT_ID" jdbcType="BIGINT" property="sendUnitId" />
+		<result column="SEND_UNIT_NAME" jdbcType="VARCHAR" property="sendUnitName" />
+		<result column="SEND_CITY_ID" jdbcType="BIGINT" property="sendCityId" />
+		<result column="SEND_CITY_NAME" jdbcType="VARCHAR" property="sendCityName" />
+		<result column="SEND_LNG" jdbcType="DOUBLE" property="sendLng" />
+		<result column="SEND_LAT" jdbcType="DOUBLE" property="sendLat" />
+
+		<result column="RECEIVE_UNIT_ID" jdbcType="BIGINT" property="receiveUnitId" />
+		<result column="RECEIVE_UNIT_NAME" jdbcType="VARCHAR" property="receiveUnitName" />
+		<result column="RECEIVE_CITY_ID" jdbcType="BIGINT" property="receiveCityId" />
+		<result column="RECEIVE_CITY_NAME" jdbcType="VARCHAR" property="receiveCityName" />
+		<result column="DELIVER" jdbcType="INTEGER" property="deliver" />
+		<result column="SPECIAL" jdbcType="INTEGER" property="special" />
+		<result column="RECEIVE_LNG" jdbcType="DOUBLE" property="receiveLng" />
+		<result column="RECEIVE_LAT" jdbcType="DOUBLE" property="receiveLat" />
+		<result column="CITY_AREA_ID" jdbcType="BIGINT" property="cityAreaId" />
+
+		<result column="settlement_city_id" jdbcType="BIGINT" property="settlementCityId" />
+		<result column="settlement_city_name" jdbcType="VARCHAR" property="settlementCityName" />
+
+        <result column="CUSTOMER_PRICE" jdbcType="DECIMAL" property="customerPrice"/>
+		<result column="INSTRUCTION_NUMBER" jdbcType="VARCHAR" property="instructionNumber" />
+		<result column="CLAIM_LOAD_DATE" jdbcType="DATE" property="claimLoadDate" />
+		<result column="CLAIM_DELIVERY_DATE" jdbcType="DATE" property="claimDeliveryDate" />
+		<result column="URGENT" jdbcType="INTEGER" property="urgent" />
+	</resultMap>
+
+	<select id="selectForAssembly" resultMap="AssemblyResultMap" parameterType="object">
+		select
+            a.ORDER_ID,
+            a.ORDER_DETAIL_ID,
+		    b.ORDER_DATE,
+
+			a.CAR_VIN,
+			a.car_id,
+			a.brand_id,
+			a.CAR_TYPE_ID,
+			a.SEND_UNIT_ID,
+			c.UNIT_NAME as SEND_UNIT_NAME,
+			c.city_id as send_city_id,
+			cc.city_name as SEND_CITY_NAME,
+			c.LAT AS SEND_LAT,
+			c.LNG AS SEND_LNG,
+			a.RECEIVE_UNIT_ID,
+
+			d.UNIT_NAME AS RECEIVE_UNIT_NAME,
+			d.city_id as receive_city_id,
+			dd.city_name as RECEIVE_CITY_NAME,
+			d.DELIVER,
+			d.SPECIAL,
+			d.LAT AS RECEIVE_LAT,
+			d.LNG AS RECEIVE_LNG,
+			e.city_area_id,
+			d.ACCOUNT_CITY_ID as settlement_city_id,
+	        ff.city_name as settlement_city_name,
+            a.CUSTOMER_QUOTED_PRICE as CUSTOMER_PRICE,
+			a.INSTRUCTION_NUMBER,
+			a.CLAIM_LOAD_DATE,
+			a.CLAIM_DELIVERY_DATE
+		from om_order_detail a
+			join om_order b on a.ORDER_ID = b.ORDER_ID
+			join bd_unit c on a.SEND_UNIT_ID = c.UNIT_ID
+			JOIN bd_city cc on c.city_id = cc.city_id
+			join bd_unit d on a.RECEIVE_UNIT_ID = d.UNIT_ID
+			join bd_city dd on d.city_id = dd.city_id
+			left join vr_city_area_detail e on d.unit_Id = e.unit_id
+			left join vr_city_area f on e.city_area_id = f.city_area_id
+			LEFT JOIN bd_city ff ON d.ACCOUNT_CITY_ID = ff.city_id
+		where a.car_status = 0 and b.del = 0 and b.BILL_STATUS = 2
+			and b.CORP_CARRIER_ID = #{corpCarrierId,jdbcType=BIGINT} and b.WORK_TYPE = #{workType,jdbcType=INTEGER}
+			and c.city_id = #{sendCityId,jdbcType=BIGINT}
+			and e.city_area_id is not null
+	</select>
+	
+	<select id="getReferenceList"  resultMap="BaseResultMap">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+		left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+		left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+    where orderdetail.DEL=0 AND orderdetail.CAR_STATUS &lt;2
+  </select>
+
+	<select id="selectDetails"  resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			a.CAR_VIN,c.BRAND_ID, d.BRAND_NAME,a.CAR_TYPE_ID,h.CAR_TYPE_NAME, a.CAR_ID,c.CAR_NAME,
+			a.SEND_UNIT_ID,ee.CITY_NAME as SEND_CITY_NAME,e.UNIT_NAME as SEND_UNIT_NAME,a.RECEIVE_UNIT_ID,
+		    ff.CITY_NAME AS RECEIVE_CITY_NAME,f.UNIT_NAME as RECEIVE_UNIT_NAME,
+			a.CLAIM_LOAD_DATE,a.CLAIM_DELIVERY_DATE,a.ETA,a.PRODUCT_NUMBER,a.URGENT
+		from om_order_detail a
+		join om_order b on a.ORDER_ID = b.ORDER_ID
+		join bd_car c on a.CAR_ID = c.CAR_ID
+		left join bd_car_type h on c.car_type_id = h.CAR_TYPE_ID
+		join bd_brand d on c.BRAND_ID = d.BRAND_ID
+		join bd_unit e on a.SEND_UNIT_ID = e.UNIT_ID
+		join bd_city ee on ee.CITY_ID = e.CITY_ID
+		join bd_unit f on a.RECEIVE_UNIT_ID = f.unit_id
+		join bd_city ff on f.CITY_ID = ff.CITY_ID
+		join sys_corp g on b.CORP_CUSTOMER_ID = g.CORP_ID
+		where B.DEL = 0
+		<if test="corpCarrierId != null and corpCarrierId != ''" >
+			AND b.CORP_CARRIER_ID = #{corpCarrierId}
+		</if>
+		<if test="billStatus != null and billStatus != ''">
+			and b.BILL_STATUS = #{billStatus}
+		</if>
+		<if test="carStatus != null">
+			and a.CAR_STATUS = #{carStatus}
+		</if>
+		<if test="receiveUnitId != null and receiveUnitId != ''">
+			and a.RECEIVE_UNIT_ID = #{receiveUnitId}
+		</if>
+		<if test="receiveCityId != null and receiveCityId != ''">
+			and f.CITY_ID = #{receiveCityId}
+		</if>
+		<if test="brandId != null and brandId != ''">
+			and c.BRAND_ID = #{brandId}
+		</if>
+		<if test="urgent != null and urgent != ''">
+			and a.URGENT = #{urgent}
+		</if>
+		<if test="vins != null">
+			and a.CAR_VIN in
+			<foreach collection="vins" item="vin" open="(" close=")" separator=",">
+				#{vin}
+			</foreach>
+		</if>
+		<if test="searchContent != null and searchContent != ''">
+			and (a.CAR_VIN like CONCAT('%',#{searchContent},'%')
+			or ff.CITY_NAME like CONCAT('%',#{searchContent},'%')
+			or d.BRAND_NAME like CONCAT('%',#{searchContent},'%')
+			or f.UNIT_NAME like CONCAT('%',#{searchContent},'%')
+			)
+		</if>
+	</select>
+
+	<select id="getOne"  resultMap="BaseResultMap">
+    select
+      <include refid="Query_Column_List"/>
+    FROM om_order_detail orderdetail
+		JOIN  bd_unit unit ON orderdetail.SEND_UNIT_ID=unit.UNIT_ID
+		JOIN  bd_unit un ON orderdetail.RECEIVE_UNIT_ID=un.UNIT_ID
+		JOIN sys_corp corp ON orderdetail.CORP_ID=corp.CORP_ID
+		JOIN bd_car car ON orderdetail.CAR_ID=car.CAR_ID
+		left JOIN bd_car_type type ON orderdetail.CAR_TYPE_ID=type.CAR_TYPE_ID
+		JOIN bd_brand brand ON orderdetail.BRAND_ID=brand.BRAND_ID
+		left join fs_quotation quo on quo.QUOTATION_ID = orderdetail.quoted_price_id
+    where orderdetail.DEL=0
+    <if test="orderId != null and orderId != ''" >
+   	 	AND orderdetail.ORDER_ID=#{orderId}
+    </if>
+    <if test="carVin != null and carVin != ''" >
+    	AND orderdetail.CAR_VIN=#{carVin}
+    </if>
+    <if test="sendUnitId != null and sendUnitId != ''" >
+        AND orderdetail.SEND_UNIT_ID = #{sendUnitId}
+     </if>
+     <if test="receiveUnitId != null and receiveUnitId != ''" >
+       AND orderdetail.RECEIVE_UNIT_ID = #{receiveUnitId}
+     </if>
+  </select>
+
+	<sql id="Settlement_Column_List" >
+	a.ORDER_DETAIL_ID,a.ORDER_ID,a.ORDER_CODE,a.CAR_ID,a.CAR_TYPE_ID,a.CAR_VIN,a.BRAND_ID,a.SEND_UNIT_ID,a.RECEIVE_UNIT_ID,a.INSTRUCTION_NUMBER,a.CLAIM_LOAD_DATE,
+	a.CLAIM_DELIVERY_DATE,a.ETA,a.CANCEL_REASON,a.REMARK,a.PRODUCT_NUMBER,a.CAR_STATUS,a.TRANSFER_ORDER_STATUS,a.QUOTED_PRICE_ID,a.FREIGHT_PRICE_ID,
+	a.CLOSED,a.RECONCILIATION,a.SETTLEMENT,a.URGENT,a.SCHEDULE_TYPE,a.CONFIRMATION_DATE,a.CUSTOMER_QUOTED_PRICE,a.CORP_ID
+  	</sql>
+	<select id="selectForSettlement" resultMap="BaseResultMap" parameterType="Map">
+		SELECT
+		<include refid="Settlement_Column_List" />
+		from om_order_detail a
+		join om_order b on a.order_id = b.order_id
+		where a.del = 0
+		<if test="corpCarrierId != null" >
+			AND b.CORP_CARRIER_ID = #{corpCarrierId}
+		</if>
+		<if test="corpCustomerId != null" >
+			and b.CORP_CUSTOMER_ID = #{corpCustomerId}
+		</if>
+		<if test="billStatus != null">
+			and b.BILL_STATUS = #{billStatus}
+		</if>
+		<if test="startDate != null">
+			<![CDATA[ and b.ORDER_DATE >= #{startDate} ]]>
+		</if>
+		<if test="endDate != null">
+			<![CDATA[ and b.ORDER_DATE <= #{endDate} ]]>
+		</if>
+		<if test="reconciliation != null">
+			and a.RECONCILIATION = #{reconciliation}
+		</if>
+		<if test="settlement != null">
+			and a.SETTLEMENT = #{settlement}
+		</if>
+		<if test="vins != null">
+			and a.CAR_VIN in
+			<foreach collection="vins" item="vin" open="(" close=")" separator=",">
+				#{vin}
+			</foreach>
+		</if>
+	</select>
+
+	<sql id="Outsourcing_Column_List">
+		orderDetail.ORDER_DETAIL_ID,
+		orderDetail.ORDER_ID,
+		orderDetail.ORDER_CODE,
+		orderDetail.CAR_ID,
+		orderDetail.CAR_TYPE_ID,
+		orderDetail.CAR_VIN,
+		orderDetail.BRAND_ID,
+		orderDetail.SEND_UNIT_ID,
+		orderDetail.RECEIVE_UNIT_ID,
+		orderDetail.INSTRUCTION_NUMBER,
+		orderDetail.CLAIM_LOAD_DATE,
+		orderDetail.CLAIM_DELIVERY_DATE,
+		orderDetail.ETA,
+		orderDetail.CANCEL_REASON,
+		orderDetail.REMARK,
+		orderDetail.PRODUCT_NUMBER,
+		orderDetail.CAR_STATUS,
+		orderDetail.TRANSFER_ORDER_STATUS,
+		orderDetail.QUOTED_PRICE_ID,
+		orderDetail.FREIGHT_PRICE_ID,
+		orderDetail.CLOSED,
+		orderDetail.RECONCILIATION,
+		orderDetail.SETTLEMENT,
+		orderDetail.URGENT,
+		orderDetail.SCHEDULE_TYPE,
+		orderDetail.CONFIRMATION_DATE,
+		orderDetail.CUSTOMER_QUOTED_PRICE,
+		orderDetail.CORP_ID,
+		ord.CORP_CARRIER_ID,
+		ord.ORDER_TYPE,
+		ord.BILL_STATUS
+	</sql>
+
+	<select id="queryForOutsourcingReconciliation" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Outsourcing_Column_List" />
+		from om_order_detail orderDetail
+		left join om_order ord on orderDetail.ORDER_ID = ord.ORDER_ID
+		where orderDetail.CAR_VIN = #{carVin}
+		and ord.BILL_STATUS != 2
+		<if test="orderId != null and orderId != ''">
+			and ord.ORDER_ID = #{orderId}
+		</if>
+		<if test="vendorCorpId != null and vendorCorpId != ''">
+			and ord.CORP_CARRIER_ID = #{vendorCorpId}
+		</if>
+		<if test="orderType != null">
+			and ord.ORDER_TYPE = #{orderType}
+		</if>
+	</select>
+
+    <select id="selectDetailByDetailIds" resultMap="BaseResultMap" parameterType="List">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM om_order_detail
+        where ORDER_DETAIL_ID in
+        <foreach collection="detailIds" item="detailId" separator="," open="(" close=")">
+            #{detailId,jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+	<select id="selectByOrderId" resultMap="BaseResultMap" parameterType="Object">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM om_order_detail
+		where del = 0 and ORDER_ID = #{orderId,jdbcType=BIGINT}
+	</select>
+</mapper>
+

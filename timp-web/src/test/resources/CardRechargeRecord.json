@@ -1,0 +1,13 @@
+{
+  "data":{
+    "cardRechargeRecordId":0,
+    "cardResourceId":0,
+    "balanceBeforeRecharge":0,
+    "rechargeMoney":0,
+    "deduction":0,
+    "userId":0,
+    "rechargeDate":"2018-05-30 03:00:32",
+    "creator":0,
+    "createDate":"2018-05-30 03:00:32"
+  }
+}

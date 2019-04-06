@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CorpMapper">
+	<resultMap id="BaseResultMap" type="com.tilchina.timp.model.Corp">
+		<id column="CORP_ID" jdbcType="BIGINT" property="corpId"/>
+		<result column="CORP_ID" jdbcType="BIGINT" property="corpId"/>
+		<result column="CORP_CODE" jdbcType="VARCHAR" property="corpCode"/>
+		<result column="CORP_NAME" jdbcType="VARCHAR" property="corpName"/>
+		<result column="EN_NAME" jdbcType="VARCHAR" property="enName"/>
+		<result column="CORP_TYPE_ID" jdbcType="BIGINT" property="corpTypeId"/>
+		<result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+		<result column="UP_CORP_ID" jdbcType="BIGINT" property="upCorpId"/>
+		<result column="CREATOR" jdbcType="BIGINT" property="creator"/>
+		<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate"/>
+		<result column="FLAG" jdbcType="INTEGER" property="flag"/>
+		<result column="SOCIAL_CREDIT_CODE" jdbcType="VARCHAR" property="socialCreditCode"/>
+		<result column="BILLING_ADDRESS" jdbcType="VARCHAR" property="billingAddress"/>
+		<result column="BANK_ACCOUNT_NAME" jdbcType="VARCHAR" property="bankAccountName"/>
+		<result column="BANK_ACCOUNT_NUMBER" jdbcType="VARCHAR" property="bankAccountNumber"/>
+		<result column="ACCOUNT_PERIOD_TYPE" jdbcType="INTEGER" property="accountPeriodType"/>
+		<result column="ACCOUNT_PERIOD_DAYS" jdbcType="INTEGER" property="accountPeriodDays"/>
+		<result column="CONTACT_NAME" jdbcType="VARCHAR" property="contactName"/>
+		<result column="CONTACT_PHONE" jdbcType="VARCHAR" property="contactPhone"/>
+		<result column="ACCOUNT_OPENING_ADDRESS" jdbcType="VARCHAR" property="accountOpeningAddress"/>
+		<result column="ACCOUNT_OPENING_PHONE" jdbcType="VARCHAR" property="accountOpeningPhone"/>
+		<result column="CORP_ADDRESS" jdbcType="VARCHAR" property="corpAddress"/>
+		<result column="CORP_PHONE" jdbcType="VARCHAR" property="corpPhone"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		CORP_ID,
+		CORP_CODE,
+		CORP_NAME,
+		EN_NAME,
+		CORP_TYPE_ID,
+		REMARK,
+		UP_CORP_ID,
+		CREATOR,
+		CREATE_DATE,
+		FLAG,
+		SOCIAL_CREDIT_CODE,
+		BILLING_ADDRESS,
+		BANK_ACCOUNT_NAME,
+		BANK_ACCOUNT_NUMBER,
+		ACCOUNT_PERIOD_TYPE,
+		ACCOUNT_PERIOD_DAYS,
+		CONTACT_NAME,
+		CONTACT_NAME,
+		ACCOUNT_OPENING_ADDRESS,
+		ACCOUNT_OPENING_PHONE,
+		CORP_ADDRESS,
+		CORP_PHONE
+	</sql>
+
+	<sql id="Query_Column_List">
+		self.CORP_ID,
+		self.CORP_CODE,
+		self.CORP_NAME,
+		self.EN_NAME,
+		self.CORP_TYPE_ID,
+		self.REMARK,
+		self.UP_CORP_ID,
+		self.CREATOR,
+		self.CREATE_DATE,
+		self.FLAG,
+		self.SOCIAL_CREDIT_CODE,
+		self.BILLING_ADDRESS,
+		self.BANK_ACCOUNT_NAME,
+		self.BANK_ACCOUNT_NUMBER,
+		self.ACCOUNT_PERIOD_TYPE,
+		self.ACCOUNT_PERIOD_DAYS,
+		self.CONTACT_NAME,
+		self.CONTACT_PHONE,
+		self.ACCOUNT_OPENING_ADDRESS,
+		self.ACCOUNT_OPENING_PHONE,
+		self.CORP_ADDRESS,
+		self.CORP_PHONE,
+		corpA.CORP_NAME as refUpCorpName,
+		userA.USER_NAME as refCreatorName
+	</sql>
+
+	<sql id="Example_Where_Clause">
+		where self.DEL = 0
+		<trim suffixOverrides=",">
+			<if test="currentCorpId != null and currentCorpId != ''">
+				and (self.CORP_ID = #{currentCorpId} or self.CORP_ID in (select sys_corp_relation.CORP_ID from
+				sys_corp_relation where ADS_CORP_ID = #{currentCorpId}))
+			</if>
+			<if test="corpId != null and corpId != ''">
+				and self.CORP_ID = #{corpId}
+			</if>
+			<if test="corpCode != null and corpCode != ''">
+				and self.CORP_CODE like concat('%',#{corpCode},'%')
+			</if>
+			<if test="corpName != null and corpName != ''">
+				and self.CORP_NAME like concat('%',#{corpName},'%')
+			</if>
+			<if test="enName != null and enName != ''">
+				and self.EN_NAME like concat('%',#{enName},'%')
+			</if>
+			<if test="corpTypeId != null and corpTypeId != ''">
+				and self.CORP_TYPE_ID = #{corpTypeId}
+			</if>
+			<if test="remark != null and remark != ''">
+				and self.REMARK = #{remark}
+			</if>
+			<if test="upCorpId != null and upCorpId != ''">
+				and self.UP_CORP_ID = #{upCorpId}
+			</if>
+			<if test="creator != null and creator != ''">
+				and self.CREATOR = #{creator}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				and self.CREATE_DATE = #{createDate}
+			</if>
+			<if test="flag != null and flag != ''">
+				and self.FLAG = #{flag}
+			</if>
+			<if test="socialCreditCode != null and socialCreditCode != ''">
+				and (self.SOCIAL_CREDIT_CODE = #{socialCreditCode} or self.SOCIAL_CREDIT_CODE like concat('%', #{socialCreditCode}, '%'))
+			</if>
+			<if test="billingAddress != null and billingAddress != ''">
+				and (self.BILLING_ADDRESS = #{billingAddress} or self.BILLING_ADDRESS like concat('%', #{billingAddress}, '%'))
+			</if>
+			<if test="bankAccountName != null and bankAccountName != ''">
+				and (self.BANK_ACCOUNT_NAME = #{bankAccountName} or self.BANK_ACCOUNT_NAME like concat('%', #{bankAccountName}, '%'))
+			</if>
+			<if test="bankAccountNumber != null and bankAccountNumber != ''">
+				and (self.BANK_ACCOUNT_NUMBER = #{bankAccountNumber} or concat('%', self.BANK_ACCOUNT_NUMBER = #{bankAccountNumber}, '%'))
+			</if>
+			<if test="accountPeriodType != null and accountPeriodType != ''">
+				and self.ACCOUNT_PERIOD_TYPE = #{accountPeriodType}
+			</if>
+			<if test="accountPeriodDays != null and accountPeriodDays != ''">
+				and self.ACCOUNT_PERIOD_DAYS = #{accountPeriodDays}
+			</if>
+			<if test="contactName != null and contactName != ''">
+				and (self.CONTACT_NAME = #{contactName} or concat('%', self.CONTACT_NAME = #{contactName}, '%'))
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				and (self.CONTACT_PHONE = #{contactPhone} or self.CONTACT_PHONE like concat('%', #{contactPhone}, '%'))
+			</if>
+			<if test="accountOpeningAddress != null and accountOpeningAddress != ''">
+				and (self.ACCOUNT_OPENING_ADDRESS = #{accountOpeningAddress} or self.ACCOUNT_OPENING_ADDRESS like concat('%', #{accountOpeningAddress}, '%'))
+			</if>
+			<if test="accountOpeningPhone != null and accountOpeningPhone != ''">
+				and (self.ACCOUNT_OPENING_PHONE = #{accountOpeningPhone} or self.ACCOUNT_OPENING_PHONE like concat('%', #{accountOpeningPhone}, '%'))
+			</if>
+			<if test="corpAddress != null and corpAddress != ''">
+				and (self.CORP_ADDRESS = #{corpAddress} or self.CORP_ADDRESS like concat('%', #{corpAddress}, '%'))
+			</if>
+			<if test="corpPhone != null and corpPhone != ''">
+				and (self.CORP_PHONE = #{corpPhone} or self.CORP_PHONE like concat('%', #{corpPhone}, '%'))
+			</if>
+
+			<if test="searchContent != null and searchContent != ''">
+				and (
+				self.CORP_CODE like concat('%', #{searchContent}, '%') or self.CORP_NAME like concat('%', #{searchContent}, '%')
+				)
+			</if>
+			<if test="refUpCorpName != null and refUpCorpName != ''">
+				and corpA.CORP_NAME like concat('%', #{refUpCorpName}, '%')
+			</if>
+			<if test="startDate != null and startDate != ''">
+				<![CDATA[ and self.CREATE_DATE  >=  #{startDate}  ]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				<![CDATA[ and self.CREATE_DATE  <  DATE_ADD(#{endDate}, INTERVAL 1 DAY)  ]]>
+			</if>
+		</trim>
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Query_Column_List"/>
+		from sys_corp self
+		left join sys_corp corpA on self.UP_CORP_ID = corpA.CORP_ID
+		left join bd_user userA on self.CREATOR = userA.USER_ID
+		where self.CORP_ID=#{corpId}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from SYS_CORP
+		where CORP_ID = #{corpId}
+	</delete>
+
+	<update id="deleteList" parameterType="java.lang.reflect.Array">
+		update SYS_CORP
+		<if test="null!=array || 0!=array.length">
+			set DEL=1 where CORP_ID in
+			<foreach item="corpId" collection="array" open="(" separator="," close=")">
+				#{corpId}
+			</foreach>
+		</if>
+	</update>
+
+	<insert id="insert" parameterType="com.tilchina.timp.model.Corp" keyProperty="corpId" useGeneratedKeys="true">
+		insert into sys_corp
+		(
+			CORP_CODE,
+			CORP_NAME,
+			EN_NAME,
+			CORP_TYPE_ID,
+			REMARK,
+			UP_CORP_ID,
+			CREATOR,
+			CREATE_DATE,
+			FLAG,
+			SOCIAL_CREDIT_CODE,
+			BILLING_ADDRESS,
+			BANK_ACCOUNT_NAME,
+			BANK_ACCOUNT_NUMBER,
+			ACCOUNT_PERIOD_TYPE,
+			ACCOUNT_PERIOD_DAYS
+		)
+
+		values
+			(
+				#{corpCode,jdbcType=VARCHAR},
+				#{corpName,jdbcType=VARCHAR},
+				#{enName,jdbcType=VARCHAR},
+				#{corpTypeId,jdbcType=BIGINT},
+				#{remark,jdbcType=VARCHAR},
+				#{upCorpId,jdbcType=BIGINT},
+				#{creator,jdbcType=BIGINT},
+				#{createDate,jdbcType=TIMESTAMP},
+				#{flag,jdbcType=INTEGER},
+				#{socialCreditCode,jdbcType=VARCHAR},
+				#{billingAddress,jdbcType=VARCHAR},
+				#{bankAccountName,jdbcType=VARCHAR},
+				#{bankAccountNumber,jdbcType=VARCHAR},
+				#{accountPeriodType,jdbcType=INTEGER},
+				#{accountPeriodDays,jdbcType=INTEGER}
+			)
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.tilchina.timp.model.Corp" keyProperty="corpId"
+	        useGeneratedKeys="true">
+		insert into sys_corp
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="corpCode != null">
+				CORP_CODE,
+			</if>
+			<if test="corpName != null">
+				CORP_NAME,
+			</if>
+			<if test="enName != null">
+				EN_NAME,
+			</if>
+			<if test="corpTypeId != null">
+				CORP_TYPE_ID,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="upCorpId != null">
+				UP_CORP_ID,
+			</if>
+			<if test="creator != null">
+				CREATOR,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+			<if test="flag != null">
+				FLAG,
+			</if>
+			<if test="socialCreditCode != null">
+				SOCIAL_CREDIT_CODE,
+			</if>
+			<if test="billingAddress != null">
+				BILLING_ADDRESS,
+			</if>
+			<if test="bankAccountName != null">
+				BANK_ACCOUNT_NAME,
+			</if>
+			<if test="bankAccountNumber != null">
+				BANK_ACCOUNT_NUMBER,
+			</if>
+			<if test="accountPeriodType != null">
+				ACCOUNT_PERIOD_TYPE,
+			</if>
+			<if test="accountPeriodDays != null">
+				ACCOUNT_PERIOD_DAYS,
+			</if>
+			<if test="contactName != null">
+				CONTACT_NAME,
+			</if>
+			<if test="contactPhone != null">
+				CONTACT_PHONE,
+			</if>
+			<if test="accountOpeningAddress != null">
+				ACCOUNT_OPENING_ADDRESS,
+			</if>
+			<if test="accountOpeningPhone != null">
+				ACCOUNT_OPENING_PHONE,
+			</if>
+			<if test="corpAddress != null">
+				CORP_ADDRESS,
+			</if>
+			<if test="corpPhone != null">
+				CORP_PHONE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="corpCode != null">
+				#{corpCode,jdbcType=VARCHAR},
+			</if>
+			<if test="corpName != null">
+				#{corpName,jdbcType=VARCHAR},
+			</if>
+			<if test="enName != null">
+				#{enName,jdbcType=VARCHAR},
+			</if>
+			<if test="corpTypeId != null">
+				#{corpTypeId,jdbcType=BIGINT},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="upCorpId != null">
+				#{upCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=BIGINT},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=INTEGER},
+			</if>
+			<if test="socialCreditCode != null">
+				#{socialCreditCode,jdbcType=VARCHAR},
+			</if>
+			<if test="billingAddress != null">
+				#{billingAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccountName != null">
+				#{bankAccountName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccountNumber != null">
+				#{bankAccountNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="accountPeriodType != null">
+				#{accountPeriodType,jdbcType=INTEGER},
+			</if>
+			<if test="accountPeriodDays != null">
+				#{accountPeriodDays,jdbcType=INTEGER},
+			</if>
+			<if test="contactName != null">
+				#{contactName,jdbcType=VARCHAR},
+			</if>
+			<if test="contactPhone != null">
+				#{contactPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="accountOpeningAddress != null">
+				#{accountOpeningAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="accountOpeningPhone != null">
+				#{accountOpeningPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="corpAddress != null">
+				#{corpAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="corpPhone != null">
+				#{corpPhone,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateById" parameterType="java.lang.Long">
+		update SYS_CORP
+		set DEL = 1
+		where CORP_ID = #{corpId,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.Corp">
+		update sys_corp
+		<set>
+			<if test="corpCode != null">
+				CORP_CODE = #{corpCode,jdbcType=VARCHAR},
+			</if>
+			<if test="corpName != null">
+				CORP_NAME = #{corpName,jdbcType=VARCHAR},
+			</if>
+			<if test="enName != null">
+				EN_NAME = #{enName,jdbcType=VARCHAR},
+			</if>
+			<if test="corpTypeId != null">
+				CORP_TYPE_ID = #{corpTypeId,jdbcType=BIGINT},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="upCorpId != null">
+				UP_CORP_ID = #{upCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="creator != null">
+				CREATOR = #{creator,jdbcType=BIGINT},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="flag != null">
+				FLAG = #{flag,jdbcType=INTEGER},
+			</if>
+			<if test="socialCreditCode != null">
+				SOCIAL_CREDIT_CODE = #{socialCreditCode,jdbcType=VARCHAR},
+			</if>
+			<if test="billingAddress != null">
+				BILLING_ADDRESS = #{billingAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccountName != null">
+				BANK_ACCOUNT_NAME = #{bankAccountName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccountNumber != null">
+				BANK_ACCOUNT_NUMBER = #{bankAccountNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="accountPeriodType != null">
+				ACCOUNT_PERIOD_TYPE = #{accountPeriodType,jdbcType=INTEGER},
+			</if>
+			<if test="accountPeriodDays != null">
+				ACCOUNT_PERIOD_DAYS = #{accountPeriodDays,jdbcType=INTEGER},
+			</if>
+			<if test="contactName != null">
+				CONTACT_NAME = #{contactName,jdbcType=VARCHAR},
+			</if>
+			<if test="contactPhone != null">
+				CONTACT_PHONE = #{contactPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="accountOpeningAddress != null">
+				ACCOUNT_OPENING_ADDRESS = #{accountOpeningAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="accountOpeningPhone != null">
+				ACCOUNT_OPENING_PHONE = #{accountOpeningPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="corpAddress != null">
+				CORP_ADDRESS = #{corpAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="corpPhone != null">
+				CORP_PHONE = #{corpPhone,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where CORP_ID = #{corpId,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateSelective" parameterType="com.tilchina.timp.model.Corp">
+		update SYS_CORP
+		<set>
+
+			<if test="corpCode != null">
+				CORP_CODE = #{corpCode,jdbcType=VARCHAR},
+			</if>
+			<if test="corpName != null">
+				CORP_NAME = #{corpName,jdbcType=VARCHAR},
+			</if>
+			<if test="enName != null">
+				EN_NAME = #{enName,jdbcType=VARCHAR},
+			</if>
+			<if test="enName == null">
+				EN_NAME = null,
+			</if>
+			<if test="corpTypeId != null">
+				CORP_TYPE_ID = #{corpTypeId,jdbcType=BIGINT},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="remark == null">
+				REMARK = null,
+			</if>
+			<if test="upCorpId != null">
+				UP_CORP_ID = #{upCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="upCorpId == null">
+				UP_CORP_ID = null,
+			</if>
+			<if test="creator != null">
+				CREATOR = #{creator,jdbcType=BIGINT},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="flag != null">
+				FLAG = #{flag,jdbcType=INTEGER},
+			</if>
+			<if test="socialCreditCode != null">
+				SOCIAL_CREDIT_CODE = #{socialCreditCode,jdbcType=VARCHAR},
+			</if>
+			<if test="billingAddress != null">
+				BILLING_ADDRESS = #{billingAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccountName != null">
+				BANK_ACCOUNT_NAME = #{bankAccountName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccountNumber != null">
+				BANK_ACCOUNT_NUMBER = #{bankAccountNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="accountPeriodType != null">
+				ACCOUNT_PERIOD_TYPE = #{accountPeriodType,jdbcType=INTEGER},
+			</if>
+			<if test="accountPeriodDays != null">
+				ACCOUNT_PERIOD_DAYS = #{accountPeriodDays,jdbcType=INTEGER},
+			</if>
+			<if test="contactName != null">
+				CONTACT_NAME = #{contactName,jdbcType=VARCHAR},
+			</if>
+			<if test="contactPhone != null">
+				CONTACT_PHONE = #{contactPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="accountOpeningAddress != null">
+				ACCOUNT_OPENING_ADDRESS = #{accountOpeningAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="accountOpeningPhone != null">
+				ACCOUNT_OPENING_PHONE = #{accountOpeningPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="corpAddress != null">
+				CORP_ADDRESS = #{corpAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="corpPhone != null">
+				CORP_PHONE = #{corpPhone,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where CORP_ID = #{corpId,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.Corp">
+		update sys_corp
+		set
+			CORP_CODE           = #{corpCode},
+			CORP_NAME           = #{corpName},
+			EN_NAME             = #{enName},
+			CORP_TYPE_ID        = #{corpTypeId},
+			REMARK              = #{remark},
+			UP_CORP_ID          = #{upCorpId},
+			CREATOR             = #{creator},
+			CREATE_DATE         = #{createDate},
+			FLAG                = #{flag},
+			SOCIAL_CREDIT_CODE  = #{socialCreditCode},
+			BILLING_ADDRESS     = #{billingAddress},
+			BANK_ACCOUNT_NAME   = #{bankAccountName},
+			BANK_ACCOUNT_NUMBER = #{bankAccountNumber},
+			ACCOUNT_PERIOD_TYPE = #{accountPeriodType},
+			ACCOUNT_PERIOD_DAYS = #{accountPeriodDays}
+		where CORP_ID = #{corpId}
+	</update>
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Query_Column_List"/>
+		from sys_corp self
+		left join sys_corp corpA on self.UP_CORP_ID = corpA.CORP_ID
+		left join bd_user userA on self.CREATOR = userA.USER_ID
+		<include refid="Example_Where_Clause"/>
+		order by self.CREATE_DATE DESC
+	</select>
+
+	<select id="getList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Query_Column_List"/>
+		from sys_corp self
+		left join sys_corp corpA on self.UP_CORP_ID = corpA.CORP_ID
+		left join bd_user userA on self.CREATOR = userA.USER_ID
+		<include refid="Example_Where_Clause"/>
+		order by self.CREATE_DATE DESC
+	</select>
+
+	<sql id="Ref_Where_Clause">
+		where self.DEL = 0
+		<trim suffixOverrides=",">
+			<if test="corpId != null and corpId != ''">
+				and self.CORP_ID = #{corpId}
+			</if>
+			<if test="corpCode != null and corpCode != ''">
+				and self.CORP_CODE like concat('%',#{corpCode},'%')
+			</if>
+			<if test="corpName != null and corpName != ''">
+				and self.CORP_NAME like concat('%',#{corpName},'%')
+			</if>
+			<if test="enName != null and enName != ''">
+				and self.EN_NAME like concat('%',#{enName},'%')
+			</if>
+			<if test="corpTypeId != null and corpTypeId != ''">
+				and self.CORP_TYPE_ID in
+				<foreach item="typeId" collection="corpTypeId" open="(" separator="," close=")">
+					#{typeId}
+				</foreach>
+			</if>
+			<if test="remark != null and remark != ''">
+				and self.REMARK = #{remark}
+			</if>
+			<if test="upCorpId != null and upCorpId != ''">
+				and self.UP_CORP_ID = #{upCorpId}
+			</if>
+			<if test="creator != null and creator != ''">
+				and self.CREATOR = #{creator}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				and self.CREATE_DATE = #{createDate}
+			</if>
+			<if test="searchContent != null and searchContent != ''">
+				and (self.CORP_CODE like concat('%',#{searchContent},'%')
+				or self.CORP_NAME like concat('%',#{searchContent},'%')
+				or self.EN_NAME like concat('%',#{searchContent},'%'))
+			</if>
+			<if test="upCorpName != null and upCorpName != ''">
+				AND corpA.CITY_NAME= #{upCorpName,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				<![CDATA[ and self.CREATE_DATE  >=  #{startTime}  ]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+				<![CDATA[ and self.CREATE_DATE  <=  #{endTime}  ]]>
+			</if>
+		</trim>
+	</sql>
+	<select id="getReferenceList" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Query_Column_List"/>
+		from sys_corp self
+		left join sys_corp corpA on self.UP_CORP_ID = corpA.CORP_ID
+		left join bd_user userA on self.CREATOR = userA.USER_ID
+		<include refid="Ref_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		and self.FLAG = 0
+	</select>
+
+	<select id="getTransCorp" resultType="java.util.Map" parameterType="Object">
+		select
+			corp.CORP_ID   AS corpId,
+			corp.CORP_NAME AS corpName
+		FROM sys_corp corp
+			LEFT JOIN sys_corp c ON corp.UP_CORP_ID = c.CORP_ID
+			JOIN bd_user u ON corp.CREATOR = u.USER_ID
+		where corp.DEL = 0
+	</select>
+
+	<select id="getByCorpName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Query_Column_List"/>
+		from sys_corp self
+		left join sys_corp corpA on self.UP_CORP_ID = corpA.CORP_ID
+		left join bd_user userA on self.CREATOR = userA.USER_ID
+		where self.CORP_NAME like concat('%',#{corpName},'%')
+	</select>
+
+	<select id="queryHigherCorpByCorpId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select CORP_ID
+		from sys_corp
+		where UP_CORP_ID = #{higherCorpId}
+		      and flag = 0
+		      and del = 0
+	</select>
+
+	<select id="selectByCorpName" resultMap="BaseResultMap" parameterType="List">
+		select
+		<include refid="Base_Column_List"/>
+		from sys_corp
+		where del = 0 and corp_name in
+		<foreach collection="corpNames" item="corpName" separator="," open="(" close=")">
+			#{corpName}
+		</foreach>
+	</select>
+
+	<select id="queryByName" parameterType="java.lang.String" resultType="java.lang.Long">
+		select CORP_ID
+		from sys_corp
+		where CORP_NAME = #{corpName}
+		      and FLAG = 0
+		      and DEL = 0
+	</select>
+
+	<sql id="CorpRelation_Column_List">
+		self.CORP_ID,
+		self.CORP_CODE,
+		self.CORP_NAME,
+		self.EN_NAME,
+		self.CORP_TYPE_ID,
+		self.REMARK,
+		self.CONTACT_NAME,
+		self.CONTACT_PHONE,
+		self.CORP_ADDRESS,
+		corpA.CORP_NAME as refUpCorpName,
+		userA.USER_NAME as refCreatorName
+	</sql>
+
+	<resultMap id="CorpRelationResultMap" type="com.tilchina.timp.model.Corp">
+		<id column="CORP_ID" jdbcType="BIGINT" property="corpId"/>
+		<result column="CORP_ID" jdbcType="BIGINT" property="corpId"/>
+		<result column="CORP_CODE" jdbcType="VARCHAR" property="corpCode"/>
+		<result column="CORP_NAME" jdbcType="VARCHAR" property="corpName"/>
+		<result column="EN_NAME" jdbcType="VARCHAR" property="enName"/>
+		<result column="CORP_TYPE_ID" jdbcType="BIGINT" property="corpTypeId"/>
+		<result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+		<result column="UP_CORP_ID" jdbcType="BIGINT" property="upCorpId"/>
+		<result column="CONTACT_NAME" jdbcType="VARCHAR" property="contactName"/>
+		<result column="CONTACT_PHONE" jdbcType="VARCHAR" property="contactPhone"/>
+		<result column="CORP_ADDRESS" jdbcType="VARCHAR" property="corpAddress"/>
+		<result column="CORP_PHONE" jdbcType="VARCHAR" property="corpPhone"/>
+	</resultMap>
+
+	<select id="getRelation" parameterType="java.lang.Long" resultMap="CorpRelationResultMap">
+		select
+		<include refid="CorpRelation_Column_List"/>
+		from sys_corp self
+		left join sys_corp corpA on self.UP_CORP_ID = corpA.CORP_ID
+		left join bd_user userA on self.CREATOR = userA.USER_ID
+		where self.CORP_ID in (select sys_corp_relation.CORP_ID from sys_corp_relation where ADS_CORP_ID = #{corpId})
+		<if test="searchContent != null and searchContent != ''">
+			and (self.CORP_CODE like concat('%',#{searchContent},'%')
+			or self.CORP_NAME like concat('%',#{searchContent},'%')
+			or self.EN_NAME like concat('%',#{searchContent},'%'))
+		</if>
+		and self.FLAG = 0
+		and self.DEL = 0
+	</select>
+
+	<select id="getManagement" parameterType="java.lang.Long" resultMap="CorpRelationResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from sys_corp self
+		where self.CORP_ID in (select sys_corp_management.MANAGEMENT_CORP_ID from sys_corp_management where USER_ID =
+		#{userId})
+		and self.FLAG = 0
+		and self.DEL = 0
+	</select>
+
+	<select id="selectByNames" parameterType="java.util.List" resultMap="BaseResultMap">
+		select
+		CORP_NAME,CORP_ID
+		from sys_corp
+		where
+		FLAG = 0
+		and DEL = 0
+		and CORP_NAME in
+		<foreach collection="customerCorpNames" item="customerCorpName" separator="," open="(" close=")">
+			#{customerCorpName}
+		</foreach>
+	</select>
+
+	<select id="selectByCorpIds" parameterType="List" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		FROM sys_corp
+		where DEL=0 and flag = 0
+		AND CORP_ID in
+		<foreach collection="corpIds" separator="," item="corpId" open="(" close=")">
+			#{corpId}
+		</foreach>
+	</select>
+
+	<select id="queryIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+		select CORP_ID
+		from sys_corp
+		where CORP_NAME = #{corpName}
+		and FLAG = 0
+		and DEL = 0
+	</select>
+</mapper>   

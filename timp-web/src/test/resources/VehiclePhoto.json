@@ -1,0 +1,14 @@
+{
+  "data":{
+    "photoId":0,
+    "parentId":0,
+    "licenseType":0,
+    "photoType":0,
+    "photoDesc":"Test-photoDesc",
+    "photoPath":"Test-photoPath",
+    "creator":0,
+    "createDate":"2018-07-17 04:04:11",
+    "corpId":0,
+    "flag":0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "data":{
+    "driverPhotoId":0,
+    "driverId":0,
+    "photoDes":"Test-photoDes",
+    "photoType":0,
+    "photoPath":"Test-photoPath",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-03-22 08:08:58",
+    "checker":0,
+    "checkDate":"2018-03-22 08:08:58",
+    "corpId":0,
+    "flag":0
+  }
+}

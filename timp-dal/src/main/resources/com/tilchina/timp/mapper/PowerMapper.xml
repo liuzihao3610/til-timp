@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.PowerMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.Power" >
+    <id column="POWER_ID" jdbcType="BIGINT" property="powerId" />
+	<result column="POWER_ID" jdbcType="BIGINT" property="powerId" />
+	<result column="GROUP_ID" jdbcType="BIGINT" property="groupId" />
+	<result column="REGIST_ID" jdbcType="BIGINT" property="registId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="GROUP_NAME" jdbcType="VARCHAR" property="refGroupNAME" />
+	<result column="REGIST_NAME" jdbcType="VARCHAR" property="refRegistNAME" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpNAME" />
+	
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    POWER_ID, GROUP_ID, REGIST_ID, CORP_ID
+  </sql>
+
+  <sql id="Query_Column_List" >
+	power.POWER_ID,power.GROUP_ID,g.GROUP_NAME,power.REGIST_ID,regist.REGIST_NAME,power.CORP_ID,corp.CORP_NAME	
+  </sql>
+
+  <sql id="Example_Where_Clause">
+    where power.del = 0
+    <trim  suffixOverrides="," >
+      <if test="powerId != null and powerId != ''" >
+        and power.POWER_ID = #{powerId}
+      </if>
+      <if test="groupId != null and groupId != ''" >
+        and power.GROUP_ID = #{groupId}
+      </if>
+      <if test="registId != null and registId != ''" >
+        and power.REGIST_ID = #{registId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and power.CORP_ID = #{corpId}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from sys_power power
+    join SYS_CORP corp on corp.CORP_ID = power.CORP_ID		 
+	join sys_group g on g.GROUP_ID = power.GROUP_ID	
+	join sys_regist regist on regist.REGIST_ID = power.REGIST_ID	
+    where power.del = 0
+    and power.POWER_ID = #{powerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from sys_power where POWER_ID = #{powerId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.Power" keyProperty="powerId" useGeneratedKeys="true">
+    insert into sys_power
+	(GROUP_ID, REGIST_ID, CORP_ID)
+	values
+	(#{groupId,jdbcType=BIGINT}, #{registId,jdbcType=BIGINT}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.Power" keyProperty="powerId" useGeneratedKeys="true">
+    insert into sys_power
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="groupId != null">
+	    GROUP_ID, 
+	  </if>
+	  <if test="registId != null">
+	    REGIST_ID, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="groupId != null">
+	    #{groupId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="registId != null">
+	    #{registId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.Power" >
+	update sys_power
+	<set>
+	  <if test="groupId != null">
+	    GROUP_ID = #{groupId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="registId != null">
+	    REGIST_ID = #{registId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where POWER_ID = #{powerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.Power" >
+    update sys_power set 
+	  GROUP_ID = #{groupId,jdbcType=BIGINT}, REGIST_ID = #{registId,jdbcType=BIGINT}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where POWER_ID = #{powerId,jdbcType=BIGINT}
+  </update>
+  	
+  <update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long" >
+    update sys_power set 
+	  DEL = 1
+	where POWER_ID = #{powerId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from sys_power power
+	join SYS_CORP corp on corp.CORP_ID = power.CORP_ID		 
+	join sys_group g on g.GROUP_ID = power.GROUP_ID	
+	join sys_regist regist on regist.REGIST_ID = power.REGIST_ID	
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  	
+  <select id="selectByGroupId"  resultMap="BaseResultMap" parameterType="Object">
+    select
+      <include refid="Query_Column_List"/>
+    from sys_power power
+    join SYS_CORP corp on corp.CORP_ID = power.CORP_ID		 
+	join sys_group g on g.GROUP_ID = power.GROUP_ID	
+	join sys_regist regist on regist.REGIST_ID = power.REGIST_ID	
+    where power.GROUP_ID = #{groupId,jdbcType=BIGINT}
+  </select>
+  
+</mapper>   

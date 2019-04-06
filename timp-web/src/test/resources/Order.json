@@ -1,0 +1,21 @@
+{
+  "data":{
+    "orderId":0,
+    "orderDate":"2018-03-22 07:59:03",
+    "orderCode":"Test-orderCode",
+    "corpCustomerId":0,
+    "corpCarrierId":0,
+    "orderType":0,
+    "workType":0,
+    "batchNumber":"123",
+    "salesManId":1,
+    "transmitDate":"2018-03-22 07:59:03",
+    "remark":"不知道",
+    "billStatus":0,
+    "creator":0,
+    "createTime":"2018-03-22 07:59:03",
+    "checker":0,
+    "checkDate":"2018-03-22 07:59:03",
+    "corpId":0
+  }
+}

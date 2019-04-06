@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CarTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.CarType" >
+    <id column="CAR_TYPE_ID" jdbcType="BIGINT" property="carTypeId" />
+	<result column="CAR_TYPE_ID" jdbcType="BIGINT" property="carTypeId" />
+	<result column="CAR_TYPE_CODE" jdbcType="VARCHAR" property="carTypeCode" />
+	<result column="CAR_TYPE_NAME" jdbcType="VARCHAR" property="carTypeName" />
+	<result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="BRAND_NAME" jdbcType="VARCHAR" property="refBrandName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CAR_TYPE_ID, CAR_TYPE_CODE, CAR_TYPE_NAME, BRAND_ID, CREATOR, CREATE_DATE, CORP_ID, FLAG
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	cartype.CAR_TYPE_ID,cartype.CAR_TYPE_CODE,cartype.CAR_TYPE_NAME,cartype.BRAND_ID,brand.BRAND_NAME,cartype.CREATOR,us.USER_NAME AS CREATE_NAME,
+  	cartype.CREATE_DATE,cartype.CORP_ID,c.CORP_NAME,cartype.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where cartype.del = 0
+    <trim  suffixOverrides="," >
+      <if test="carTypeId != null and carTypeId != ''" >
+        and cartype.CAR_TYPE_ID = #{carTypeId}
+      </if>
+      <if test="carTypeCode != null and carTypeCode != ''" >
+        and cartype.CAR_TYPE_CODE LIKE CONCAT('%',#{carTypeCode},'%') 
+      </if>
+      <if test="carTypeName != null and carTypeName != ''" >
+        and cartype.CAR_TYPE_NAME LIKE CONCAT('%',#{carTypeName},'%') 
+      </if>
+      <if test="brandId != null and brandId != ''" >
+        and cartype.BRAND_ID = #{brandId}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and cartype.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and cartype.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and cartype.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and cartype.FLAG = #{flag}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (cartype.CAR_TYPE_CODE LIKE CONCAT('%',#{searchContent},'%') 
+        	or cartype.CAR_TYPE_NAME LIKE CONCAT('%',#{searchContent},'%') 
+        	or brand.BRAND_NAME LIKE CONCAT('%',#{searchContent},'%') 
+        	)
+      </if>
+      <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and cartype.CREATE_DATE  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and cartype.CREATE_DATE  <=  #{endTime}  ]]>
+	  </if>
+      <if test="refCorpName != null and refCorpName != ''" >
+        and c.CORP_NAME LIKE CONCAT('%',#{refCorpName},'%')
+      </if>
+      <if test="refBrandName != null and refBrandName != ''" >
+        and brand.BRAND_NAME LIKE CONCAT('%',#{refBrandName},'%')
+	  </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM bd_car_type cartype
+		JOIN bd_brand brand ON cartype.BRAND_ID=brand.BRAND_ID
+		JOIN bd_user us ON cartype.CREATOR=us.USER_ID
+		JOIN sys_corp c ON cartype.CORP_ID=c.CORP_ID
+    where cartype.CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update BD_CAR_TYPE set DEL=1 where CAR_TYPE_ID = #{carTypeId}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update BD_CAR_TYPE	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	CAR_TYPE_ID in
+  	 		<foreach item="carTypeId" collection="array" open="(" separator="," close=")">
+  	 			#{carTypeId}
+  	 		</foreach>
+  		</if>
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.CarType" keyProperty="carTypeId" useGeneratedKeys="true">
+    insert into BD_CAR_TYPE
+	(CAR_TYPE_CODE, CAR_TYPE_NAME, BRAND_ID, CREATOR, CREATE_DATE, CORP_ID, FLAG)
+	values
+	(#{carTypeCode,jdbcType=VARCHAR}, #{carTypeName,jdbcType=VARCHAR}, #{brandId,jdbcType=BIGINT}, #{creator,jdbcType=BIGINT}, 
+	#{createDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.CarType" keyProperty="carTypeId" useGeneratedKeys="true">
+    insert into BD_CAR_TYPE
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="carTypeCode != null">
+	    CAR_TYPE_CODE, 
+	  </if>
+	  <if test="carTypeName != null">
+	    CAR_TYPE_NAME, 
+	  </if>
+	  <if test="brandId != null">
+	    BRAND_ID, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="carTypeCode != null">
+	    #{carTypeCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="carTypeName != null">
+	    #{carTypeName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="brandId != null">
+	    #{brandId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.CarType" >
+	update BD_CAR_TYPE
+	<set>
+		<!-- 
+	  <if test="carTypeCode != null">
+	    CAR_TYPE_CODE = #{carTypeCode,jdbcType=VARCHAR}, 
+	  </if>
+	   -->
+	  <if test="carTypeName != null">
+	    CAR_TYPE_NAME = #{carTypeName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="brandId != null">
+	    BRAND_ID = #{brandId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.CarType" >
+    update BD_CAR_TYPE set 
+	  CAR_TYPE_CODE = #{carTypeCode,jdbcType=VARCHAR}, CAR_TYPE_NAME = #{carTypeName,jdbcType=VARCHAR}, BRAND_ID = #{brandId,jdbcType=BIGINT}, 
+	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  FLAG = #{flag,jdbcType=INTEGER}
+	where CAR_TYPE_ID = #{carTypeId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_car_type cartype
+		JOIN bd_brand brand ON cartype.BRAND_ID=brand.BRAND_ID
+		JOIN bd_user us ON cartype.CREATOR=us.USER_ID
+		JOIN sys_corp c ON cartype.CORP_ID=c.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by cartype.CREATE_DATE DESC
+  </select>
+  
+  <select id="getList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM bd_car_type cartype
+		JOIN bd_brand brand ON cartype.BRAND_ID=brand.BRAND_ID
+		JOIN bd_user us ON cartype.CREATOR=us.USER_ID
+		JOIN sys_corp c ON cartype.CORP_ID=c.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by cartype.CREATE_DATE DESC
+  </select>
+  
+  <select id="getCarTypeName" resultType="java.util.Map">
+  	SELECT CAR_TYPE_ID ,CAR_TYPE_NAME FROM bd_car_type  WHERE DEL=0 AND BRAND_ID=#{brandId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="getReferenceList"  resultType="java.util.Map">
+  	SELECT CAR_TYPE_ID AS carTypeId,CAR_TYPE_NAME AS carTypeName, cartype.BRAND_ID AS brandId,brand.BRAND_NAME AS brandName
+	FROM bd_car_type cartype
+		JOIN bd_brand brand ON cartype.BRAND_ID=brand.BRAND_ID
+		JOIN bd_user us ON cartype.CREATOR=us.USER_ID
+		JOIN sys_corp c ON cartype.CORP_ID=c.CORP_ID
+        <include refid="Example_Where_Clause"/>
+        <if test="orderByClause != null and orderByClause != ''">
+            order by ${orderByClause}
+        </if>
+  </select>
+
+	<select id="queryIdByName" parameterType="String" resultType="Long">
+		SELECT CAR_TYPE_ID
+		FROM bd_car_type
+		WHERE CAR_TYPE_NAME = #{carTypeName}
+		AND FLAG = 0
+		AND DEL = 0
+	</select>
+
+	<select id="queryByName" parameterType="java.lang.String" resultType="java.lang.Long">
+		select CAR_TYPE_ID
+		from bd_car_type
+		where CAR_TYPE_NAME = #{carTypeName}
+		and FLAG = 0
+		and DEL = 0
+	</select>
+</mapper>   

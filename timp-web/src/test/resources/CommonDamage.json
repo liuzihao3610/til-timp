@@ -1,0 +1,14 @@
+{
+  "data":{
+    "damageId":0,
+    "damageCode":"Test-damageCode",
+    "damageDate":"2018-04-25 01:06:34",
+    "carVin":"Test-carVin",
+    "carBrandId":0,
+    "voyageNumber":"Test-voyageNumber",
+    "creator":0,
+    "createDate":"2018-04-25 01:06:34",
+    "corpId":0,
+    "flag":0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "data":{
+    "transportOrderId":0,
+    "transportOrderCode":"Test-transportOrderCode",
+    "jobType":0,
+    "examination":0,
+    "predictKm":0,
+    "practicalKm":0,
+    "driverId":0,
+    "transporterId":0,
+    "loadingDate":"2018-03-28 12:36:22",
+    "settled":0,
+    "carriageCorpId":0,
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-03-28 12:36:22",
+    "checker":0,
+    "checkDate":"2018-03-28 12:36:22",
+    "corpId":0
+  }
+}

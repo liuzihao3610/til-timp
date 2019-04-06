@@ -1,0 +1,12 @@
+{
+  "data":{
+    "loadingReservationDatailId":0,
+    "loadingReservationId":0,
+    "transportOrderId":0,
+    "transportOrderDetailId":0,
+    "carId":0,
+    "carVin":"Test-carVin",
+    "remark":"Test-remark",
+    "corpId":0
+  }
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.WayReportMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.WayReport" >
+    <id column="REPORT_ID" jdbcType="BIGINT" property="reportId" />
+	<result column="REPORT_ID" jdbcType="BIGINT" property="reportId" />
+	<result column="REPORT_STATUS" jdbcType="INTEGER" property="reportStatus" />
+	<result column="REPORT_DATE" jdbcType="TIMESTAMP" property="reportDate" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="LOCATION" jdbcType="VARCHAR" property="location" />
+	<result column="ORIGIN_LNG" jdbcType="DOUBLE" property="originLng" />
+	<result column="ORIGIN_LAT" jdbcType="DOUBLE" property="originLat" />
+	<result column="LNG" jdbcType="DOUBLE" property="lng" />
+	<result column="LAT" jdbcType="DOUBLE" property="lat" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    REPORT_ID, REPORT_STATUS, REPORT_DATE, DRIVER_ID, TRANSPORTER_ID, LOCATION, ORIGIN_LNG, ORIGIN_LAT, LNG, LAT, CORP_ID
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where wr.del = 0
+    <trim  suffixOverrides="," >
+      <if test="reportId != null and reportId != ''" >
+        and wr.REPORT_ID = #{reportId}
+      </if>
+      <if test="reportStatus != null and reportStatus != ''" >
+        and wr.REPORT_STATUS = #{reportStatus}
+      </if>
+      <if test="reportDate != null and reportDate != ''" >
+        and wr.REPORT_DATE = #{reportDate}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and wr.DRIVER_ID = #{driverId}
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and wr.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="location != null and location != ''" >
+        and wr.LOCATION = #{location}
+      </if>
+      <if test="originLng != null and originLng != ''" >
+        and wr.ORIGIN_LNG = #{originLng}
+      </if>
+      <if test="originLat != null and originLat != ''" >
+        and wr.ORIGIN_LAT = #{originLat}
+      </if>
+      <if test="lng != null and lng != ''" >
+        and wr.LNG = #{lng}
+      </if>
+      <if test="lat != null and lat != ''" >
+        and wr.LAT = #{lat}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and wr.CORP_ID = #{corpId}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Base_Column_List"/>
+    from tc_way_report
+    where REPORT_ID = #{reportId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from tc_way_report where REPORT_ID = #{reportId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.WayReport" keyProperty="reportId" useGeneratedKeys="true">
+    insert into tc_way_report	(REPORT_STATUS, REPORT_DATE, DRIVER_ID, TRANSPORTER_ID, LOCATION, ORIGIN_LNG, ORIGIN_LAT, LNG, LAT, CORP_ID)	values	(#{reportStatus,jdbcType=INTEGER}, #{reportDate,jdbcType=TIMESTAMP}, #{driverId,jdbcType=BIGINT}, #{transporterId,jdbcType=BIGINT}, 	#{location,jdbcType=VARCHAR}, #{originLng,jdbcType=DOUBLE}, #{originLat,jdbcType=DOUBLE}, #{lng,jdbcType=DOUBLE}, 	#{lat,jdbcType=DOUBLE}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.WayReport" keyProperty="reportId" useGeneratedKeys="true">
+    insert into tc_way_report	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="reportStatus != null">	    REPORT_STATUS, 	  </if>	  <if test="reportDate != null">	    REPORT_DATE, 	  </if>	  <if test="driverId != null">	    DRIVER_ID, 	  </if>	  <if test="transporterId != null">	    TRANSPORTER_ID, 	  </if>	  <if test="location != null">	    LOCATION, 	  </if>	  <if test="originLng != null">	    ORIGIN_LNG, 	  </if>	  <if test="originLat != null">	    ORIGIN_LAT, 	  </if>	  <if test="lng != null">	    LNG, 	  </if>	  <if test="lat != null">	    LAT, 	  </if>	  <if test="corpId != null">	    CORP_ID, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="reportStatus != null">	    #{reportStatus,jdbcType=INTEGER}, 	  </if>	  <if test="reportDate != null">	    #{reportDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="driverId != null">	    #{driverId,jdbcType=BIGINT}, 	  </if>	  <if test="transporterId != null">	    #{transporterId,jdbcType=BIGINT}, 	  </if>	  <if test="location != null">	    #{location,jdbcType=VARCHAR}, 	  </if>	  <if test="originLng != null">	    #{originLng,jdbcType=DOUBLE}, 	  </if>	  <if test="originLat != null">	    #{originLat,jdbcType=DOUBLE}, 	  </if>	  <if test="lng != null">	    #{lng,jdbcType=DOUBLE}, 	  </if>	  <if test="lat != null">	    #{lat,jdbcType=DOUBLE}, 	  </if>	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.WayReport" >
+	update tc_way_report	<set>	  <if test="reportStatus != null">	    REPORT_STATUS = #{reportStatus,jdbcType=INTEGER}, 	  </if>	  <if test="reportDate != null">	    REPORT_DATE = #{reportDate,jdbcType=TIMESTAMP}, 	  </if>	  <if test="driverId != null">	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 	  </if>	  <if test="transporterId != null">	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 	  </if>	  <if test="location != null">	    LOCATION = #{location,jdbcType=VARCHAR}, 	  </if>	  <if test="originLng != null">	    ORIGIN_LNG = #{originLng,jdbcType=DOUBLE}, 	  </if>	  <if test="originLat != null">	    ORIGIN_LAT = #{originLat,jdbcType=DOUBLE}, 	  </if>	  <if test="lng != null">	    LNG = #{lng,jdbcType=DOUBLE}, 	  </if>	  <if test="lat != null">	    LAT = #{lat,jdbcType=DOUBLE}, 	  </if>	  <if test="corpId != null">	    CORP_ID = #{corpId,jdbcType=BIGINT}, 	  </if>	</set>	where REPORT_ID = #{reportId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.WayReport" >
+    update tc_way_report set 	  REPORT_STATUS = #{reportStatus,jdbcType=INTEGER}, REPORT_DATE = #{reportDate,jdbcType=TIMESTAMP}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, 	  TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, LOCATION = #{location,jdbcType=VARCHAR}, ORIGIN_LNG = #{originLng,jdbcType=DOUBLE}, 	  ORIGIN_LAT = #{originLat,jdbcType=DOUBLE}, LNG = #{lng,jdbcType=DOUBLE}, LAT = #{lat,jdbcType=DOUBLE}, 	  CORP_ID = #{corpId,jdbcType=BIGINT}	where REPORT_ID = #{reportId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Base_Column_List"/>
+	from tc_way_report wr
+	<include refid="Example_Where_Clause"/>
+	ORDER BY wr.REPORT_ID DESC
+  </select>
+  
+  <select id="getByDriverId"  resultMap="BaseResultMap" parameterType="object">
+    select
+      <include refid="Base_Column_List"/>
+    from tc_way_report
+    where DRIVER_ID = #{0} AND  REPORT_DATE  BETWEEN #{1} AND #{2}
+  </select>
+  	
+</mapper>   

@@ -1,0 +1,22 @@
+{
+  "data":{
+    "reconciliationId":0,
+    "reconciliationNumber":"Test-reconciliationNumber",
+    "carVinCount":0,
+    "outsourcingAmount":0,
+    "actualAmount":0,
+    "deductionAmount":0,
+    "deductionReason":"Test-deductionReason",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-06-04 03:55:51",
+    "checker":0,
+    "checkDate":"2018-06-04 03:55:51",
+    "confirmor":0,
+    "confirmDate":"2018-06-04 03:55:51",
+    "feedbackDate":"2018-06-04 03:55:51",
+    "settlementDate":"2018-06-04 03:55:51",
+    "corpId":0,
+    "flag":0
+  }
+}

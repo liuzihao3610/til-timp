@@ -1,0 +1,12 @@
+{
+  "data":{
+    "stockCarHisId":0,
+    "stockCarId":0,
+    "carVin":"Test-carVin",
+    "carStatus":0,
+    "changeDate":"2018-05-07 12:23:44",
+    "orderBillId":0,
+    "corpId":0,
+    "flag":0
+  }
+}

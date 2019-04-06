@@ -1,0 +1,12 @@
+{
+  "data":{
+    "reportOrderDetailId":0,
+    "reportId":0,
+    "reportOrderId":0,
+    "ordertDetailId":0,
+    "transportDetailId":0,
+    "carVin":"Test-carVin",
+    "carId":0,
+    "corpId":0
+  }
+}

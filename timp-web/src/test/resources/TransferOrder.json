@@ -1,0 +1,20 @@
+{
+	"data":{
+		"transferOrderId":1,
+		"transferOrderCode":"transferOrderCode",
+		"customerId":1,
+		"carVin":"carVin",
+		"orderId":1,
+		"orderDetailId":1,
+		"transportOrderId":1,
+		"transportOrderDetailId":1,
+		"dealerCorpId":1,
+		"dealerUnitId":1,
+		"scanPath":"scanPath",
+		"remark":"remark",
+		"billStatus":0,
+		"userId":1,
+		"receptionDate":"2018-04-09 14:05:19",
+		"corpId":1
+	}
+}

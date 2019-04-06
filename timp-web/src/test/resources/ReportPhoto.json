@@ -1,0 +1,10 @@
+{
+  "data":{
+    "reportPhotoId":0,
+    "reportId":0,
+    "photoType":0,
+    "photoPath":"Test-photoPath",
+    "description":"Test-description",
+    "corpId":0
+  }
+}

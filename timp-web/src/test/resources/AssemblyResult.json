@@ -1,0 +1,19 @@
+{
+  "data":{
+    "assemblyResultId":0,
+    "resultCode":"Test-resultCode",
+    "allTransPrice":0,
+    "rate":0,
+    "baseTransPrice":0,
+    "allSubsidy":0,
+    "trailerId":0,
+    "maxQuantity":0,
+    "carCount":0,
+    "cityCount":0,
+    "unitCount":0,
+    "transPlan":"Test-transPlan",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-06-10 11:26:32"
+  }
+}

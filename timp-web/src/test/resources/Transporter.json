@@ -1,0 +1,29 @@
+{
+  "data":{
+    "transporterId":0,
+    "transporterCode":"Test-transporterCode",
+    "tractorId":0,
+    "tractirPlateCode":"Test-tractirPlateCode",
+    "tractirVin":"Test-tractirVin",
+    "engineCode":"Test-engineCode",
+    "trailerId":0,
+    "trailerPlateCode":"Test-trailerPlateCode",
+    "trailerVin":"Test-trailerVin",
+    "contractorId":0,
+    "contractorEndDate":"2018-04-22 04:22:14",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-04-22 04:22:14",
+    "checker":0,
+    "checkDate":"2018-04-22 04:22:14",
+    "corpId":0,
+    "flag":0,
+    "trucksType":0,
+    "weightCount":0,
+    "checkLoadweight":0,
+    "trucksLong":0,
+    "trucksWidth":0,
+    "trucksHigh":0,
+    "axleCount":0
+  }
+}

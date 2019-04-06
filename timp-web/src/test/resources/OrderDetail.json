@@ -1,0 +1,32 @@
+{
+  "data":{
+    		"orderDetailId": 0,
+			"orderId": 0,
+			"orderCode": "Test-orderCode",
+			"carId": 1,
+			"carTypeId": 1,
+			"brandId": 1,
+			"eta": "123",
+			"carStatus": 0,
+			"transferOrderStatus": 0,
+			"quotedPriceId": 1,
+			"freightPriceId": 1,
+			"cancelReason": "不知道",
+			"remark": "不知道",
+			"productNumber": "123",
+			"closed": 0,
+			"reconciliation": 0,
+			"settlement": 0,
+			"carVin": "Test-carVin",
+			"sendUnitId": 0,
+			"receiveUnitId": 0,
+			"instructionNumber": "Test-instructionNumber",
+			"claimLoadDate": "2018-03-22 07:59:03",
+			"claimDeliveryDate": "2018-03-22 07:59:03",
+			"urgent": 0,
+			"scheduleType": 0,
+			"confirmationDate": "2018-03-22 07:59:03",
+			"customerQuotedPrice": 0,
+			"corpId": 0
+  }
+}

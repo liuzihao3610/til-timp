@@ -1,0 +1,12 @@
+{
+  "data":{
+    "positionId":0,
+    "positionCode":"Test-positionCode",
+    "positionName":"Test-positionName",
+    "deptId":0,
+    "creator":0,
+    "createDate":"2018-03-22 08:09:44",
+    "corpId":0,
+    "flag":0
+  }
+}

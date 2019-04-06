@@ -1,0 +1,21 @@
+{
+  "data":{
+    "transportPlanId":0,
+    "transportOrderId":0,
+    "transportOrderCode":"Test-transportOrderCode",
+    "transporterId":0,
+    "driverId":0,
+    "sequence":"Test-sequence",
+    "intakenQuantity":0,
+    "changeQuantity":0,
+    "driverKm":0,
+    "approveKm":0,
+    "startUnitId":0,
+    "startLng":0,
+    "startLat":0,
+    "endUnitId":0,
+    "endLng":0,
+    "endLat":0,
+    "corpId":0
+  }
+}

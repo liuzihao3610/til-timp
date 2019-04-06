@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransporterFuelRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransporterFuelRecord" >
+    <id column="TRANSPORTER_FUEL_RECORD_ID" jdbcType="BIGINT" property="transporterFuelRecordId" />
+	<result column="TRANSPORTER_FUEL_RECORD_ID" jdbcType="BIGINT" property="transporterFuelRecordId" />
+	<result column="OIL_DEPOT_ID" jdbcType="BIGINT" property="oilDepotId" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="FUEL_CHARGE" jdbcType="DOUBLE" property="fuelCharge" />
+	<result column="FUEL_DATE" jdbcType="TIMESTAMP" property="fuelDate" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="OIL_DEPOT_CODE" jdbcType="VARCHAR" property="refOilDepotCode" />
+    <result column="OIL_DEPOT_TYPE" jdbcType="INTEGER" property="refOilDepotType" />
+    <result column="OIL_LABEL" jdbcType="VARCHAR" property="refOilLabel" />
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANSPORTER_FUEL_RECORD_ID, OIL_DEPOT_ID, DRIVER_ID, TRANSPORTER_ID, FUEL_CHARGE, FUEL_DATE, CREATOR, CREATE_DATE,CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List" >
+    tfr.TRANSPORTER_FUEL_RECORD_ID,tfr.OIL_DEPOT_ID,od.OIL_DEPOT_CODE,od.OIL_DEPOT_TYPE,od.OIL_LABEL,tfr.DRIVER_ID,us.USER_NAME AS DRIVER_NAME,
+    tfr.TRANSPORTER_ID,t.TRACTIR_PLATE_CODE,tfr.FUEL_CHARGE,tfr.FUEL_DATE,tfr.CREATOR,u.USER_NAME AS CREATE_NAME,tfr.CREATE_DATE,
+    tfr.CORP_ID,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where tfr.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transporterFuelRecordId != null and transporterFuelRecordId != ''" >
+        and tfr.TRANSPORTER_FUEL_RECORD_ID = #{transporterFuelRecordId}
+      </if>
+      <if test="oilDepotId != null and oilDepotId != ''" >
+        and tfr.OIL_DEPOT_ID = #{oilDepotId}
+      </if>
+		<if test="refOilDepotCode != null and refOilDepotCode != ''" >
+			and od.OIL_DEPOT_CODE LIKE CONCAT('%',#{refOilDepotCode},'%')
+		</if>
+      <if test="driverId != null and driverId != ''" >
+        and tfr.DRIVER_ID = #{driverId}
+      </if>
+		<if test="refDriverName != null and refDriverName != ''" >
+			and us.USER_NAME LIKE CONCAT('%',#{refDriverName},'%')
+		</if>
+      <if test="transporterId != null and transporterId != ''" >
+        and tfr.TRANSPORTER_ID = #{transporterId}
+      </if>
+		<if test="refTractirPlateCode != null and refTractirPlateCode != ''" >
+			and t.TRACTIR_PLATE_CODE LIKE CONCAT('%',#{refTractirPlateCode},'%')
+		</if>
+      <if test="fuelCharge != null and fuelCharge != ''" >
+        and tfr.FUEL_CHARGE = #{fuelCharge}
+      </if>
+      <if test="fuelDate != null and fuelDate != ''" >
+        and tfr.FUEL_DATE = #{fuelDate}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and tfr.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and tfr.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and tfr.CORP_ID = #{corpId}
+      </if>
+		<if test="refCorpName != null and refCorpName != ''" >
+			and corp.CORP_NAME LIKE CONCAT('%',#{refCorpName},'%')
+		</if>
+		<if test="refOilDepotType != null and refOilDepotType != ''" >
+			and od.OIL_DEPOT_TYPE LIKE CONCAT('%',#{refOilDepotType},'%')
+		</if>
+		<if test="refOilLabel != null and refOilLabel != ''" >
+			and od.OIL_LABEL LIKE CONCAT('%',#{refOilLabel},'%')
+		</if>
+		<if test="startTime != null and startTime != ''">
+			<![CDATA[ and odsr.CREATE_DATE  >=  #{startTime}  ]]>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			<![CDATA[ and odsr.CREATE_DATE  <=  #{endTime}  ]]>
+		</if>
+		<if test="fuelStartTime != null and fuelStartTime != ''">
+			<![CDATA[ and odsr.CREATE_DATE  >=  #{fuelStartTime}  ]]>
+		</if>
+		<if test="fuelEndTime != null and fuelEndTime != ''">
+			<![CDATA[ and odsr.CREATE_DATE  <=  #{fuelEndTime}  ]]>
+		</if>
+		<if test="searchContent != null and searchContent != ''" >
+			and (od.OIL_DEPOT_CODE LIKE CONCAT('%',#{searchContent},'%')
+			or us.USER_NAME LIKE CONCAT('%',#{searchContent},'%')
+			)
+		</if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from am_transporter_fuel_record tfr
+		JOIN am_oil_depot od ON tfr.OIL_DEPOT_ID=od.OIL_DEPOT_ID
+		JOIN bd_user us ON tfr.DRIVER_ID=us.USER_ID
+		LEFT JOIN tc_transporter t ON tfr.TRANSPORTER_ID=t.TRANSPORTER_ID
+		JOIN bd_user u ON tfr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON tfr.CORP_ID=corp.CORP_ID
+    where tfr.DEL=0 AND tfr.TRANSPORTER_FUEL_RECORD_ID = #{transporterFuelRecordId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update am_transporter_fuel_record set DEL=1 where TRANSPORTER_FUEL_RECORD_ID = #{transporterFuelRecordId}
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.TransporterFuelRecord" keyProperty="transporterFuelRecordId" useGeneratedKeys="true">
+    insert into am_transporter_fuel_record
+	(OIL_DEPOT_ID, DRIVER_ID, TRANSPORTER_ID, FUEL_CHARGE, FUEL_DATE, CREATOR, CREATE_DATE,CORP_ID)
+	values
+	(#{oilDepotId,jdbcType=BIGINT}, #{driverId,jdbcType=BIGINT}, #{transporterId,jdbcType=BIGINT}, #{fuelCharge,jdbcType=DOUBLE}, 
+	#{fuelDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP},#{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.TransporterFuelRecord" keyProperty="transporterFuelRecordId" useGeneratedKeys="true">
+    insert into am_transporter_fuel_record
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="oilDepotId != null">
+	    OIL_DEPOT_ID, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID, 
+	  </if>
+	  <if test="fuelCharge != null">
+	    FUEL_CHARGE, 
+	  </if>
+	  <if test="fuelDate != null">
+	    FUEL_DATE, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="oilDepotId != null">
+	    #{oilDepotId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterId != null">
+	    #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="fuelCharge != null">
+	    #{fuelCharge,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="fuelDate != null">
+	    #{fuelDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.TransporterFuelRecord" >
+	update am_transporter_fuel_record
+	<set>
+	  <if test="oilDepotId != null">
+	    OIL_DEPOT_ID = #{oilDepotId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="fuelCharge != null">
+	    FUEL_CHARGE = #{fuelCharge,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="fuelDate != null">
+	    FUEL_DATE = #{fuelDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where TRANSPORTER_FUEL_RECORD_ID = #{transporterFuelRecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.TransporterFuelRecord" >
+    update am_transporter_fuel_record set 
+	  OIL_DEPOT_ID = #{oilDepotId,jdbcType=BIGINT}, DRIVER_ID = #{driverId,jdbcType=BIGINT}, TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 
+	  FUEL_CHARGE = #{fuelCharge,jdbcType=DOUBLE}, FUEL_DATE = #{fuelDate,jdbcType=TIMESTAMP}, CREATOR = #{creator,jdbcType=BIGINT}, 
+	  CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},CORP_ID = #{corpId,jdbcType=BIGINT}
+	where TRANSPORTER_FUEL_RECORD_ID = #{transporterFuelRecordId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+      <include refid="Query_Column_List"/>
+    from am_transporter_fuel_record tfr
+		JOIN am_oil_depot od ON tfr.OIL_DEPOT_ID=od.OIL_DEPOT_ID
+		JOIN bd_user us ON tfr.DRIVER_ID=us.USER_ID
+		LEFT JOIN tc_transporter t ON tfr.TRANSPORTER_ID=t.TRANSPORTER_ID
+		JOIN bd_user u ON tfr.CREATOR=u.USER_ID
+		JOIN sys_corp corp ON tfr.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+       order by tfr.CREATE_DATE DESC
+  </select>
+  	
+</mapper>   

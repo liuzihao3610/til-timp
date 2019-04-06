@@ -1,0 +1,33 @@
+{
+  "data":{
+    "userId":0,
+    "userCode":"Test-userCode",
+    "userName":"Test-userName",
+    "userEnName":"Test-userEnName",
+    "phone":"Test-phone",
+    "email":"Test-email",
+    "userType":0,
+    "driverType":0,
+    "qq":"Test-qq",
+    "wechat":"Test-wechat",
+    "sex":0,
+    "birthday":"2018-03-30 03:31:09",
+    "nation":"Test-nation",
+    "education":"Test-education",
+    "remark":"Test-remark",
+    "avatrar":"Test-avatrar",
+    "photoPath":"Test-photoPath",
+    "bindingPhone":0,
+    "deptId":0,
+    "positionId":0,
+    "joinDate":"2018-03-30 03:31:09",
+    "resignationDate":"2018-03-30 03:31:09",
+    "billStatus":0,
+    "creator":0,
+    "createDate":"2018-03-30 03:31:09",
+    "checker":0,
+    "checkDate":"2018-03-30 03:31:09",
+    "corpId":0,
+    "flag":0
+  }
+}

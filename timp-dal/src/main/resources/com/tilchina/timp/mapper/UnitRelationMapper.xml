@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.UnitRelationMapper" >
+	<resultMap id="BaseResultMap" type="com.tilchina.timp.model.UnitRelation" >
+		<id column="UNIT_RELATION_ID" jdbcType="BIGINT" property="unitRelationId" />
+		<result column="UNIT_ID" jdbcType="BIGINT" property="unitId" />
+		<result column="ADS_CORP_ID" jdbcType="BIGINT" property="adsCorpId" />
+		<result column="LEVEL" jdbcType="INTEGER" property="level" />
+
+		<result column="ADDRESS" jdbcType="VARCHAR" property="refUnitAddress" />
+		<result column="UNIT_CODE" jdbcType="VARCHAR" property="refUnitCode" />
+		<result column="ADS_CORP_NAME" jdbcType="VARCHAR" property="refAdsCorpName" />
+		<result column="UNIT_NAME" jdbcType="VARCHAR" property="refUnitName" />
+		<result column="DEALER_CODE" jdbcType="VARCHAR" property="refDealerCode" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+    UNIT_RELATION_ID, UNIT_ID, ADS_CORP_ID, LEVEL
+  </sql>
+
+	<sql id="Example_Where_Clause">
+		where del = 0
+		<trim  suffixOverrides="," >
+			<if test="unitRelationId != null and unitRelationId != ''" >
+				and UNIT_RELATION_ID = #{unitRelationId}
+			</if>
+			<if test="unitId != null and unitId != ''" >
+				and UNIT_ID = #{unitId}Unit
+			</if>
+			<if test="adsCorpId != null and adsCorpId != ''" >
+				and ADS_CORP_ID = #{adsCorpId}
+			</if>
+			<if test="level != null and level != ''" >
+				and LEVEL = #{level}
+			</if>
+		</trim>
+	</sql>
+
+	<select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List"/>
+		from bd_unit_relation
+		where UNIT_RELATION_ID = #{unitRelationId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from bd_unit_relation where UNIT_RELATION_ID = #{unitRelationId}
+  </delete>
+	<insert id="insert" parameterType="com.tilchina.timp.model.UnitRelation" keyProperty="unitRelationId" useGeneratedKeys="true">
+    insert into bd_unit_relation
+	( UNIT_ID, ADS_CORP_ID, LEVEL)
+	values
+	( #{unitId,jdbcType=BIGINT}, #{adsCorpId,jdbcType=BIGINT},
+	#{level,jdbcType=INTEGER})
+  </insert>
+	<insert id="insertSelective" parameterType="com.tilchina.timp.model.UnitRelation" keyProperty="unitRelationId" useGeneratedKeys="true">
+		insert into bd_unit_relation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="unitId != null">
+				UNIT_ID,
+			</if>
+			<if test="adsCorpId != null">
+				ADS_CORP_ID,
+			</if>
+			<if test="level != null">
+				LEVEL,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="unitId != null">
+				#{unitId,jdbcType=BIGINT},
+			</if>
+			<if test="adsCorpId != null">
+				#{adsCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="level != null">
+				#{level,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.UnitRelation" >
+		update bd_unit_relation
+		<set>
+			<if test="unitId != null">
+				UNIT_ID = #{unitId,jdbcType=BIGINT},
+			</if>
+			<if test="adsCorpId != null">
+				ADS_CORP_ID = #{adsCorpId,jdbcType=BIGINT},
+			</if>
+			<if test="level != null">
+				LEVEL = #{level,jdbcType=INTEGER},
+			</if>
+		</set>
+		where UNIT_RELATION_ID = #{unitRelationId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.UnitRelation" >
+    update bd_unit_relation set 
+	   UNIT_ID = #{unitId,jdbcType=BIGINT},
+	  ADS_CORP_ID = #{adsCorpId,jdbcType=BIGINT}, LEVEL = #{level,jdbcType=INTEGER}
+	where UNIT_RELATION_ID = #{unitRelationId,jdbcType=BIGINT}
+  </update>
+
+	<select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Base_Column_List"/>
+	from bd_unit_relation
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+		order by ${orderByClause}
+	</if>
+	</select>
+
+
+	<select id="selectByUnitId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List"/>
+		from bd_unit_relation
+		where UNIT_ID = #{unitId,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectByCorpId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+			UNIT_ID
+		from bd_unit_relation
+		where ADS_CORP_ID = #{adsCorpId,jdbcType=BIGINT}
+	</select>
+
+	<sql id="CorpId_Where_Clause">
+		where relation.del = 0
+		<trim  suffixOverrides="," >
+			<if test="adsCorpId != null">
+				and relation.ADS_CORP_ID = #{adsCorpId,jdbcType=BIGINT}
+			</if>
+			<if test="searchContent != null and searchContent != ''" >
+				and (
+				unit.UNIT_NAME  like concat(concat('%',#{searchContent}),'%')
+				or 	unit.UNIT_CODE  like concat(concat('%',#{searchContent}),'%')
+				),
+			</if>
+		</trim>
+	</sql>
+
+	<select id="selectByCorpIdAndKey" resultMap="BaseResultMap"  parameterType="Object">
+		SELECT
+		relation.UNIT_RELATION_ID,
+		unit.UNIT_NAME,
+		unit.UNIT_CODE,
+		unit.DEALER_CODE,
+		unit.ADDRESS,
+		relation.UNIT_ID,
+		relation.ADS_CORP_ID,
+		relation.LEVEL,
+		corp.CORP_NAME AS ADS_CORP_NAME
+		FROM
+		bd_unit_relation relation
+		LEFT JOIN bd_unit unit ON relation.UNIT_ID = unit.UNIT_ID
+		LEFT JOIN sys_corp corp ON relation.ADS_CORP_ID = corp.CORP_ID
+		<include refid="CorpId_Where_Clause"/>
+	</select>
+
+	<select id="selectByadsCorpIds" resultMap="BaseResultMap"  parameterType="List">
+		select
+		UNIT_RELATION_ID, UNIT_ID, ADS_CORP_ID, LEVEL
+		from bd_unit_relation
+		where del = 0
+		<if test=" null!= adsCorpIds || 0 != adsCorpIds.length">
+			and ADS_CORP_ID in
+			<foreach item="adsCorpId" collection="adsCorpIds" open="(" separator="," close=")">
+				#{adsCorpId}
+			</foreach>
+		</if>
+	</select>
+
+</mapper>   

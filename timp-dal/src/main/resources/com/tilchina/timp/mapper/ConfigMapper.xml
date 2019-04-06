@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.ConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.Config" >
+    <id column="CONFIG_ID" jdbcType="BIGINT" property="configId" />
+	<result column="CONFIG_ID" jdbcType="BIGINT" property="configId" />
+	<result column="CODE" jdbcType="VARCHAR" property="code" />
+	<result column="VALUE" jdbcType="VARCHAR" property="value" />
+	<result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CONFIG_ID, CODE, VALUE, DESCRIPTION, CORP_ID
+  </sql>
+  	
+  <sql id="Query_Column_List">
+  	config.CONFIG_ID, config.CODE, config.VALUE, config.DESCRIPTION, config.CORP_ID,info.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where config.DEL = 0
+    <trim  suffixOverrides="," >
+      <if test="configId != null and configId != ''" >
+        and config.CONFIG_ID = #{configId}
+      </if>
+      <if test="code != null and code != ''" >
+        and config.CODE = #{code}
+      </if>
+      <if test="value != null and value != ''" >
+        and config.VALUE = #{value}
+      </if>
+      <if test="description != null and description != ''" >
+        and config.DESCRIPTION = #{description}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and config.CORP_ID = #{corpId}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (config.CODE  LIKE  CONCAT('%',#{searchContent},'%')
+        	or config.DESCRIPTION  LIKE  CONCAT('%',#{searchContent},'%'))
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from SYS_CONFIG config
+    join SYS_CORP corp ON config.CORP_ID=corp.CORP_ID
+    where config.CONFIG_ID = #{configId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update SYS_CONFIG  set DEL=1 where CONFIG_ID = #{configId}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update SYS_CONFIG
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	CONFIG_ID in
+  	 		<foreach item="configId" collection="array" open="(" separator="," close=")">
+  	 			#{configId}
+  	 		</foreach>
+  		</if>
+  		
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.Config" keyProperty="config" useGeneratedKeys="true">
+    insert into SYS_CONFIG	(CODE, VALUE, DESCRIPTION, CORP_ID)	values	(#{code,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.Config" keyProperty="config" useGeneratedKeys="true">
+    insert into SYS_CONFIG	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="code != null">	    CODE, 	  </if>	  <if test="value != null">	    VALUE, 	  </if>	  <if test="description != null">	    DESCRIPTION, 	  </if>	  <if test="corpId != null">	    CORP_ID, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="code != null">	    #{code,jdbcType=VARCHAR}, 	  </if>	  <if test="value != null">	    #{value,jdbcType=VARCHAR}, 	  </if>	  <if test="description != null">	    #{description,jdbcType=VARCHAR}, 	  </if>	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	</trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.Config" >
+	update SYS_CONFIG	<set>	  <if test="code != null">	    CODE = #{code,jdbcType=VARCHAR}, 	  </if>	  <if test="value != null">	    VALUE = #{value,jdbcType=VARCHAR}, 	  </if>	  <if test="description != null">	    DESCRIPTION = #{description,jdbcType=VARCHAR}, 	  </if>	  <if test="corpId != null">	    CORP_ID = #{corpId,jdbcType=BIGINT}, 	  </if>	</set>	where CONFIG_ID = #{configId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.Config" >
+    update SYS_CONFIG set 	  CODE = #{code,jdbcType=VARCHAR}, VALUE = #{value,jdbcType=VARCHAR}, DESCRIPTION = #{description,jdbcType=VARCHAR}, CORP_ID = #{corpId,jdbcType=BIGINT}	where CONFIG_ID = #{configId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from SYS_CONFIG config
+    join 
+	(SELECT con.CONFIG_ID,co.CORP_NAME FROM sys_config con JOIN sys_corp co ON con.CORP_ID=co.CORP_ID) info
+	 ON config.CONFIG_ID=info.CONFIG_ID
+	<include refid="Example_Where_Clause"/>
+	order by config.CONFIG_ID DESC
+  </select>
+  	
+</mapper>   

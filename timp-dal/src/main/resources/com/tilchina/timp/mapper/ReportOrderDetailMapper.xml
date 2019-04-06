@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.ReportOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.ReportOrderDetail" >
+    <id column="REPORT_ORDER_DETAIL_ID" jdbcType="BIGINT" property="reportOrderDetailId" />
+	<result column="REPORT_ID" jdbcType="BIGINT" property="reportId" />
+	<result column="REPORT_ORDER_ID" jdbcType="BIGINT" property="reportOrderId" />
+	<result column="ORDERT_DETAIL_ID" jdbcType="BIGINT" property="ordertDetailId" />
+	<result column="TRANSPORT_DETAIL_ID" jdbcType="BIGINT" property="transportDetailId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="CAR_ID" jdbcType="BIGINT" property="carId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    REPORT_ORDER_DETAIL_ID, REPORT_ID, REPORT_ORDER_ID, ORDERT_DETAIL_ID, TRANSPORT_DETAIL_ID, CAR_VIN, CAR_ID, CORP_ID
+  </sql>
+  
+  <sql id="Example_Where_Clause">
+    where del = 0
+    <trim  suffixOverrides="," >
+      <if test="reportOrderDetailId != null and reportOrderDetailId != ''" >
+        and REPORT_ORDER_DETAIL_ID = #{reportOrderDetailId}
+      </if>
+      <if test="reportId != null and reportId != ''" >
+        and REPORT_ID = #{reportId}
+      </if>
+      <if test="reportOrderId != null and reportOrderId != ''" >
+        and REPORT_ORDER_ID = #{reportOrderId}
+      </if>
+      <if test="ordertDetailId != null and ordertDetailId != ''" >
+        and ORDERT_DETAIL_ID = #{ordertDetailId}
+      </if>
+      <if test="transportDetailId != null and transportDetailId != ''" >
+        and TRANSPORT_DETAIL_ID = #{transportDetailId}
+      </if>
+      <if test="carVin != null and carVin != ''" >
+        and (CAR_VIN = #{carVin}
+        or CAR_VIN like concat(concat('%',#{carVin}),'%')
+        )
+      </if>
+      <if test="carId != null and carId != ''" >
+        and CAR_ID = #{carId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and CORP_ID = #{corpId}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Base_Column_List"/>
+    from tc_report_order_detail
+    where REPORT_ORDER_DETAIL_ID = #{reportOrderDetailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from tc_report_order_detail where REPORT_ORDER_DETAIL_ID = #{reportOrderDetailId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.ReportOrderDetail" keyProperty="reportOrderDetailId" useGeneratedKeys="true">
+    insert into tc_report_order_detail	(REPORT_ID, REPORT_ORDER_ID, ORDERT_DETAIL_ID, TRANSPORT_DETAIL_ID, CAR_VIN, CAR_ID, CORP_ID)	values	(#{reportId,jdbcType=BIGINT}, #{reportOrderId,jdbcType=BIGINT}, #{ordertDetailId,jdbcType=BIGINT}, #{transportDetailId,jdbcType=BIGINT}, 	#{carVin,jdbcType=VARCHAR}, #{carId,jdbcType=BIGINT}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.ReportOrderDetail" keyProperty="reportOrderDetailId" useGeneratedKeys="true">
+    insert into tc_report_order_detail	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="reportId != null">	    REPORT_ID, 	  </if>	  <if test="reportOrderId != null">	    REPORT_ORDER_ID, 	  </if>	  <if test="ordertDetailId != null">	    ORDERT_DETAIL_ID, 	  </if>	  <if test="transportDetailId != null">	    TRANSPORT_DETAIL_ID, 	  </if>	  <if test="carVin != null">	    CAR_VIN, 	  </if>	  <if test="carId != null">	    CAR_ID, 	  </if>	  <if test="corpId != null">	    CORP_ID, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="reportId != null">	    #{reportId,jdbcType=BIGINT}, 	  </if>	  <if test="reportOrderId != null">	    #{reportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="ordertDetailId != null">	    #{ordertDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="transportDetailId != null">	    #{transportDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="carVin != null">	    #{carVin,jdbcType=VARCHAR}, 	  </if>	  <if test="carId != null">	    #{carId,jdbcType=BIGINT}, 	  </if>	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.ReportOrderDetail" >
+	update tc_report_order_detail	<set>	  <if test="reportId != null">	    REPORT_ID = #{reportId,jdbcType=BIGINT}, 	  </if>	  <if test="reportOrderId != null">	    REPORT_ORDER_ID = #{reportOrderId,jdbcType=BIGINT}, 	  </if>	  <if test="ordertDetailId != null">	    ORDERT_DETAIL_ID = #{ordertDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="transportDetailId != null">	    TRANSPORT_DETAIL_ID = #{transportDetailId,jdbcType=BIGINT}, 	  </if>	  <if test="carVin != null">	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 	  </if>	  <if test="carId != null">	    CAR_ID = #{carId,jdbcType=BIGINT}, 	  </if>	  <if test="corpId != null">	    CORP_ID = #{corpId,jdbcType=BIGINT}, 	  </if>	</set>	where REPORT_ORDER_DETAIL_ID = #{reportOrderDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.ReportOrderDetail" >
+    update tc_report_order_detail set 	  REPORT_ID = #{reportId,jdbcType=BIGINT}, REPORT_ORDER_ID = #{reportOrderId,jdbcType=BIGINT}, ORDERT_DETAIL_ID = #{ordertDetailId,jdbcType=BIGINT}, 	  TRANSPORT_DETAIL_ID = #{transportDetailId,jdbcType=BIGINT}, CAR_VIN = #{carVin,jdbcType=VARCHAR}, 	  CAR_ID = #{carId,jdbcType=BIGINT}, CORP_ID = #{corpId,jdbcType=BIGINT}	where REPORT_ORDER_DETAIL_ID = #{reportOrderDetailId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectByReportIdList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Base_Column_List"/>
+	from tc_report_order_detail 
+	where del = 0 and REPORT_ID = #{reportId,jdbcType=BIGINT}
+  </select>
+  
+    <select id="selectByCarVinList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Base_Column_List"/>  
+	from tc_report_order_detail 
+	where del = 0 
+	and (CAR_VIN =  #{carVin,jdbcType=VARCHAR} or CAR_VIN  LIKE CONCAT('%',#{carVin},'%') )
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Base_Column_List"/>
+	from tc_report_order_detail
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  	
+</mapper>   

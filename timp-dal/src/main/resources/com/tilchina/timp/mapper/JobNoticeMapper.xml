@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.JobNoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.JobNotice" >
+    <id column="JOB_NOTICE_ID" jdbcType="BIGINT" property="jobNoticeId" />
+	<result column="JOB_NOTICE_ID" jdbcType="BIGINT" property="jobNoticeId" />
+	<result column="JOB_NOTICE_CODE" jdbcType="VARCHAR" property="jobNoticeCode" />
+	<result column="JOB_NOTICE_NAME" jdbcType="VARCHAR" property="jobNoticeName" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+
+	  <result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	  <result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    JOB_NOTICE_ID, JOB_NOTICE_CODE, JOB_NOTICE_NAME, REMARK, CREATOR, CREATE_DATE, CORP_ID
+  </sql>
+
+	<sql id="Query_Column_List" >
+    jobnotice.JOB_NOTICE_ID, jobnotice.JOB_NOTICE_CODE, jobnotice.JOB_NOTICE_NAME, jobnotice.REMARK, jobnotice.CREATOR,
+    jobnotice.CREATE_DATE, jobnotice.CORP_ID, us.USER_NAME AS CREATE_NAME,corp.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where jobnotice.del = 0
+    <trim  suffixOverrides="," >
+      <if test="jobNoticeId != null and jobNoticeId != ''" >
+        and jobnotice.JOB_NOTICE_ID = #{jobNoticeId}
+      </if>
+      <if test="jobNoticeCode != null and jobNoticeCode != ''" >
+        and jobnotice.JOB_NOTICE_CODE LIKE  CONCAT('%',#{jobNoticeCode},'%')
+      </if>
+      <if test="jobNoticeName != null and jobNoticeName != ''" >
+        and jobnotice.JOB_NOTICE_NAME LIKE CONCAT('%',#{jobNoticeName},'%')
+      </if>
+      <if test="remark != null and remark != ''" >
+        and jobnotice.REMARK LIKE CONCAT('%',#{remark},'%')
+      </if>
+      <if test="creator != null and creator != ''" >
+        and jobnotice.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and jobnotice.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and jobnotice.CORP_ID = #{corpId}
+      </if>
+
+		<if test="searchContent != null and searchContent != ''" >
+			and (jobnotice.JOB_NOTICE_CODE LIKE  CONCAT('%',#{searchContent},'%')
+				or jobnotice.JOB_NOTICE_NAME LIKE  CONCAT('%',#{searchContent},'%')
+			)
+		</if>
+		<if test="startTime != null and startTime != ''">
+			<![CDATA[ and jobnotice.CREATE_DATE  >=  #{startTime}  ]]>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			<![CDATA[ and jobnotice.CREATE_DATE  <=  #{endTime}  ]]>
+		</if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from sys_job_notice jobnotice
+		left join bd_user us on jobnotice.CREATOR=us.USER_ID
+		left join sys_corp corp on jobnotice.CORP_ID=corp.CORP_ID
+    where jobnotice.del=0 and jobnotice.JOB_NOTICE_ID = #{jobNoticeId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update  sys_job_notice set del=1 where JOB_NOTICE_ID = #{jobNoticeId}
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.JobNotice" keyProperty="jobNoticeId" useGeneratedKeys="true">
+    insert into sys_job_notice
+	(JOB_NOTICE_CODE, JOB_NOTICE_NAME, REMARK, CREATOR, CREATE_DATE, CORP_ID)
+	values
+	(#{jobNoticeCode,jdbcType=VARCHAR}, #{jobNoticeName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=BIGINT}, 
+	#{createDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.JobNotice" keyProperty="jobNoticeId" useGeneratedKeys="true">
+    insert into sys_job_notice
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="jobNoticeCode != null">
+	    JOB_NOTICE_CODE, 
+	  </if>
+	  <if test="jobNoticeName != null">
+	    JOB_NOTICE_NAME, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="jobNoticeCode != null">
+	    #{jobNoticeCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="jobNoticeName != null">
+	    #{jobNoticeName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.JobNotice" >
+	update sys_job_notice
+	<set>
+	  <if test="jobNoticeCode != null">
+	    JOB_NOTICE_CODE = #{jobNoticeCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="jobNoticeName != null">
+	    JOB_NOTICE_NAME = #{jobNoticeName,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK = #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where JOB_NOTICE_ID = #{jobNoticeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.JobNotice" >
+    update sys_job_notice set 
+	  JOB_NOTICE_CODE = #{jobNoticeCode,jdbcType=VARCHAR}, JOB_NOTICE_NAME = #{jobNoticeName,jdbcType=VARCHAR}, REMARK = #{remark,jdbcType=VARCHAR}, 
+	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where JOB_NOTICE_ID = #{jobNoticeId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	  select
+	  <include refid="Query_Column_List"/>
+	  from sys_job_notice jobnotice
+	  left join bd_user us on jobnotice.CREATOR=us.USER_ID
+	  left join sys_corp corp on jobnotice.CORP_ID=corp.CORP_ID
+	  <include refid="Example_Where_Clause"/>
+	  order by jobnotice.CREATE_DATE desc
+  </select>
+
+   <select id="queryByCode"  resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Query_Column_List"/>
+		from sys_job_notice jobnotice
+		left join bd_user us on jobnotice.CREATOR=us.USER_ID
+		left join sys_corp corp on jobnotice.CORP_ID=corp.CORP_ID
+		where jobnotice.del=0 and jobnotice.JOB_NOTICE_CODE = #{jobNoticeCode,jdbcType=VARCHAR}
+	</select>
+  	
+</mapper>   

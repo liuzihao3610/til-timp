@@ -1,0 +1,21 @@
+{
+  "data":{
+    "oilDepotId":0,
+    "oilDepotCode":"Test-oilDepotCode",
+    "oilDepotType":0,
+    "oilLabel":"Test-oilLabel",
+    "allowance":0,
+    "oilDepotStatus":0,
+    "remark":"Test-remark",
+    "managePerson":0,
+    "phone":"Test-phone",
+    "provinceId":0,
+    "cityId":0,
+    "areaId":0,
+    "oilDepotAddress":"Test-oilDepotAddress",
+    "creator":0,
+    "createDate":"2018-05-30 03:00:33",
+    "corpId":0,
+    "flag":0
+  }
+}

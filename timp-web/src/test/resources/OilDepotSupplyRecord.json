@@ -1,0 +1,14 @@
+{
+  "data":{
+    "oilDepotSupplyRecordId":0,
+    "oilDepotId":0,
+    "allowanceBeforeSupply":0,
+    "oilSupply":0,
+    "unitPrice":0,
+    "totalPrice":0,
+    "managePerson":0,
+    "supplyDate":"2018-05-30 03:00:33",
+    "creator":0,
+    "createDate":"2018-05-30 03:00:33"
+  }
+}

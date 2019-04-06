@@ -1,0 +1,12 @@
+{
+  "data":{
+    "cardReceiveRecordId":0,
+    "cardResourceId":0,
+    "receiveBalance":0,
+    "driverId":0,
+    "transporterId":0,
+    "receiveDate":"2018-05-30 03:00:32",
+    "creator":0,
+    "createDate":"2018-05-30 03:00:32"
+  }
+}

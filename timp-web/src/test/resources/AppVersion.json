@@ -1,0 +1,15 @@
+{
+  "data":{
+    "appId":0,
+    "appVersion":"Test-appVersion",
+    "appPath":"Test-appPath",
+    "appUpdateLog":"Test-appUpdateLog",
+    "appSize":0,
+    "appMd5":"Test-appMd5",
+    "appConstraint":0,
+    "creator":0,
+    "createDate":"2018-06-14 02:37:21",
+    "corpId":0,
+    "flag":0
+  }
+}

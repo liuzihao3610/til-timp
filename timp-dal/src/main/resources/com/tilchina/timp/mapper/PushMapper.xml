@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.PushMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.Push" >
+    <id column="PUSH_ID" jdbcType="BIGINT" property="pushId" />
+    <result column="PLATFORM_TYPE" jdbcType="INTEGER" property="platformType" />
+	<result column="PUSH_TYPE" jdbcType="INTEGER" property="pushType" />
+	<result column="AUDIENCE_TYPE" jdbcType="INTEGER" property="audienceType" />
+	<result column="AUDIENCE" jdbcType="VARCHAR" property="audience" />
+	<result column="NOTIFICATION_TYPE" jdbcType="INTEGER" property="notificationType" />
+	<result column="CONTNET" jdbcType="VARCHAR" property="content" />
+	<result column="TITLE" jdbcType="VARCHAR" property="title" />
+	<result column="CID" jdbcType="VARCHAR" property="cid" />
+	<result column="PUSH_COUNT" jdbcType="INTEGER" property="pushCount" />
+	  <result column="RECIPIENT" jdbcType="BIGINT" property="recipient" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	 
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    PUSH_ID,PLATFORM_TYPE, PUSH_TYPE, AUDIENCE_TYPE, AUDIENCE, NOTIFICATION_TYPE, CONTNET, TITLE, CID, PUSH_COUNT, RECIPIENT, CREATOR, CREATE_DATE,
+	CORP_ID, FLAG
+  </sql>
+  
+  <sql id="Query_Column_List" >
+	push.PUSH_ID,PLATFORM_TYPE,push.PUSH_TYPE, push.AUDIENCE_TYPE, push.AUDIENCE, push.NOTIFICATION_TYPE, push.CONTNET, push.TITLE, push.CID, push.PUSH_COUNT,
+	push.RECIPIENT , push.CREATOR, creator.USER_NAME,push.CREATE_DATE, push.CORP_ID, corp.CORP_NAME,push.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where push.del = 0
+    <trim  suffixOverrides="," >
+      <if test="pushId != null and pushId != ''" >
+        and push.PUSH_ID = #{pushId}
+      </if>
+      <if test="platformType != null and platformType != ''" >
+        and push.PLATFORM_TYPE = #{platformType}
+      </if>
+      <if test="pushType != null and pushType != ''" >
+        and push.PUSH_TYPE = #{pushType}
+      </if>
+      <if test="audienceType != null and audienceType != ''" >
+        and push.AUDIENCE_TYPE = #{audienceType}
+      </if>
+      <if test="audience != null and audience != ''" >
+        and push.AUDIENCE = #{audience}
+      </if>
+      <if test="notificationType != null and notificationType != ''" >
+        and push.NOTIFICATION_TYPE = #{notificationType}
+      </if>
+      <if test="content != null and content != ''" >
+        and push.CONTNET = #{content}
+      </if>
+      <if test="title != null and title != ''" >
+        and push.TITLE = #{title}
+      </if>
+      <if test="cid != null and cid != ''" >
+        and push.CID = #{cid}
+      </if>
+      <if test="pushCount != null and pushCount != ''" >
+        and push.PUSH_COUNT = #{pushCount}
+      </if>
+		<if test="recipient != null and recipient != ''" >
+			and push.RECIPIENT = #{recipient}
+		</if>
+      <if test="creator != null and creator != ''" >
+		and push.CREATOR = #{creator}
+	  </if>
+      <if test="createDate != null and createDate != ''" >
+        and push.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and push.CORP_ID = #{corpId}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and push.FLAG = #{flag}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from jg_push push
+    left JOIN sys_corp corp ON corp.CORP_ID = push.CORP_ID
+    left JOIN bd_user creator ON creator.USER_ID = push.creator
+    where push.PUSH_ID = #{pushId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from jg_push where PUSH_ID = #{pushId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.Push" keyProperty="pushId" useGeneratedKeys="true">
+    insert into jg_push
+	(PLATFORM_TYPR, PUSH_TYPE, AUDIENCE_TYPE, AUDIENCE, NOTIFICATION_TYPE, CONTNET, TITLE, CID, PUSH_COUNT, RECIPIENT,CREATOR, CREATE_DATE,
+	CORP_ID, FLAG)
+	values
+	(#{platformType,jdbcType=INTEGER}, #{pushType,jdbcType=INTEGER}, #{audienceType,jdbcType=INTEGER}, #{audience,jdbcType=VARCHAR}, 
+	#{notificationType,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR}, 
+	#{pushCount,jdbcType=INTEGER}, #{recipient,jdbcType=BIGINT}, #{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT},
+	#{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.Push" keyProperty="pushId" useGeneratedKeys="true">
+    insert into jg_push
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="platformType != null">
+	    PLATFORM_TYPE, 
+	  </if>
+	  <if test="pushType != null">
+	    PUSH_TYPE, 
+	  </if>
+	  <if test="audienceType != null">
+	    AUDIENCE_TYPE, 
+	  </if>
+	  <if test="audience != null">
+	    AUDIENCE, 
+	  </if>
+	  <if test="notificationType != null">
+	    NOTIFICATION_TYPE, 
+	  </if>
+	  <if test="content != null">
+	    CONTNET, 
+	  </if>
+	  <if test="title != null">
+	    TITLE, 
+	  </if>
+	  <if test="cid != null">
+	    CID, 
+	  </if>
+	  <if test="pushCount != null">
+	    PUSH_COUNT, 
+	  </if>
+		<if test="recipient != null">
+			RECIPIENT,
+		</if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	   <if test="platformType != null">
+	    #{platformType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="pushType != null">
+	    #{pushType,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="audienceType != null">
+	    #{audienceType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="audience != null">
+	    #{audience,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="notificationType != null">
+	    #{notificationType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="content != null">
+	    #{content,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="title != null">
+	    #{title,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="cid != null">
+	    #{cid,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="pushCount != null">
+	    #{pushCount,jdbcType=INTEGER}, 
+	  </if>
+		<if test="recipient != null">
+			#{recipient,jdbcType=BIGINT},
+		</if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="flag != null">
+	    #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.Push" >
+	update jg_push
+	<set>
+	   <if test="platformType != null">
+	    PLATFORM_TYPE = #{platformType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="pushType != null">
+	    PUSH_TYPE = #{pushType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="audienceType != null">
+	    AUDIENCE_TYPE = #{audienceType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="audience != null">
+	    AUDIENCE = #{audience,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="notificationType != null">
+	    NOTIFICATION_TYPE = #{notificationType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="content != null">
+	    CONTNET = #{content,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="title != null">
+	    TITLE = #{title,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="cid != null">
+	    CID = #{cid,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="pushCount != null">
+	    PUSH_COUNT = #{pushCount,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="flag != null">
+	    FLAG = #{flag,jdbcType=INTEGER}, 
+	  </if>
+	</set>
+	where PUSH_ID = #{pushId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.Push" >
+    update jg_push set 
+	  PLATFORM_TYPR = #{platformtType,jdbcType=INTEGER},PUSH_TYPE = #{pushType,jdbcType=INTEGER}, AUDIENCE_TYPE = #{audienceType,jdbcType=INTEGER}, 
+	  AUDIENCE = #{audience,jdbcType=VARCHAR}, NOTIFICATION_TYPE = #{notificationType,jdbcType=INTEGER}, CONTNET = #{content,jdbcType=VARCHAR}, 
+	  TITLE = #{title,jdbcType=VARCHAR}, CID = #{cid,jdbcType=VARCHAR}, PUSH_COUNT = #{pushCount,jdbcType=INTEGER}, 
+	  RECIPIENT = #{recipient,jdbcType=BIGINT}, CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT},
+	  FLAG = #{flag,jdbcType=INTEGER}
+	where PUSH_ID = #{pushId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from jg_push push
+    left JOIN sys_corp corp ON corp.CORP_ID = push.CORP_ID
+    left JOIN bd_user creator ON creator.USER_ID = push.creator
+	<include refid="Example_Where_Clause"/>
+    order by push.CREATE_DATE DESC
+  </select>
+  	
+</mapper>   

@@ -1,0 +1,17 @@
+{
+  "data":{
+    "driverLoginId":0,
+    "driverId":0,
+    "password":"Test-password",
+    "token":"Test-token",
+    "ldentifier":"Test-ldentifier",
+    "userAgent":"Test-userAgent",
+    "clientType":0,
+    "errorTimes":0,
+    "block":0,
+    "ip":"Test-ip",
+    "recentlyLogintime":"2018-03-28 02:32:06",
+    "corpId":0,
+    "flag":0
+  }
+}

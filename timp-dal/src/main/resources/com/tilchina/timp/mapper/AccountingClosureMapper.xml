@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.AccountingClosureMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.AccountingClosure" >
+    <id column="CLOSURE_ID" jdbcType="BIGINT" property="closureId" />
+	<result column="CLOSURE_ID" jdbcType="BIGINT" property="closureId" />
+	<result column="CLOSURE_NUMBER" jdbcType="VARCHAR" property="closureNumber" />
+	<result column="ACCOUNT_PERIOD" jdbcType="TIMESTAMP" property="accountPeriod" />
+	<result column="VIN_COUNT" jdbcType="INTEGER" property="vinCount" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CLOSURE_ID, CLOSURE_NUMBER, ACCOUNT_PERIOD, VIN_COUNT, CREATOR, CREATE_DATE, CORP_ID
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where ac.del = 0
+    <trim  suffixOverrides="," >
+      <if test="closureId != null and closureId != ''" >
+        and ac.CLOSURE_ID = #{closureId}
+      </if>
+      <if test="closureNumber != null and closureNumber != ''" >
+        and ac.CLOSURE_NUMBER = #{closureNumber}
+      </if>
+      <if test="accountPeriod != null and accountPeriod != ''" >
+        and ac.ACCOUNT_PERIOD = #{accountPeriod}
+      </if>
+      <if test="vinCount != null and vinCount != ''" >
+        and ac.VIN_COUNT = #{vinCount}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and ac.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and ac.CREATE_DATE = #{createDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and ac.CORP_ID = #{corpId}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Base_Column_List"/>
+    from fs_accounting_closure
+    where CLOSURE_ID = #{closureId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from fs_accounting_closure where CLOSURE_ID = #{closureId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.AccountingClosure" keyProperty="closureId" useGeneratedKeys="true">
+    insert into fs_accounting_closure
+	(CLOSURE_NUMBER, ACCOUNT_PERIOD, VIN_COUNT, CREATOR, CREATE_DATE, CORP_ID)
+	values
+	(#{closureNumber,jdbcType=VARCHAR}, #{accountPeriod,jdbcType=TIMESTAMP}, #{vinCount,jdbcType=INTEGER}, #{creator,jdbcType=BIGINT},
+	#{createDate,jdbcType=TIMESTAMP}, #{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.AccountingClosure" keyProperty="closureId" useGeneratedKeys="true">
+    insert into fs_accounting_closure
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="closureNumber != null">
+	    CLOSURE_NUMBER, 
+	  </if>
+	  <if test="accountPeriod != null">
+	    ACCOUNT_PERIOD, 
+	  </if>
+	  <if test="vinCount != null">
+	    VIN_COUNT, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="closureNumber != null">
+	    #{closureNumber,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="accountPeriod != null">
+	    #{accountPeriod,jdbcType=TIMESTAMP},
+	  </if>
+	  <if test="vinCount != null">
+	    #{vinCount,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.AccountingClosure" >
+	update fs_accounting_closure
+	<set>
+	  <if test="closureNumber != null">
+	    CLOSURE_NUMBER = #{closureNumber,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="accountPeriod != null">
+	    ACCOUNT_PERIOD = #{accountPeriod,jdbcType=TIMESTAMP},
+	  </if>
+	  <if test="vinCount != null">
+	    VIN_COUNT = #{vinCount,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR = #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where CLOSURE_ID = #{closureId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.AccountingClosure" >
+    update fs_accounting_closure set 
+	  CLOSURE_NUMBER = #{closureNumber,jdbcType=VARCHAR}, ACCOUNT_PERIOD = #{accountPeriod,jdbcType=TIMESTAMP}, VIN_COUNT = #{vinCount,jdbcType=INTEGER},
+	  CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where CLOSURE_ID = #{closureId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Base_Column_List"/>
+	from fs_accounting_closure ac
+	<include refid="Example_Where_Clause"/>
+       order by ac.CREATE_DATE DESC
+  </select>
+
+	<select id="selectCarVinByDate" parameterType="java.util.Date" resultType="java.lang.String">
+		select self.CAR_VIN from st_stock_car self
+		join st_stock_car sc on self.CAR_VIN = sc.CAR_VIN
+		join om_transport_order_detail tod on self.CAR_VIN = tod.CAR_VIN
+		where sc.SHUT_BILL_STATUS = 0
+		<![CDATA[ and tod.REALITY_LOADING_DATE <= #{accountPeriod} ]]>
+	</select>
+  	
+</mapper>   

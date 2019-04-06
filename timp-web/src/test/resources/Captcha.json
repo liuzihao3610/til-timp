@@ -1,0 +1,14 @@
+{
+  "data":{
+    "captchaId":0,
+    "userId":0,
+    "phoneNum":"Test-phoneNum",
+    "captchaCode":"Test-captchaCode",
+    "identifier":"Test-identifier",
+    "ip":"Test-ip",
+    "captchaType":"Test-captchaType",
+    "sendTime":"2018-04-01 04:42:18",
+    "captchaStatus":0,
+    "corpId":0
+  }
+}

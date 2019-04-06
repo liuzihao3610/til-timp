@@ -1,0 +1,17 @@
+{
+  "data":{
+    "transOrderId":0,
+    "transOrderCode":"Test-transOrderCode",
+    "carrier":"Test-carrier",
+    "hubLocation":"Test-hubLocation",
+    "carBatch":"Test-carBatch",
+    "remark":"Test-remark",
+    "creator":0,
+    "createDate":"2018-04-16 07:39:29",
+    "checker":0,
+    "checkDate":"2018-04-16 07:39:29",
+    "billStatus":0,
+    "corpId":0,
+    "flag":0
+  }
+}

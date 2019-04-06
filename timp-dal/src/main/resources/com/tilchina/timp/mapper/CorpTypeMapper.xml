@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.CorpTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.CorpType" >
+    <id column="CORP_TYPE_ID" jdbcType="BIGINT" property="corpTypeId" />
+	<result column="CORP_TYPE_ID" jdbcType="BIGINT" property="corpTypeId" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	<result column="TYPE_KEY" jdbcType="INTEGER" property="typeKey" />
+	<result column="TYPE_NAME" jdbcType="VARCHAR" property="typeName" />
+	<result column="FLAG" jdbcType="INTEGER" property="flag" />
+	
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CORP_TYPE_ID, CORP_ID, TYPE_KEY, TYPE_NAME, FLAG
+  </sql>
+  <sql id="Query_Column_List" >
+    corpType.CORP_TYPE_ID, corpType.CORP_ID,corp.CORP_NAME, corpType.TYPE_KEY, corpType.TYPE_NAME, corpType.FLAG
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where corpType.del = 0
+    <trim  suffixOverrides="," >
+      <if test="corpTypeId != null and corpTypeId != ''" >
+        and corpType.CORP_TYPE_ID = #{corpTypeId}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and corpType.CORP_ID = #{corpId}
+      </if>
+      <if test="typeKey != null and typeKey != ''" >
+        and TYPE_KEY = #{typeKey}
+      </if>
+      <if test="typeName != null and typeName != ''" >
+        and corpType.TYPE_NAME = #{typeName}
+      </if>
+      <if test="flag != null and flag != ''" >
+        and corpType.FLAG = #{flag}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and corpType.TYPE_NAME LIKE CONCAT('%',#{searchContent},'%')
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from sys_corp_type corpType
+    join sys_corp corp on corpType.CORP_ID=corp.CORP_ID
+    where corpType.CORP_TYPE_ID = #{corpTypeId,jdbcType=BIGINT}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update sys_corp_type set DEL=1 where CORP_TYPE_ID = #{corpTypeId}
+  </update>
+  <update id="deleteList"  parameterType="java.lang.reflect.Array" >
+  	  	update SYS_CORP_TYPE	
+  		<if test="null!=array || 0!=array.length">
+  		 set DEL=1 where	CORP_TYPE_ID in
+  	 		<foreach item="corpTypeId" collection="array" open="(" separator="," close=")">
+  	 			#{corpTypeId}
+  	 		</foreach>
+  		</if>
+  		
+  </update>
+  <insert id="insert" parameterType="com.tilchina.timp.model.CorpType" keyProperty="corpTypeId" useGeneratedKeys="true">
+    insert into sys_corp_type	(CORP_ID, TYPE_KEY, TYPE_NAME, FLAG)	values	(#{corpId,jdbcType=BIGINT}, #{typeKey,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.CorpType" keyProperty="corpTypeId" useGeneratedKeys="true">
+    insert into sys_corp_type	<trim prefix="(" suffix=")" suffixOverrides=",">	  <if test="corpId != null">	    CORP_ID, 	  </if>	  <if test="typeKey != null">	    TYPE_KEY, 	  </if>	  <if test="typeName != null">	    TYPE_NAME, 	  </if>	  <if test="flag != null">	    FLAG, 	  </if>	</trim>	<trim prefix="values (" suffix=")" suffixOverrides=",">	  <if test="corpId != null">	    #{corpId,jdbcType=BIGINT}, 	  </if>	  <if test="typeKey != null">	    #{typeKey,jdbcType=INTEGER}, 	  </if>	  <if test="typeName != null">	    #{typeName,jdbcType=VARCHAR}, 	  </if>	  <if test="flag != null">	    #{flag,jdbcType=INTEGER}, 	  </if>	</trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.CorpType" >
+	update sys_corp_type	<set>	  <if test="corpId != null">	    CORP_ID = #{corpId,jdbcType=BIGINT}, 	  </if>	  <if test="typeKey != null">	    TYPE_KEY = #{typeKey,jdbcType=INTEGER}, 	  </if>	  <if test="typeName != null">	    TYPE_NAME = #{typeName,jdbcType=VARCHAR}, 	  </if>	  <if test="flag != null">	    FLAG = #{flag,jdbcType=INTEGER}, 	  </if>	</set>	where CORP_TYPE_ID = #{corpTypeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.CorpType" >
+    update sys_corp_type set 	  CORP_ID = #{corpId,jdbcType=BIGINT}, TYPE_KEY = #{typeKey,jdbcType=INTEGER}, TYPE_NAME = #{typeName,jdbcType=VARCHAR}, 	  FLAG = #{flag,jdbcType=INTEGER}	where CORP_TYPE_ID = #{corpTypeId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from sys_corp_type corpType 
+	JOIN sys_corp corp ON corpType.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by corpType.CORP_TYPE_ID DESC
+  </select>
+  
+  <select id="getCorpTypeNameList" resultType="java.util.Map" parameterType="Object">
+  	SELECT corpType.CORP_TYPE_ID,corpType.TYPE_NAME 
+  	FROM sys_corp_type  corpType
+  	JOIN sys_corp corp ON corpType.CORP_ID=corp.CORP_ID
+  	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  <select id="getReferenceList"  resultType="java.util.Map" parameterType="Object">
+  	SELECT corpType.CORP_TYPE_ID AS corpType,corpType.TYPE_NAME AS typeName 
+  	FROM sys_corp_type  corpType
+  	JOIN sys_corp corp ON corpType.CORP_ID=corp.CORP_ID
+	<include refid="Example_Where_Clause"/> 
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="queryByCorpId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from sys_corp_type corpType
+    join sys_corp corp on corpType.CORP_ID=corp.CORP_ID
+    where corpType.CORP_ID = #{corpTypeId,jdbcType=BIGINT}
+  </select>
+  	
+</mapper>   

@@ -1,0 +1,12 @@
+{
+  "data":{
+    "customerId":0,
+    "customerCorpId":0,
+    "dealerNumber":"Test-dealerNumber",
+    "recvSendUnitId":0,
+    "creator":0,
+    "createDate":"2018-05-14 04:29:12",
+    "corpId":0,
+    "flag":0
+  }
+}

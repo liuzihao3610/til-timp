@@ -1,0 +1,15 @@
+{
+  "data":{
+    "damageDetailId":0,
+    "damageId":0,
+    "damagePositionId":0,
+    "damageDegree":0,
+    "damageRegistration":0,
+    "damageCauseCn":"Test-damageCauseCn",
+    "damageCauseEn":"Test-damageCauseEn",
+    "damageDate":"2018-04-26 01:30:54",
+    "remark":"Test-remark",
+    "createDate":"2018-04-26 01:30:54",
+    "creator":0
+  }
+}

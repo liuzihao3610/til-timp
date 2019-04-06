@@ -1,0 +1,11 @@
+{
+  "data":{
+    "jobNoticeId":0,
+    "jobNoticeCode":"Test-jobNoticeCode",
+    "jobNoticeName":"Test-jobNoticeName",
+    "remark":"Test-remark",
+    "creator":0,
+    "createDate":"2018-07-11 09:06:48",
+    "corpId":0
+  }
+}

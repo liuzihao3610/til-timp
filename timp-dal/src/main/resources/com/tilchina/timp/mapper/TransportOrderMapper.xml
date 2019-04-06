@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransportOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransportOrder" >
+    <id column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="transportOrderCode" />
+	<result column="JOB_TYPE" jdbcType="INTEGER" property="jobType" />
+	<result column="EXAMINATION" jdbcType="INTEGER" property="examination" />
+	<result column="URGENT" jdbcType="INTEGER" property="urgent" />
+	<result column="PREDICT_KM" jdbcType="DOUBLE" property="predictKm" />
+	<result column="PRACTICAL_KM" jdbcType="DOUBLE" property="practicalKm" />
+	<result column="DRIVER_ID" jdbcType="BIGINT" property="driverId" />
+	<result column="TRANSPORTER_ID" jdbcType="BIGINT" property="transporterId" />
+	<result column="LOADING_DATE" jdbcType="DATE" property="loadingDate" />
+	<result column="CARRIAGE_CORP_ID" jdbcType="BIGINT" property="carriageCorpId" />
+	<result column="SALESMAN_ID" jdbcType="BIGINT" property="salesmanId" />
+	<result column="TRANSMIT_DATE" jdbcType="TIMESTAMP" property="transmitDate" />
+	<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus" />
+	<result column="CREATOR" jdbcType="BIGINT" property="creator" />
+	<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+	<result column="CHECKER" jdbcType="BIGINT" property="checker" />
+	<result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="RECEIVING_DATE" jdbcType="TIMESTAMP" property="receivingDate" />
+	<result column="SETTLE_TYPE" jdbcType="INTEGER" property="settleType" />
+	<result column="SETTLE_STATUS" jdbcType="INTEGER" property="settleStatus" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    
+	<result column="DRIVER_NAME" jdbcType="VARCHAR" property="refDriverName" />
+	<result column="DRIVER_CODE" jdbcType="VARCHAR" property="refDriverCode" />
+	<result column="TRANSPORTER_CODE" jdbcType="VARCHAR" property="refTransporterCode" />
+	<result column="CARRIAGE_CORP_NAME" jdbcType="VARCHAR" property="refCarriageCorpName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+	<result column="CREATE_NAME" jdbcType="VARCHAR" property="refCreateName" />
+	<result column="CHECKER_NAME" jdbcType="VARCHAR" property="refCheckerName" />
+    <result column="TRACTIR_PLATE_CODE" jdbcType="VARCHAR" property="refTractirPlateCode" />
+    <result column="TRAILER_PLATE_CODE" jdbcType="VARCHAR" property="refTrailerPlateCode" />
+    <result column="ASSISTANT_DRIVER_ID" jdbcType="VARCHAR" property="refAssistantDriverName" />
+    <result column="TRACTOR_CODE" jdbcType="VARCHAR" property="refTractorName" />
+    <result column="SALESMAN_NAME" jdbcType="VARCHAR" property="refSalesmanName" />
+    <result column="MAX_QUANTITY" jdbcType="VARCHAR" property="refMaxQuantity" />
+	
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANSPORT_ORDER_ID, TRANSPORT_ORDER_CODE, JOB_TYPE, EXAMINATION,URGENT, PREDICT_KM, PRACTICAL_KM, DRIVER_ID, TRANSPORTER_ID, 
+	LOADING_DATE, CARRIAGE_CORP_ID,SALESMAN_ID,TRANSMIT_DATE,RECEIVING_DATE,SETTLE_TYPE,SETTLE_STATUS,REMARK,
+    BILL_STATUS, CREATOR, CREATE_DATE, CHECKER, CHECK_DATE, CORP_ID
+  </sql>
+   
+  <sql id="Refer_Column_List" >
+    tso.TRANSPORT_ORDER_ID, tso.TRANSPORT_ORDER_CODE, tso.JOB_TYPE, tso.EXAMINATION ,tso.URGENT,
+     dr.USER_NAME as DRIVER_NAME,user.USER_CODE as DRIVER_CODE,tr.TRACTIR_PLATE_CODE
+  </sql>
+  
+  <sql id="Query_Column_List" >
+    tso.TRANSPORT_ORDER_ID, trailer.MAX_QUANTITY,tso.TRANSPORT_ORDER_CODE,tractor.TRACTOR_CODE, tso.JOB_TYPE, tso.EXAMINATION ,tso.URGENT,tso.PREDICT_KM, tso.PRACTICAL_KM, tso.DRIVER_ID,
+    dr.USER_NAME as DRIVER_NAME,dr.USER_CODE as DRIVER_CODE, ass.USER_NAME as ASSISTANT_Driver_NAME,tso.TRANSPORTER_ID, tr.TRANSPORTER_CODE,tr.TRACTIR_PLATE_CODE,
+    tr.TRAILER_PLATE_CODE, tso.LOADING_DATE,  tso.CARRIAGE_CORP_ID,ccorp.CORP_NAME as CARRIAGE_CORP_NAME,
+    tso.RECEIVING_DATE,tso.SETTLE_TYPE,tso.SETTLE_STATUS,tso.REMARK,tso.SALESMAN_ID, tso.TRANSMIT_DATE, tso.BILL_STATUS, tso.CREATOR,salesmen.USER_NAME as SALESMAN_NAME,
+    creator.USER_NAME as CREATE_NAME,tso.CREATE_DATE, tso.CHECKER,checker.USER_NAME as CHECKER_NAME, tso.CHECK_DATE, tso.CORP_ID,corp.CORP_NAME
+  </sql>
+  
+   <sql id="Driver_Where_Clause">
+    where tso.del = 0
+    <trim  suffixOverrides="," >
+      <if test="driverId != null and driverId != ''" >
+        and tso.DRIVER_ID = #{driverId}
+      </if>
+      <if test="appBillStatus != null and appBillStatus != ''" >
+	      <if  test="appBillStatus == 'query'.toString()" >
+	        and tso.BILL_STATUS >= 5
+	      </if>
+	      <if  test="appBillStatus == 'get'.toString()" >
+	        and( tso.BILL_STATUS = 2 or tso.BILL_STATUS = 3 or tso.BILL_STATUS = 4 )
+	      </if >
+	      <if  test="appBillStatus == 'reservation'.toString()" >
+	        and( tso.BILL_STATUS = 2 or tso.BILL_STATUS = 3 )
+	      </if >
+      </if>
+      <if test="billStatus != null and billStatus != ''" >
+        and tso.BILL_STATUS = #{billStatus}
+      </if>
+      <if test="startLoadingDate != null and startLoadingDate != ''">
+		<![CDATA[ and tso.RECEIVING_DATE  >=  #{startLoadingDate}  ]]>
+	  </if>
+	  <if test="endLoadingDate != null and endLoadingDate != ''">
+	    <![CDATA[ and tso.RECEIVING_DATE  <=  #{endLoadingDate}  ]]>
+	  </if>
+	  <if test="jobType != null and jobType != ''" >
+        and tso.JOB_TYPE = #{jobType}
+      </if>
+      <if test="examination != null and examination != ''" >
+        and tso.EXAMINATION = #{examination}
+      </if>
+       <if test="refTractirPlateCode != null and refTractirPlateCode != ''" >
+        or tr.TRACTIR_PLATE_CODE like concat(concat('%',#{carVin}),'%')
+      </if>
+      <if test="refTransportOrderCode != null and refTransportOrderCode != ''" >
+        and  tso.TRANSPORT_ORDER_CODE like concat(concat('%',#{refTransportOrderCode}),'%')
+      </if>
+	  <if test="searchContent != null and searchContent != ''" >
+        and (
+        tso.TRANSPORT_ORDER_CODE like concat(concat('%',#{searchContent}),'%')
+        or tr.TRACTIR_PLATE_CODE  like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+
+    </trim>
+  </sql> 
+  
+  <sql id="Example_Where_Clause">
+    where tso.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and tso.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="transportOrderCode != null and transportOrderCode != ''" >
+        and 
+        (
+        tso.TRANSPORT_ORDER_CODE = #{transportOrderCode}
+        or tso.TRANSPORT_ORDER_CODE like concat(concat('%',#{transportOrderCode}),'%')
+        )
+      </if>
+      <if test="jobType != null and jobType != ''" >
+        and tso.JOB_TYPE = #{jobType}
+      </if>
+      <if test="examination != null and examination != ''" >
+        and tso.EXAMINATION = #{examination}
+      </if>
+      <if test="URGENT != null and URGENT != ''" >
+        and tso.URGENT = #{urgent}
+      </if>
+      <if test="predictKm != null and predictKm != ''" >
+        and tso.PREDICT_KM = #{predictKm}
+      </if>
+      <if test="practicalKm != null and practicalKm != ''" >
+        and tso.PRACTICAL_KM = #{practicalKm}
+      </if>
+      <if test="driverId != null and driverId != ''" >
+        and tso.DRIVER_ID = #{driverId}
+      </if>
+      <if test="transporterId != null and transporterId != ''" >
+        and tso.TRANSPORTER_ID = #{transporterId}
+      </if>
+      <if test="loadingDate != null and loadingDate != ''" >
+        and tso.LOADING_DATE = #{loadingDate}
+      </if>
+      <if test="salesmanId != null and salesmanId != ''" >
+        and tso.SALESMAN_ID = #{salesmanId}
+      </if>
+      <if test="transmitDate != null and transmitDate != ''" >
+        and (tso.TRANSMIT_DATE = #{transmitDate}
+        or tso.TRANSMIT_DATE like concat(concat('%',#{transmitDate}),'%')
+        )
+      </if>
+      <if test="receivingDate != null and receivingDate != ''" >
+        and tso.RECEIVING_DATE = #{receivingDate}
+      </if>
+      <if test="settleType != null and settleType != ''" >
+        and tso.SETTLE_TYPE = #{settleType}
+      </if>
+      <if test="settleStatus != null and settleStatus != ''" >
+        and tso.SETTLE_STATUS = #{settleStatus}
+      </if>
+      <if test="remark != null and remark != ''" >
+        and tso.REMARK = #{remark}
+      </if>
+      <if test="billStatus != null and billStatus != ''" >
+        and tso.BILL_STATUS = #{billStatus}
+      </if>
+      <if test="creator != null and creator != ''" >
+        and tso.CREATOR = #{creator}
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and tso.CREATE_DATE = #{createDate}
+      </if>
+      <if test="checker != null and checker != ''" >
+        and tso.CHECKER = #{checker}
+      </if>
+      <if test="checkDate != null and checkDate != ''" >
+        and 
+        (tso.CHECK_DATE = #{checkDate}
+        or tso.CHECK_DATE like concat(concat('%',#{checkDate}),'%')
+        )
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and (tso.CORP_ID = #{corpId} or tso.CARRIAGE_CORP_ID = #{corpId})
+      </if>
+      <if test="carriageCorpId != null and carriageCorpId != ''" >
+        and tso.CARRIAGE_CORP_ID = #{carriageCorpId}
+      </if>
+		<if test="startDate != null and startDate != ''">
+			<![CDATA[ and tso.RECEIVING_DATE  >=  #{startDate}  ]]>
+		</if>
+		<if test="endDate != null and endDate != ''">
+			<![CDATA[ and tso.RECEIVING_DATE  <=  #{endDate}  ]]>
+		</if>
+      <if test="startLoadingDate != null and startLoadingDate != ''">
+		<![CDATA[ and tso.LOADING_DATE  >=  #{startLoadingDate}  ]]>
+	  </if>
+	  <if test="endLoadingDate != null and endLoadingDate != ''">
+	    <![CDATA[ and tso.LOADING_DATE  <=  #{endLoadingDate}  ]]>
+	  </if>
+
+		<if test="carVin != null and carVin != ''" >
+			and detail.CAR_VIN like concat(concat('%',#{carVin}),'%')
+		</if>
+
+	  <if test="searchContent != null and searchContent != ''" >
+        and (
+        tso.TRANSPORT_ORDER_CODE like concat(concat('%',#{searchContent}),'%')
+        or dr.USER_NAME like concat(concat('%',#{searchContent}),'%')
+        or dr.USER_CODE like concat(concat('%',#{searchContent}),'%')
+		or detail.CAR_VIN like concat(concat('%',#{searchContent}),'%')
+		or tr.TRACTIR_PLATE_CODE like concat(concat('%',#{searchContent}),'%')
+        )
+      </if>
+      
+     <if test="refDriverName != null and refDriverName != ''" >
+        and (
+         dr.USER_NAME  = #{refDriverName}
+        or dr.USER_NAME like concat(concat('%',#{refDriverName}),'%')
+        )
+      </if>
+      
+ 	  <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and tso.CREATE_DATE  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and tso.CREATE_DATE  <=  #{endTime}  ]]>
+	  </if>
+      
+    </trim>
+  </sql>
+
+	<select id="selectByTransportOrderIds"  resultMap="BaseResultMap" parameterType="List">
+		select
+		*
+		from om_transport_order
+		where del = 0
+		<if test="transportOrderIds.size > 0 ">
+			and TRANSPORT_ORDER_ID in
+		<foreach collection="transportOrderIds" item="item" open="(" separator="," close=")">
+			<if test="item != null and item != ''" >
+				#{item}
+			</if>
+		</foreach>
+		</if>
+	</select>
+
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from om_transport_order tso
+	left join  tc_transporter tr on   tr.TRANSPORTER_ID = tso.TRANSPORTER_ID
+	left join bd_user checker ON checker.USER_ID =   tso.CHECKER
+	left join bd_user salesmen ON salesmen.USER_ID =   tso.SALESMAN_ID
+	join bd_user creator ON creator.USER_ID =   tso.CREATOR
+	join SYS_CORP ccorp on ccorp.CORP_ID =  tso.CARRIAGE_CORP_ID
+	join SYS_CORP corp on corp.CORP_ID =  tso.CORP_ID
+  	left join  tc_transporter_and_driver tad on tad.DRIVER_ID = tso.DRIVER_ID  and tad.TRANSPORTER_ID = tso.TRANSPORTER_ID
+  	left join bd_user dr ON dr.USER_ID =  tad.DRIVER_ID
+	left join bd_user ass ON ass.USER_ID =  tad.ASSISTANT_DRIVER_ID
+	left join  bd_tractor tractor on   tr.TRACTOR_ID = tractor.TRACTOR_ID
+	left join  bd_trailer trailer on   tr.TRAILER_ID = trailer.TRAILER_ID
+    where tso.del = 0
+    and tso.TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete  from om_transport_order where TRANSPORT_ORDER_ID = #{transportOrderId}
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.TransportOrder" keyProperty="transportOrderId" useGeneratedKeys="true">
+    insert into om_transport_order
+	(TRANSPORT_ORDER_CODE, JOB_TYPE, EXAMINATION, URGENT, PREDICT_KM, PRACTICAL_KM, DRIVER_ID, TRANSPORTER_ID, LOADING_DATE, 
+	CARRIAGE_CORP_ID, SALESMAN_ID,TRANSMIT_DATE,RECEIVING_DATE,SETTLE_TYPE,SETTLE_STATUS,REMARK,
+	 BILL_STATUS, CREATOR, CREATE_DATE, CHECKER, CHECK_DATE, CORP_ID)
+	values
+	(#{transportOrderCode,jdbcType=VARCHAR}, #{jobType,jdbcType=INTEGER}, #{examination,jdbcType=INTEGER}, #{urgent,jdbcType=INTEGER}, #{predictKm,jdbcType=DOUBLE}, 
+	#{practicalKm,jdbcType=DOUBLE}, #{driverId,jdbcType=BIGINT}, #{transporterId,jdbcType=BIGINT}, #{loadingDate,jdbcType=DATE},
+	#{carriageCorpId,jdbcType=BIGINT}, #{salesmanId,jdbcType=BIGINT}, #{transmitDate,jdbcType=TIMESTAMP}, 
+	#{receivingDate,jdbcType=TIMESTAMP},#{settleType,jdbcType=INTEGER},#{settleStatus,jdbcType=INTEGER},  #{remark,jdbcType=VARCHAR},
+	#{billStatus,jdbcType=INTEGER}, 
+	#{creator,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{checker,jdbcType=BIGINT}, #{checkDate,jdbcType=TIMESTAMP}, 
+	#{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.TransportOrder" keyProperty="transportOrderId" useGeneratedKeys="true">
+    insert into om_transport_order
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="transportOrderCode != null">
+	    TRANSPORT_ORDER_CODE, 
+	  </if>
+	  <if test="jobType != null">
+	    JOB_TYPE, 
+	  </if>
+	  <if test="examination != null">
+	    EXAMINATION, 
+	  </if>
+	  <if test="urgent != null">
+	    URGENT, 
+	  </if>
+	  <if test="predictKm != null">
+	    PREDICT_KM, 
+	  </if>
+	  <if test="practicalKm != null">
+	    PRACTICAL_KM, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID, 
+	  </if>
+	  <if test="loadingDate != null">
+	    LOADING_DATE, 
+	  </if>
+	  <if test="carriageCorpId != null">
+	    CARRIAGE_CORP_ID, 
+	  </if>
+	   <if test="salesmanId != null" >
+        SALESMAN_ID,
+      </if>
+      <if test="transmitDate != null" >
+        TRANSMIT_DATE,
+      </if>
+      <if test="receivingDate != null" >
+        RECEIVING_DATE,
+      </if>
+      <if test="settleType != null" >
+        SETTLE_TYPE,
+      </if>
+      <if test="settleStatus != null" >
+        SETTLE_STATUS,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS, 
+	  </if>
+	  <if test="creator != null">
+	    CREATOR, 
+	  </if>
+	  <if test="createDate != null">
+	    CREATE_DATE, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="transportOrderCode != null">
+	    #{transportOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="jobType != null">
+	    #{jobType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="examination != null">
+	    #{examination,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="urgent != null">
+	    #{urgent,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="predictKm != null">
+	    #{predictKm,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="practicalKm != null">
+	    #{practicalKm,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="driverId != null">
+	    #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterId != null">
+	    #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="loadingDate != null">
+	    #{loadingDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="carriageCorpId != null">
+	    #{carriageCorpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="salesmanId != null">
+	    #{salesmanId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transmitDate != null">
+	    #{transmitDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="receivingDate != null" >
+	   #{receivingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleType != null" >
+        #{settleType,jdbcType=INTEGER},
+      </if>
+      <if test="settleStatus != null" >
+        #{settleStatus,jdbcType=INTEGER},  
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+	  <if test="billStatus != null">
+	    #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="creator != null">
+	    #{creator,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="createDate != null">
+	    #{createDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="checker != null">
+	    #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.TransportOrder" >
+	update om_transport_order
+	<set>
+	  <if test="jobType != null">
+	    JOB_TYPE = #{jobType,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="examination != null">
+	    EXAMINATION = #{examination,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="urgent != null">
+	    URGENT = #{urgent,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="predictKm != null">
+	    PREDICT_KM = #{predictKm,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="practicalKm != null">
+	    PRACTICAL_KM = #{practicalKm,jdbcType=DOUBLE}, 
+	  </if>
+	  <if test="driverId != null">
+	    DRIVER_ID = #{driverId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transporterId != null">
+	    TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="loadingDate != null">
+	    LOADING_DATE = #{loadingDate,jdbcType=DATE}, 
+	  </if>
+	  <if test="carriageCorpId != null">
+	    CARRIAGE_CORP_ID = #{carriageCorpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="salesmanId != null" >
+       SALESMAN_ID = #{salesmanId,jdbcType=BIGINT},
+      </if>
+      <if test="transmitDate != null" >
+        TRANSMIT_DATE = #{transmitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivingDate != null" >
+	    RECEIVING_DATE = #{receivingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleType != null" >
+        SETTLE_TYPE = #{settleType,jdbcType=INTEGER},
+      </if>
+      <if test="settleStatus != null" >
+        SETTLE_STATUS = #{settleStatus,jdbcType=INTEGER},  
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="checker != null">
+	    CHECKER = #{checker,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="checkDate != null">
+	    CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	</set>
+	where TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.TransportOrder" >
+    update om_transport_order set 
+	  TRANSPORT_ORDER_CODE = #{transportOrderCode,jdbcType=VARCHAR}, JOB_TYPE = #{jobType,jdbcType=INTEGER}, EXAMINATION = #{examination,jdbcType=INTEGER}, 
+	  URGENT = #{urgent,jdbcType=INTEGER}, PREDICT_KM = #{predictKm,jdbcType=DOUBLE}, PRACTICAL_KM = #{practicalKm,jdbcType=DOUBLE}, 
+	  DRIVER_ID = #{driverId,jdbcType=BIGINT}, TRANSPORTER_ID = #{transporterId,jdbcType=BIGINT}, LOADING_DATE = #{loadingDate,jdbcType=DATE}, 
+	  CARRIAGE_CORP_ID = #{carriageCorpId,jdbcType=BIGINT},  SALESMAN_ID = #{salesmanId,jdbcType=BIGINT},TRANSMIT_DATE = #{transmitDate,jdbcType=TIMESTAMP},
+	  RECEIVING_DATE = #{receivingDate,jdbcType=TIMESTAMP}, SETTLE_TYPE = #{settleType,jdbcType=INTEGER},SETTLE_STATUS = #{settleStatus,jdbcType=INTEGER},  
+	  BILL_STATUS = #{billStatus,jdbcType=INTEGER}, CREATOR = #{creator,jdbcType=BIGINT}, CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, REMARK = #{remark,jdbcType=VARCHAR},
+	  CHECKER = #{checker,jdbcType=BIGINT}, CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+  	
+  <update id="updateCheck" parameterType="com.tilchina.timp.model.TransportOrder" >
+	update om_transport_order
+	<set>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+		<if test="predictKm != null">
+			PREDICT_KM = #{predictKm,jdbcType=DOUBLE},
+		</if>
+	    CHECKER = #{checker,jdbcType=BIGINT}, 
+	    CHECK_DATE = #{checkDate,jdbcType=TIMESTAMP}, 
+	</set>
+	where TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+    <update id="updateByTransmit" parameterType="com.tilchina.timp.model.TransportOrder" >
+	update om_transport_order
+	<set>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	    TRANSMIT_DATE = #{transmitDate,jdbcType=TIMESTAMP},
+	    SALESMAN_ID = #{salesmanId,jdbcType=BIGINT},
+	</set>
+	where TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+  
+  <update id="logicDeleteByPrimaryKey" parameterType="java.lang.Long">
+    update om_transport_order set 
+      DEL = 1 
+    WHERE TRANSPORT_ORDER_ID  = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="logicDeleteByPrimaryKeyList" parameterType="java.lang.Long">
+    update om_transport_order set 
+	  DEL = 1
+	WHERE TRANSPORT_ORDER_ID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+		<if test="item != null and item != ''" >
+	       #{item,jdbcType=BIGINT}
+	    </if>
+	</foreach>
+  </update>
+
+  	<select id="selectRefer" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Refer_Column_List"/>
+	from om_transport_order tso
+	LEFT JOIN om_transport_order_detail  detail ON tso.TRANSPORT_ORDER_ID = detail.TRANSPORT_ORDER_ID
+	left join  tc_transporter tr on   tr.TRANSPORTER_ID = tso.TRANSPORTER_ID
+	left join bd_user salesmen ON salesmen.USER_ID =   tso.SALESMAN_ID
+	left join bd_user checker ON checker.USER_ID =   tso.CHECKER
+	left join bd_user creator ON creator.USER_ID =   tso.CREATOR
+	left join SYS_CORP ccorp on ccorp.CORP_ID =  tso.CARRIAGE_CORP_ID
+	left join SYS_CORP corp on corp.CORP_ID =  tso.CORP_ID
+  	left join  tc_transporter_and_driver tad on tad.DRIVER_ID = tso.DRIVER_ID  and tad.TRANSPORTER_ID = tso.TRANSPORTER_ID
+  	left join bd_user dr ON dr.USER_ID =  tad.DRIVER_ID
+	left join bd_user ass ON ass.USER_ID =  tad.ASSISTANT_DRIVER_ID
+	left join  bd_tractor tractor on   tr.TRACTOR_ID = tractor.TRACTOR_ID
+	left join  bd_trailer trailer on   tr.TRAILER_ID = trailer.TRAILER_ID
+	<include refid="Example_Where_Clause"/>
+		GROUP BY tso.TRANSPORT_ORDER_ID
+		order by tso.CREATE_DATE DESC
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	from om_transport_order tso
+	LEFT JOIN om_transport_order_detail  detail ON tso.TRANSPORT_ORDER_ID = detail.TRANSPORT_ORDER_ID
+	left join  tc_transporter tr on   tr.TRANSPORTER_ID = tso.TRANSPORTER_ID
+	left join bd_user salesmen ON salesmen.USER_ID =   tso.SALESMAN_ID
+	left join bd_user checker ON checker.USER_ID =   tso.CHECKER
+	left join bd_user creator ON creator.USER_ID =   tso.CREATOR
+	left join SYS_CORP ccorp on ccorp.CORP_ID =  tso.CARRIAGE_CORP_ID
+	left join SYS_CORP corp on corp.CORP_ID =  tso.CORP_ID
+  	left join  tc_transporter_and_driver tad on tad.DRIVER_ID = tso.DRIVER_ID  and tad.TRANSPORTER_ID = tso.TRANSPORTER_ID
+  	left join bd_user dr ON dr.USER_ID =  tad.DRIVER_ID
+	left join bd_user ass ON ass.USER_ID =  tad.ASSISTANT_DRIVER_ID
+	left join  bd_trailer trailer on   tr.TRAILER_ID = trailer.TRAILER_ID
+	left join  bd_tractor tractor on   tr.TRACTOR_ID = tractor.TRACTOR_ID
+	<include refid="Example_Where_Clause"/>
+	  GROUP BY tso.TRANSPORT_ORDER_ID
+	 order by tso.CREATE_DATE DESC
+  </select>
+  
+    <select id="queryByDriverId"  resultMap="BaseResultMap" parameterType="Object">
+    select
+      <include refid="Query_Column_List"/>
+    from om_transport_order tso
+	left join  tc_transporter tr on   tr.TRANSPORTER_ID = tso.TRANSPORTER_ID
+	left join bd_user salesmen ON salesmen.USER_ID =   tso.SALESMAN_ID
+	left join bd_user checker ON checker.USER_ID =   tso.CHECKER
+	left join bd_user creator ON creator.USER_ID =   tso.CREATOR
+	left join SYS_CORP ccorp on ccorp.CORP_ID =  tso.CARRIAGE_CORP_ID
+	left join SYS_CORP corp on corp.CORP_ID =  tso.CORP_ID
+  	left join  tc_transporter_and_driver tad on tad.DRIVER_ID = tso.DRIVER_ID  and tad.TRANSPORTER_ID = tso.TRANSPORTER_ID
+  	left join bd_user dr ON dr.USER_ID =  tad.DRIVER_ID
+	left join bd_user ass ON ass.USER_ID =  tad.ASSISTANT_DRIVER_ID
+	left join  bd_trailer trailer on   tr.TRAILER_ID = trailer.TRAILER_ID
+	left join  bd_tractor tractor on   tr.TRACTOR_ID = tractor.TRACTOR_ID
+	<include refid="Driver_Where_Clause"/>
+	order by tso.CREATE_DATE DESC
+  </select>
+
+  <select id="getByOrderId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    from om_transport_order tso
+		left join  tc_transporter tr on   tr.TRANSPORTER_ID = tso.TRANSPORTER_ID
+		left join bd_user salesmen ON salesmen.USER_ID =   tso.SALESMAN_ID
+		left join bd_user checker ON checker.USER_ID =   tso.CHECKER
+		left join bd_user creator ON creator.USER_ID =   tso.CREATOR
+		left join SYS_CORP ccorp on ccorp.CORP_ID =  tso.CARRIAGE_CORP_ID
+		left join SYS_CORP corp on corp.CORP_ID =  tso.CORP_ID
+	  	left join  tc_transporter_and_driver tad on tad.DRIVER_ID = tso.DRIVER_ID  and tad.TRANSPORTER_ID = tso.TRANSPORTER_ID
+	  	left join bd_user dr ON dr.USER_ID =  tad.DRIVER_ID
+		left join bd_user ass ON ass.USER_ID =  tad.ASSISTANT_DRIVER_ID
+		left join  bd_trailer trailer on   tr.TRAILER_ID = trailer.TRAILER_ID
+		left join  bd_tractor tractor on   tr.TRACTOR_ID = tractor.TRACTOR_ID
+	WHERE 
+		tso.TRANSPORT_ORDER_ID in 
+		(SELECT sct.TRANSPORT_ORDER_ID 
+		FROM st_stock_car_trans sct 
+		WHERE sct.STOCK_CAR_ID in 
+		(SELECT st.STOCK_CAR_ID FROM st_stock_car st WHERE st.ORDER_ID=#{orderId,jdbcType=BIGINT}))
+  </select>
+  
+</mapper>   

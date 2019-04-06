@@ -1,0 +1,12 @@
+{
+  "data":{
+    "brandId":0,
+    "brandCode":"Test-brandCode",
+    "brandName":"Test-brandName",
+    "brandEnName":"Test-brandEnName",
+    "creator":0,
+    "createDate":"2018-03-22 07:21:00",
+    "corpId":0,
+    "flag":0
+  }
+}

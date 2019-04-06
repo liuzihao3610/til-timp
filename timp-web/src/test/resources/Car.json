@@ -1,0 +1,31 @@
+{
+  "data":{
+    "carId":0,
+    "carCode":"Test-carCode",
+    "carName":"Test-carName",
+    "brandId":0,
+    "categoryId":0,
+    "carLevel":0,
+    "suv":0,
+    "description":"Test-description",
+    "dataLevel":0,
+    "carLong":0,
+    "carWidth":0,
+    "carHigh":0,
+    "wheelBase":0,
+    "wheelRadius":0,
+    "frontSuspension":0,
+    "rearSuspension":0,
+    "rideHeight":0,
+    "carWeight":0,
+    "price":0,
+    "origin":"Test-origin",
+    "billStatus":0,
+    "creator":0,
+    "createTime":"2018-03-22 08:07:07",
+    "checker":0,
+    "checkDate":"2018-03-22 08:07:07",
+    "corpId":0,
+    "flag":0
+  }
+}

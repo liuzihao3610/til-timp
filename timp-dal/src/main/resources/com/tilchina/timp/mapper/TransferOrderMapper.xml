@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tilchina.timp.mapper.TransferOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.tilchina.timp.model.TransferOrder" >
+    <id column="TRANSFER_ORDER_ID" jdbcType="BIGINT" property="transferOrderId" />
+	<result column="TRANSFER_ORDER_ID" jdbcType="BIGINT" property="transferOrderId" />
+	<result column="TRANSFER_ORDER_CODE" jdbcType="VARCHAR" property="transferOrderCode" />
+	<result column="CUSTOMER_ID" jdbcType="BIGINT" property="customerId" />
+	<result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+	<result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+	<result column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
+	<result column="TRANSPORT_ORDER_ID" jdbcType="BIGINT" property="transportOrderId" />
+	<result column="TRANSPORT_ORDER_DETAIL_ID" jdbcType="BIGINT" property="transportOrderDetailId" />
+	<result column="DEALER_CORP_ID" jdbcType="BIGINT" property="dealerCorpId" />
+	<result column="DEALER_UNIT_ID" jdbcType="BIGINT" property="dealerUnitId" />
+	<result column="SCAN_PATH" jdbcType="VARCHAR" property="scanPath" />
+	<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	<result column="BILL_STATUS" jdbcType="INTEGER" property="billStatus" />
+	<!--<result column="USER_ID" jdbcType="BIGINT" property="userId" />-->
+	<result column="RECEPTION_DATE" jdbcType="TIMESTAMP" property="receptionDate" />
+	<result column="CORP_ID" jdbcType="BIGINT" property="corpId" />
+	
+	<result column="CUSTOMER_NAME" jdbcType="VARCHAR" property="refCustomerName" />
+	<result column="ORDER_CODE" jdbcType="VARCHAR" property="refOrderCode" />
+	<result column="TRANSPORT_ORDER_CODE" jdbcType="VARCHAR" property="refTransportOrderCode" />
+	<result column="DEALER_CORP_NAME" jdbcType="VARCHAR" property="refDealerCorpName" />
+	<result column="DEALER_UNIT_NAME" jdbcType="VARCHAR" property="refDealerUnitName" />
+	<result column="USER_NAME" jdbcType="VARCHAR" property="refUserName" />
+	<result column="CORP_NAME" jdbcType="VARCHAR" property="refCorpName" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANSFER_ORDER_ID, TRANSFER_ORDER_CODE, CUSTOMER_ID, CAR_VIN, ORDER_ID, ORDER_DETAIL_ID, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_DETAIL_ID, 
+	DEALER_CORP_ID, DEALER_UNIT_ID, SCAN_PATH, REMARK, BILL_STATUS, USER_NAME, RECEPTION_DATE, CORP_ID
+  </sql>
+  
+  <sql id="Query_Column_List">
+  	transferorder.TRANSFER_ORDER_ID,transferorder.TRANSFER_ORDER_CODE,transferorder.CUSTOMER_ID,corp.CORP_NAME AS CUSTOMER_NAME,transferorder.CAR_VIN,transferorder.ORDER_ID,ord.ORDER_CODE,
+  	transferorder.ORDER_DETAIL_ID,transferorder.TRANSPORT_ORDER_ID,transportorder.TRANSPORT_ORDER_CODE,transferorder.TRANSPORT_ORDER_DETAIL_ID,transferorder.DEALER_CORP_ID,co.CORP_NAME AS DEALER_CORP_NAME,
+  	transferorder.DEALER_UNIT_ID,unit.UNIT_NAME AS DEALER_UNIT_NAME,transferorder.SCAN_PATH,transferorder.REMARK,transferorder.BILL_STATUS,transferorder.USER_NAME,transferorder.RECEPTION_DATE,
+  	transferorder.CORP_ID,c.CORP_NAME
+  </sql>
+   
+  <sql id="Example_Where_Clause">
+    where transferorder.del = 0
+    <trim  suffixOverrides="," >
+      <if test="transferOrderId != null and transferOrderId != ''" >
+        and transferorder.TRANSFER_ORDER_ID = #{transferOrderId}
+      </if>
+      <if test="transferOrderCode != null and transferOrderCode != ''" >
+        and transferorder.TRANSFER_ORDER_CODE LIKE CONCAT('%',#{transferOrderCode},'%') 
+      </if>
+      <if test="customerId != null and customerId != ''" >
+        and transferorder.CUSTOMER_ID = #{customerId}
+      </if>
+		<if test="refCustomerName != null and refCustomerName != ''" >
+			and corp.CORP_NAME LIKE CONCAT('%',#{refCustomerName},'%')
+		</if>
+      <if test="carVin != null and carVin != ''" >
+        and transferorder.CAR_VIN LIKE CONCAT('%',#{carVin},'%') 
+      </if>
+      <if test="orderId != null and orderId != ''" >
+        and transferorder.ORDER_ID = #{orderId}
+      </if>
+      <if test="refOrderCode != null and refOrderCode != ''" >
+        and ord.ORDER_CODE LIKE CONCAT('%',#{refOrderCode},'%') 
+      </if>
+      <if test="orderDetailId != null and orderDetailId != ''" >
+        and transferorder.ORDER_DETAIL_ID = #{orderDetailId}
+      </if>
+      <if test="transportOrderId != null and transportOrderId != ''" >
+        and transferorder.TRANSPORT_ORDER_ID = #{transportOrderId}
+      </if>
+      <if test="refTransportOrderCode != null and refTransportOrderCode != ''" >
+        and transportorder.TRANSPORT_ORDER_CODE LIKE CONCAT('%',#{refTransportOrderCode},'%') 
+      </if>
+      <if test="transportOrderDetailId != null and transportOrderDetailId != ''" >
+        and transferorder.TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId}
+      </if>
+      <if test="dealerCorpId != null and dealerCorpId != ''" >
+        and transferorder.DEALER_CORP_ID = #{dealerCorpId}
+      </if>
+      <if test="dealerUnitId != null and dealerUnitId != ''" >
+        and transferorder.DEALER_UNIT_ID = #{dealerUnitId}
+      </if>
+      <if test="scanPath != null and scanPath != ''" >
+        and transferorder.SCAN_PATH = #{scanPath}
+      </if>
+      <if test="remark != null and remark != ''" >
+        and transferorder.REMARK = #{remark}
+      </if>
+      <if test="billStatus != null and billStatus != ''" >
+        and transferorder.BILL_STATUS = #{billStatus}
+      </if>
+		<if test="refUserName != null and refUserName != ''" >
+			and transferorder.USER_NAME LIKE CONCAT('%',#{refUserName},'%')
+		</if>
+      <if test="receptionDate != null and receptionDate != ''" >
+        and transferorder.RECEPTION_DATE = #{receptionDate}
+      </if>
+      <if test="corpId != null and corpId != ''" >
+        and transferorder.CORP_ID = #{corpId}
+      </if>
+      <if test="searchContent != null and searchContent != ''" >
+        and (transferorder.TRANSFER_ORDER_CODE  LIKE  CONCAT('%',#{searchContent},'%')
+        	or transferorder.CAR_VIN LIKE CONCAT('%',#{searchContent},'%')
+		  or corp.CORP_NAME LIKE CONCAT('%',#{searchContent},'%')
+		  or transferorder.USER_NAME LIKE CONCAT('%',#{searchContent},'%')
+		  )
+      </if>
+      <if test="startTime != null and startTime != ''">
+      	<![CDATA[ and transferorder.RECEPTION_DATE  >=  #{startTime}  ]]>
+	  </if>
+	  <if test="endTime != null and endTime != ''">
+		<![CDATA[ and transferorder.RECEPTION_DATE  <=  #{endTime}  ]]>
+	  </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM sr_transfer_order transferorder
+		JOIN sys_corp corp ON transferorder.CUSTOMER_ID=corp.CORP_ID
+		JOIN om_order ord ON transferorder.ORDER_ID=ord.ORDER_ID
+		JOIN om_transport_order transportorder ON transferorder.TRANSPORT_ORDER_ID=transportorder.TRANSPORT_ORDER_ID
+		JOIN sys_corp co ON transferorder.DEALER_CORP_ID=co.CORP_ID
+		JOIN bd_unit unit ON transferorder.DEALER_UNIT_ID=unit.UNIT_ID
+		JOIN sys_corp c ON transferorder.CORP_ID=c.CORP_ID
+    where transferorder.TRANSFER_ORDER_ID = #{transferOrderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from SR_TRANSFER_ORDER where  TRANSFER_ORDER_ID= #{transferOrderId}
+  </delete>
+	<delete id="deleteByTransportOrderId" parameterType="java.lang.Long">
+    delete from SR_TRANSFER_ORDER where  TRANSPORT_ORDER_ID= #{transportOrderId}
+  </delete>
+  <delete id="deleteList"  parameterType="java.lang.reflect.Array" >
+	  delete from SR_TRANSFER_ORDER
+  		<if test="null!=array || 0!=array.length">
+  		 where	TRANSFER_ORDER_ID in
+  	 		<foreach item="transferOrderId" collection="array" open="(" separator="," close=")">
+  	 			#{transferOrderId}
+  	 		</foreach>
+  		</if>
+  </delete>
+  <insert id="insert" parameterType="com.tilchina.timp.model.TransferOrder" keyProperty="transferOrderId" useGeneratedKeys="true">
+    insert into SR_TRANSFER_ORDER
+	(TRANSFER_ORDER_CODE, CUSTOMER_ID, CAR_VIN, ORDER_ID, ORDER_DETAIL_ID, TRANSPORT_ORDER_ID, TRANSPORT_ORDER_DETAIL_ID, 
+	DEALER_CORP_ID, DEALER_UNIT_ID, SCAN_PATH, REMARK, BILL_STATUS, USER_NAME, RECEPTION_DATE, CORP_ID)
+	values
+	(#{transferOrderCode,jdbcType=VARCHAR}, #{customerId,jdbcType=BIGINT}, #{carVin,jdbcType=VARCHAR}, #{orderId,jdbcType=BIGINT}, 
+	#{orderDetailId,jdbcType=BIGINT}, #{transportOrderId,jdbcType=BIGINT}, #{transportOrderDetailId,jdbcType=BIGINT}, 
+	#{dealerCorpId,jdbcType=BIGINT}, #{dealerUnitId,jdbcType=BIGINT}, #{scanPath,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+	#{billStatus,jdbcType=INTEGER}, #{refUserName,jdbcType=VARCHAR}, #{receptionDate,jdbcType=TIMESTAMP},
+	#{corpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tilchina.timp.model.TransferOrder" keyProperty="transferOrderId" useGeneratedKeys="true">
+    insert into SR_TRANSFER_ORDER
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  <if test="transferOrderCode != null">
+	    TRANSFER_ORDER_CODE, 
+	  </if>
+	  <if test="customerId != null">
+	    CUSTOMER_ID, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN, 
+	  </if>
+	  <if test="orderId != null">
+	    ORDER_ID, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    ORDER_DETAIL_ID, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID, 
+	  </if>
+	  <if test="transportOrderDetailId != null">
+	    TRANSPORT_ORDER_DETAIL_ID, 
+	  </if>
+	  <if test="dealerCorpId != null">
+	    DEALER_CORP_ID, 
+	  </if>
+	  <if test="dealerUnitId != null">
+	    DEALER_UNIT_ID, 
+	  </if>
+	  <if test="scanPath != null">
+	    SCAN_PATH, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS, 
+	  </if>
+	  <if test="refUserName != null">
+		USER_NAME,
+	  </if>
+	  <if test="receptionDate != null">
+	    RECEPTION_DATE, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID, 
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  <if test="transferOrderCode != null">
+	    #{transferOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="customerId != null">
+	    #{customerId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="orderId != null">
+	    #{orderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    #{orderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderDetailId != null">
+	    #{transportOrderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="dealerCorpId != null">
+	    #{dealerCorpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="dealerUnitId != null">
+	    #{dealerUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="scanPath != null">
+	    #{scanPath,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="billStatus != null">
+	    #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="refUserName != null">
+	    #{refUserName,jdbcType=BIGINT},
+	  </if>
+	  <if test="receptionDate != null">
+	    #{receptionDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tilchina.timp.model.TransferOrder" >
+	update SR_TRANSFER_ORDER
+	<set>
+		<!--
+	  <if test="transferOrderCode != null">
+	    TRANSFER_ORDER_CODE = #{transferOrderCode,jdbcType=VARCHAR}, 
+	  </if>
+	    -->
+	  <if test="customerId != null">
+	    CUSTOMER_ID = #{customerId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="carVin != null">
+	    CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="orderId != null">
+	    ORDER_ID = #{orderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="orderDetailId != null">
+	    ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderId != null">
+	    TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="transportOrderDetailId != null">
+	    TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="dealerCorpId != null">
+	    DEALER_CORP_ID = #{dealerCorpId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="dealerUnitId != null">
+	    DEALER_UNIT_ID = #{dealerUnitId,jdbcType=BIGINT}, 
+	  </if>
+	  <if test="scanPath != null">
+	    SCAN_PATH = #{scanPath,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="remark != null">
+	    REMARK = #{remark,jdbcType=VARCHAR}, 
+	  </if>
+	  <if test="billStatus != null">
+	    BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  </if>
+	  <if test="refUserName != null">
+		USER_NAME = #{refUserName,jdbcType=VARCHAR},
+	  </if>
+	  <if test="receptionDate != null">
+	    RECEPTION_DATE = #{receptionDate,jdbcType=TIMESTAMP}, 
+	  </if>
+	  <if test="corpId != null">
+	    CORP_ID = #{corpId,jdbcType=BIGINT}, 
+	  </if>
+	</set>
+	where TRANSFER_ORDER_ID = #{transferOrderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tilchina.timp.model.TransferOrder" >
+    update SR_TRANSFER_ORDER set 
+	  TRANSFER_ORDER_CODE = #{transferOrderCode,jdbcType=VARCHAR}, CUSTOMER_ID = #{customerId,jdbcType=BIGINT}, CAR_VIN = #{carVin,jdbcType=VARCHAR}, 
+	  ORDER_ID = #{orderId,jdbcType=BIGINT}, ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}, 
+	  TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}, TRANSPORT_ORDER_DETAIL_ID = #{transportOrderDetailId,jdbcType=BIGINT}, 
+	  DEALER_CORP_ID = #{dealerCorpId,jdbcType=BIGINT}, DEALER_UNIT_ID = #{dealerUnitId,jdbcType=BIGINT}, SCAN_PATH = #{scanPath,jdbcType=VARCHAR}, 
+	  REMARK = #{remark,jdbcType=VARCHAR}, BILL_STATUS = #{billStatus,jdbcType=INTEGER}, 
+	  USER_NAME = #{refUserName,jdbcType=VARCHAR}, RECEPTION_DATE = #{receptionDate,jdbcType=TIMESTAMP}, CORP_ID = #{corpId,jdbcType=BIGINT}
+	where TRANSFER_ORDER_ID = #{transferOrderId,jdbcType=BIGINT}
+  </update>
+  	
+  <select id="selectList" resultMap="BaseResultMap"  parameterType="Object">
+	select
+	<include refid="Query_Column_List"/>
+	FROM sr_transfer_order transferorder
+		JOIN sys_corp corp ON transferorder.CUSTOMER_ID=corp.CORP_ID
+		JOIN om_order ord ON transferorder.ORDER_ID=ord.ORDER_ID
+		JOIN om_transport_order transportorder ON transferorder.TRANSPORT_ORDER_ID=transportorder.TRANSPORT_ORDER_ID
+		JOIN sys_corp co ON transferorder.DEALER_CORP_ID=co.CORP_ID
+		JOIN bd_unit unit ON transferorder.DEALER_UNIT_ID=unit.UNIT_ID
+		JOIN sys_corp c ON transferorder.CORP_ID=c.CORP_ID
+	<include refid="Example_Where_Clause"/>
+	order by transferorder.TRANSFER_ORDER_ID DESC
+  </select>
+  
+  <select id="selectByVin"  resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+      <include refid="Query_Column_List"/>
+    FROM sr_transfer_order transferorder
+		JOIN sys_corp corp ON transferorder.CUSTOMER_ID=corp.CORP_ID
+		JOIN om_order ord ON transferorder.ORDER_ID=ord.ORDER_ID
+		JOIN om_transport_order transportorder ON transferorder.TRANSPORT_ORDER_ID=transportorder.TRANSPORT_ORDER_ID
+		JOIN sys_corp co ON transferorder.DEALER_CORP_ID=co.CORP_ID
+		JOIN bd_unit unit ON transferorder.DEALER_UNIT_ID=unit.UNIT_ID
+		JOIN sys_corp c ON transferorder.CORP_ID=c.CORP_ID
+    where transferorder.DEL=0 AND transferorder.CAR_VIN = #{carVin,jdbcType=VARCHAR} AND transferorder.TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </select>
+  
+  <update id="updateByVin" parameterType="java.util.Map">
+    update SR_TRANSFER_ORDER set BILL_STATUS = #{billStatus,jdbcType=INTEGER} where  CAR_VIN = #{carVin,jdbcType=VARCHAR} AND TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT}
+  </update>
+  
+
+  <select id="query"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Query_Column_List"/>
+    FROM sr_transfer_order transferorder
+		JOIN sys_corp corp ON transferorder.CUSTOMER_ID=corp.CORP_ID
+		JOIN om_order ord ON transferorder.ORDER_ID=ord.ORDER_ID
+		JOIN om_transport_order transportorder ON transferorder.TRANSPORT_ORDER_ID=transportorder.TRANSPORT_ORDER_ID
+		JOIN sys_corp co ON transferorder.DEALER_CORP_ID=co.CORP_ID
+		JOIN bd_unit unit ON transferorder.DEALER_UNIT_ID=unit.UNIT_ID
+		JOIN sys_corp c ON transferorder.CORP_ID=c.CORP_ID
+		JOIN st_stock_car sto ON transferorder.CAR_VIN=sto.CAR_VIN
+    where transferorder.DEL=0 AND transferorder.TRANSPORT_ORDER_ID = #{transportOrderId,jdbcType=BIGINT} ORDER BY sto.CAR_STATUS DESC, transferorder.BILL_STATUS ASC
+    
+     
+  </select>
+  
+  <select id="getOrders"  resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT
+		aa.CAR_VIN AS carVin,aa.car_status AS carStatus,bb.BILL_STATUS AS transferOrderStatus ,car.CAR_NAME AS refCarName,
+		carType.CAR_TYPE_NAME AS refCarTypeName,brand.BRAND_NAME AS refBrandName,car.CAR_CODE AS refCarCode,
+		category.CATEGORY_NAME AS refCategoryName
+		FROM om_transport_order_detail aa 
+		JOIN sr_transfer_order bb ON aa.TRANSPORT_ORDER_DETAIL_ID = bb.TRANSPORT_ORDER_DETAIL_ID
+		JOIN bd_car car ON aa.CAR_ID=car.CAR_ID
+		LEFT JOIN bd_brand brand ON car.BRAND_ID=brand.BRAND_ID
+		LEFT JOIN bd_car_type carType ON car.CAR_TYPE_ID=carType.CAR_TYPE_ID
+		LEFT JOIN bd_category category ON car.CATEGORY_ID=category.CATEGORY_ID
+	WHERE aa.TRANSPORT_ORDER_ID in (
+		SELECT a.TRANSPORT_ORDER_ID
+		FROM om_transport_order_detail a 
+		JOIN sr_transfer_order b ON a.TRANSPORT_ORDER_DETAIL_ID = b.TRANSPORT_ORDER_DETAIL_ID
+		JOIN om_transport_order c ON a.TRANSPORT_ORDER_ID = c.TRANSPORT_ORDER_ID
+		WHERE b.BILL_STATUS = 0 AND c.DRIVER_ID = #{driverId,jdbcType=BIGINT}
+		GROUP BY a.TRANSPORT_ORDER_ID
+	) AND bb.DEL=0
+	ORDER BY bb.BILL_STATUS ASC , aa.car_status DESC
+    
+     
+  </select>
+
+  	
+</mapper>   

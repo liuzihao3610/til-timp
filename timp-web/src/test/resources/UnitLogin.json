@@ -1,0 +1,19 @@
+{
+  "data":{
+    "unitLoginId":0,
+    "unitId":0,
+    "password":"Test-password",
+    "token":"Test-token",
+    "special":"Test-special",
+    "captcha":"Test-captcha",
+    "identifier":"Test-identifier",
+    "userAgent":"Test-userAgent",
+    "clientType":0,
+    "errorTimes":0,
+    "block":0,
+    "ip":"Test-ip",
+    "recentlyLogintime":"2018-07-11 02:55:08",
+    "corpId":0,
+    "flag":0
+  }
+}
